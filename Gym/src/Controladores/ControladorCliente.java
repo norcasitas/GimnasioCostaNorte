@@ -42,8 +42,6 @@ public class ControladorCliente implements ActionListener{
             BotNuevoPres = false;
             panelClientes.LimpiarTexts();
             panelClientes.getBotGuardar().setEnabled(true);
-            panelClientes.getBotAnterior().setEnabled(true);
-            panelClientes.getBotSiguiente().setEnabled(true);
             panelClientes.getBotModif().setEnabled(true);
         }
     }
