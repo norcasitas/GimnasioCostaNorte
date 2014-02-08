@@ -11,7 +11,9 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -22,8 +24,11 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
     /**
      * Creates new form AbmClienteGui
      */
+    
+    private DefaultTableModel tablaActivDefault ;
     public AbmClienteGui() {
         initComponents();
+        tablaActivDefault= (DefaultTableModel) tablaActividades.getModel();
     }
 
     public void setActionListener(ActionListener lis){
@@ -87,9 +92,7 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
         return labelFechaVenci;
     }
 
-    public JList getListActividades() {
-        return listActividades;
-    }
+
 
     public JTextField getNombre() {
         return nombre;
@@ -123,7 +126,7 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
         direccion.setEnabled(!si);
         telefono.setEnabled(!si);
         fechaNacim.setEnabled(!si);
-        listActividades.setEnabled(!si);
+        tablaActividades.setEnabled(!si);
         sexo.setEnabled(!si);
     }
     
@@ -134,8 +137,18 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
         direccion.setText("");
         telefono.setText("");
         fechaNacim.setDate(Calendar.getInstance().getTime());
-        listActividades.clearSelection();
+        tablaActividades.clearSelection();
     }
+
+    public DefaultTableModel getTablaActivDefault() {
+        return tablaActivDefault;
+    }
+
+    public JTable getTablaActividades() {
+        return tablaActividades;
+    }
+        
+        
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -146,6 +159,8 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -171,12 +186,25 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        listActividades = new javax.swing.JList();
+        tablaActividades = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         labelFechaIngreso = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         labelFechaVenci = new javax.swing.JLabel();
         botPago = new javax.swing.JButton();
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(jTable1);
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -243,7 +271,7 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel11)
                                 .addGap(27, 27, 27)))
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(telefono, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                            .addComponent(telefono, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
                             .addComponent(sexo, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -255,7 +283,7 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addGap(4, 4, 4)
-                        .addComponent(fechaNacim, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE))
+                        .addComponent(fechaNacim, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(65, 65, 65)
                         .addComponent(direccion))
@@ -326,21 +354,42 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Gimnasio"));
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Actividades"));
+        jPanel4.setLayout(new java.awt.GridLayout());
 
-        jScrollPane1.setViewportView(listActividades);
+        tablaActividades.setAutoCreateRowSorter(true);
+        tablaActividades.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Actividad", "Realiza"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Boolean.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, true
+            };
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addGap(6, 6, 6))
-        );
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaActividades.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        tablaActividades.setShowHorizontalLines(false);
+        tablaActividades.setShowVerticalLines(false);
+        jScrollPane1.setViewportView(tablaActividades);
+        tablaActividades.getColumnModel().getColumn(1).setMaxWidth(60);
+
+        jPanel4.add(jScrollPane1);
 
         jLabel1.setText("Fecha de ingreso:");
 
@@ -366,11 +415,11 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(botPago)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
@@ -379,7 +428,7 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(labelFechaVenci, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addComponent(botPago))
         );
 
@@ -391,9 +440,7 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0)))
+                    .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
@@ -440,11 +487,13 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
     private javax.swing.JLabel labelFechaIngreso;
     private javax.swing.JLabel labelFechaVenci;
-    private javax.swing.JList listActividades;
     private javax.swing.JTextField nombre;
     private javax.swing.JComboBox sexo;
+    private javax.swing.JTable tablaActividades;
     private javax.swing.JTextField telefono;
     // End of variables declaration//GEN-END:variables
 

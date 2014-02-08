@@ -5,9 +5,12 @@
 package Controladores;
 
 import Interfaces.AbmClienteGui;
+import Interfaces.FichaMedicaGui;
+import Interfaces.RegistrarPagoGui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
 
 /**
  *
@@ -17,6 +20,8 @@ public class ControladorAbmCliente implements ActionListener {
 
     private AbmClienteGui clienteGui;
     private boolean isNuevo;
+    private RegistrarPagoGui pagoGui;
+    private FichaMedicaGui fichaMedicaGui;
 
     public ControladorAbmCliente(AbmClienteGui clienteGui) {
         this.clienteGui = clienteGui;
@@ -48,6 +53,10 @@ public class ControladorAbmCliente implements ActionListener {
         }
         if (ae.getSource() == clienteGui.getBotFicha()) {
             System.out.println("Boton ficha pulsado");
+            fichaMedicaGui= new FichaMedicaGui(null, true);
+            fichaMedicaGui.setLocationRelativeTo(null);
+            fichaMedicaGui.setVisible(true);
+            
 
         }
         if (ae.getSource() == clienteGui.getBotGuardar()) {
@@ -81,6 +90,11 @@ public class ControladorAbmCliente implements ActionListener {
         }
         if (ae.getSource() == clienteGui.getBotPago()) {
             System.out.println("Boton pago pulsado");
+            /*SE DEBERÁ MODIFICAR EL CONSTRUCTOR DE REGISTRARPAGOGUI PARA QUE TOME
+             UN CLIENTE ASÍ SE HACE EL PAGO TODO DESDE ESA CLASE*/
+            pagoGui= new RegistrarPagoGui(null, true);
+            pagoGui.setLocationRelativeTo(null);
+            pagoGui.setVisible(true);
 
         }
     }
