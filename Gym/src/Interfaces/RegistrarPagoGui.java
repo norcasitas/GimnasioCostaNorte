@@ -66,7 +66,7 @@ public class RegistrarPagoGui extends javax.swing.JDialog {
         setTitle("Realizar cobro");
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Actividades que realiza"));
-        jPanel4.setLayout(new java.awt.GridLayout());
+        jPanel4.setLayout(new java.awt.GridLayout(1, 0));
 
         tablaActividades.setAutoCreateRowSorter(true);
         tablaActividades.setModel(new javax.swing.table.DefaultTableModel(
@@ -135,8 +135,11 @@ public class RegistrarPagoGui extends javax.swing.JDialog {
 
         jLabel3.setText("Fecha");
 
+        fecha.setDateFormatString("dd-MM-yyyy");
+
         jLabel4.setText("Vence");
 
+        fechaVence.setDateFormatString("dd-MM-yyyy");
         fechaVence.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

@@ -61,7 +61,7 @@
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="305" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="9" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="botVerTodos" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="botBorrarPago" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -151,6 +151,7 @@
     <Component class="com.toedter.calendar.JDateChooser" name="hasta">
       <Properties>
         <Property name="toolTipText" type="java.lang.String" value="Ver pagos hasta la fecha"/>
+        <Property name="dateFormatString" type="java.lang.String" value="dd-MM-yyyy"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
@@ -166,6 +167,7 @@
     <Component class="com.toedter.calendar.JDateChooser" name="desde">
       <Properties>
         <Property name="toolTipText" type="java.lang.String" value="Ver pagos desde la fecha"/>
+        <Property name="dateFormatString" type="java.lang.String" value="dd-MM-yyyy"/>
       </Properties>
     </Component>
   </SubComponents>

@@ -243,6 +243,8 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
 
         BotHuella.setText("Cargar huella");
 
+        fechaNacim.setDateFormatString("dd-MM-yyyy");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -354,7 +356,7 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Gimnasio"));
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Actividades"));
-        jPanel4.setLayout(new java.awt.GridLayout());
+        jPanel4.setLayout(new java.awt.GridLayout(1, 0));
 
         tablaActividades.setAutoCreateRowSorter(true);
         tablaActividades.setModel(new javax.swing.table.DefaultTableModel(

@@ -206,6 +206,9 @@
       </Properties>
     </Component>
     <Component class="com.toedter.calendar.JDateChooser" name="fecha">
+      <Properties>
+        <Property name="dateFormatString" type="java.lang.String" value="dd-MM-yyyy"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>
@@ -214,6 +217,7 @@
     </Component>
     <Component class="com.toedter.calendar.JDateChooser" name="fechaVence">
       <Properties>
+        <Property name="dateFormatString" type="java.lang.String" value="dd-MM-yyyy"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
