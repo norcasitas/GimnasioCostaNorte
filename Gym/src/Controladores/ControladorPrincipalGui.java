@@ -12,6 +12,8 @@ import Interfaces.UsuarioGui;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Locale;
+import java.util.Properties;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -33,10 +35,11 @@ public class ControladorPrincipalGui implements ActionListener {
     private ControladorUsuario controladorUsuario;
 
     public ControladorPrincipalGui() {
-        JFrame.setDefaultLookAndFeelDecorated(true);
         try {
             JFrame.setDefaultLookAndFeelDecorated(true);
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+                                                com.jtattoo.plaf.aero.AeroLookAndFeel.setTheme("Green-Large-Font");
+
+            UIManager.setLookAndFeel("com.jtattoo.plaf.aero.AeroLookAndFeel");
         } catch (Exception e) {
             e.printStackTrace();
         }

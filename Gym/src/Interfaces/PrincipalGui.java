@@ -128,6 +128,7 @@ public class PrincipalGui extends javax.swing.JFrame {
         getContentPane().add(panelBotones, java.awt.BorderLayout.LINE_START);
 
         jMenu1.setText("Archivo");
+        jMenu1.setToolTipText("");
 
         botDesconectar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/cerrar.png"))); // NOI18N
         botDesconectar.setText("Cerrar sesión");

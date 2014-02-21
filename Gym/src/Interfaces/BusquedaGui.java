@@ -103,7 +103,8 @@ public class BusquedaGui extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setResizable(true);
         setTitle("Socios");
-        setPreferredSize(new java.awt.Dimension(710, 400));
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/1393023303_clients.png"))); // NOI18N
+        setPreferredSize(new java.awt.Dimension(734, 410));
         getContentPane().setLayout(new java.awt.BorderLayout());
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Busqueda"));
