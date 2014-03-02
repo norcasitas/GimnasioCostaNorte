@@ -4,12 +4,16 @@
  */
 package Controladores;
 
+import ABMs.ABMAranceles;
 import Interfaces.ActividadesGui;
+import Modelos.Arancel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import org.javalite.activejdbc.LazyList;
 
 /**
  *
@@ -21,9 +25,11 @@ public class ControladorActividades implements ActionListener {
     private JTable tablaActividades;
     private DefaultTableModel tablaActividadesDefault;
     private boolean isNuevo;
+    private ABMAranceles abmAranceles;
 
     public ControladorActividades(ActividadesGui actividadesGui) {
         this.actividadesGui = actividadesGui;
+        abmAranceles = new ABMAranceles();
         actividadesGui.setActionListener(this);
         tablaActividades = this.actividadesGui.getTablaActividades();
         tablaActividadesDefault = this.actividadesGui.getTablaActividadesDefault();
@@ -42,7 +48,11 @@ public class ControladorActividades implements ActionListener {
         actividadesGui.getBotEliminarCancelar().setEnabled(true);
         actividadesGui.getBotEliminarCancelar().setText("Eliminar");
         System.out.println("hice click en una actividad");
-
+        int row = actividadesGui.getTablaActividades().getSelectedRow();
+        Arancel ar = Arancel.first("id = ?", actividadesGui.getTablaActividadesDefault().getValueAt(row, 0));
+        actividadesGui.getActividad().setText(ar.getString("nombre"));
+        actividadesGui.getPrecio().setText(String.valueOf(ar.getFloat("precio")));
+        actividadesGui.getDesde().setDate(ar.getDate("fecha"));
         /*Cargo la info de las actividades en los campos! */
     }
 
@@ -54,6 +64,19 @@ public class ControladorActividades implements ActionListener {
                 actividadesGui.bloquearCampos(true);
                 int ret = JOptionPane.showConfirmDialog(actividadesGui, "¿Desea borrar la actividad.....?", null, JOptionPane.YES_NO_OPTION);
                 if (ret == JOptionPane.YES_OPTION) {
+                    Arancel ar = Arancel.first("nombre = ?", actividadesGui.getActividad().getText());
+                    abmAranceles.baja(ar);
+                    LazyList ListAranceles = Arancel.where("activo = ?", 1);
+                    actividadesGui.getTablaActividadesDefault().setRowCount(0);
+                    Iterator<Arancel> it = ListAranceles.iterator();
+                    while(it.hasNext()){
+                        Arancel aran = it.next();
+                        Object row[] = new Object[3];
+                        row[0] = aran.getInteger("id");
+                        row[1] = aran.getString("nombre");
+                        row[2] = aran.getFloat("precio");
+                        actividadesGui.getTablaActividadesDefault().addRow(row);
+                     }
                     /*Aqui va todo para borrar! */
                     actividadesGui.limpiarCampos();
                     actividadesGui.bloquearCampos(true);
@@ -79,8 +102,29 @@ public class ControladorActividades implements ActionListener {
                 System.out.println("Se modificó uno que existia");
                 
             } else {
-                /*Aca va todo para guardar uno nuevo*/
+                Arancel a = new Arancel();
+                a.set("fecha", actividadesGui.getDesde().getDate());
+                a.set("precio",actividadesGui.getPrecio().getText());
+                a.set("activo", 1);
+                a.set("nombre", actividadesGui.getActividad().getText().toUpperCase());
                 System.out.println("Boton guardó uno nuevito");
+                if(abmAranceles.alta(a)){
+                    JOptionPane.showMessageDialog(actividadesGui, "Actividad guardada exitosamente!");
+                    actividadesGui.bloquearCampos(true);
+                    LazyList ListAranceles = Arancel.where("activo = ?", 1);
+                    actividadesGui.getTablaActividadesDefault().setRowCount(0);
+                    Iterator<Arancel> it = ListAranceles.iterator();
+                    while(it.hasNext()){
+                        Arancel ar = it.next();
+                        Object row[] = new Object[3];
+                        row[0] = ar.getInteger("id");
+                        row[1] = ar.getString("nombre");
+                        row[2] = ar.getFloat("precio");
+                        actividadesGui.getTablaActividadesDefault().addRow(row);
+                     }
+                }else{
+                    JOptionPane.showMessageDialog(actividadesGui, "Ocurrió un error, revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
+                }
             }
             actividadesGui.limpiarCampos();
             actividadesGui.bloquearCampos(true);

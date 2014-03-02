@@ -4,18 +4,24 @@
  */
 package Controladores;
 
+import ABMs.ABMSocios;
 import Interfaces.AbmClienteGui;
 import Interfaces.BusquedaGui;
 import Interfaces.DesktopPaneImage;
 import Interfaces.PagosGui;
+import Modelos.Arancel;
+import Modelos.Pago;
+import Modelos.Socio;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
 import java.util.List;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import org.javalite.activejdbc.LazyList;
 
 /**
  *
@@ -29,11 +35,13 @@ public class ControladorClientes implements ActionListener {
     private AbmClienteGui altaClienteGui;
     private ControladorAbmCliente controladorAbmCliente;
     private PagosGui pagosGui;
+    private ABMSocios abmSocios;
 
     public ControladorClientes(BusquedaGui clientes, DesktopPaneImage desktop) {
         this.clientesGui = clientes;
         clientes.setActionListener(this);
         altaClienteGui = new AbmClienteGui();
+        abmSocios = new ABMSocios();
         controladorAbmCliente = new ControladorAbmCliente(altaClienteGui);
         desktop.add(altaClienteGui);
         pagosGui= new PagosGui();
@@ -87,8 +95,32 @@ public class ControladorClientes implements ActionListener {
             altaClienteGui.setTitle("Información del socio");
             altaClienteGui.setVisible(true);
             altaClienteGui.toFront();
-            /*Aca va el código para que se abra la ventana de clientes con TODOS
-             los datos del cliente cargado*/
+             int row = tablaClientes.getSelectedRow();
+            Socio s = Socio.first("DNI = ?", tablaClientes.getValueAt(row, 2));
+            altaClienteGui.getNombre().setText(s.getString("NOMBRE"));
+            altaClienteGui.getApellido().setText(s.getString("APELLIDO"));
+            altaClienteGui.getTelefono().setText(s.getString("TEL"));
+            altaClienteGui.getDni().setText(s.getString("DNI"));
+            altaClienteGui.getDireccion().setText(s.getString("DIR"));
+            if(s.getString("SEXO").equals("M")){
+                altaClienteGui.getSexo().setSelectedIndex(1);
+            }else{
+                altaClienteGui.getSexo().setSelectedIndex(0);
+            }
+            altaClienteGui.getFechaNacimJDate().setDate(s.getDate("FECHA_NAC"));
+            altaClienteGui.getLabelFechaIngreso().setText(s.getString("FECHA_ING"));
+            altaClienteGui.getLabelFechaVenci().setText(s.getString("FECHA_PROX_PAGO")); 
+             altaClienteGui.getTablaActivDefault().setRowCount(0);
+            LazyList<Arancel> ListAran = Arancel.findAll();
+            Iterator<Arancel> ite = ListAran.iterator();
+                while(ite.hasNext()){
+                    Arancel a = ite.next();
+                    Object row1[] = new Object[2];
+                    row1[0] = a.getString("nombre");
+                    altaClienteGui.getTablaActivDefault().addRow(row1);
+            /*Se debe abrir la ventana de clientes para permitir el alta de giles*/
+                }
+            
         }
 
     }
@@ -104,25 +136,51 @@ public class ControladorClientes implements ActionListener {
             altaClienteGui.setTitle("Alta de socio");
             altaClienteGui.setVisible(true);
             altaClienteGui.toFront();
+            altaClienteGui.getTablaActivDefault().setRowCount(0);
+            LazyList<Arancel> ListAran = Arancel.findAll();
+            Iterator<Arancel> ite = ListAran.iterator();
+                while(ite.hasNext()){
+                    Arancel a = ite.next();
+                    Object row[] = new Object[2];
+                    row[0] = a.getString("nombre");
+                    altaClienteGui.getTablaActivDefault().addRow(row);
             /*Se debe abrir la ventana de clientes para permitir el alta de giles*/
-
+                }
         }
         if (ae.getSource() == clientesGui.getBotEliminarSocio()) {
             System.out.println("eliminar socio");
             if(tablaClientes.getSelectedRow()>=0){
                 /*elimino el socio SELECCIONADO, pregunto y fue*/
-                                int ret=JOptionPane.showConfirmDialog(clientesGui, "¿Desea eliminar el socio.......?",null,JOptionPane.YES_NO_OPTION);
+                int ret=JOptionPane.showConfirmDialog(clientesGui, "¿Desea eliminar a "+tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0)+" "+tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 1)+" ?",null,JOptionPane.YES_NO_OPTION);
                 if(ret== JOptionPane.YES_OPTION){
                     System.out.println("elimino el de la fila "+tablaClientes.getSelectedRow());
-
+                  /*  Socio s = new Socio();
+                    s.set("DNI", tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 2));
+                    abmSocios.baja(s);*/
+                    Socio s = Socio.first("DNI = ?", tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 2));
+                    s.set("ACTIVO", 0);
+                    s.saveIt();
                 }
             }
         }
         if (ae.getSource() == clientesGui.getBotRegistrosPago()) {
             System.out.println("ver registros de pago pulsado");
             if(tablaClientes.getSelectedRow()>=0){
-            /*abro la ventana de pagos y veo los pagos realizados por el cliente
-             seleccionado*/
+                Socio s = Socio.first("DNI = ?", tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 2));
+                LazyList ListPagos = Pago.where("ID_DATOS_PERS = ?", s.getString("ID_DATOS_PERS"));
+                pagosGui.getTablaPagosDefault().setRowCount(0);
+                Iterator<Pago> it = ListPagos.iterator();
+                
+                while(it.hasNext()){
+                    Pago p = it.next();
+                    Object row[] = new Object[6];
+                    row[0] = tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0);
+                    row[1] = tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 1);
+                    row[2] = tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 2);
+                    row[3] = p.getString("FECHA");
+                    row[4] = p.getFloat("MONTO");
+                    pagosGui.getTablaPagosDefault().addRow(row);
+                }
                 pagosGui.setVisible(true);
                 pagosGui.toFront();
                 System.out.println("pagos del gil de la fila"+tablaClientes.getSelectedRow());
