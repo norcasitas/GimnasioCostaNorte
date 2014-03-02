@@ -4,6 +4,7 @@
  */
 package Controladores;
 
+import ABMs.ABMSocios;
 import Interfaces.ActividadesGui;
 import Interfaces.BusquedaGui;
 import Interfaces.IngresoGui;
@@ -111,6 +112,11 @@ public class ControladorPrincipalGui implements ActionListener {
                  i++;
              }
              socios.getActividades().setListData(d);
+             ABMSocios abm = new ABMSocios();
+             /*
+              * ESTO SE EJECUTA UNA VEZ!
+              */
+           //  abm.modbase();
         }
         if (ae.getSource() == principalGui.getBotActividades()) {
             System.out.println("actividades pulsado");

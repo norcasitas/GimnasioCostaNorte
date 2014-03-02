@@ -247,7 +247,7 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
 
         BotHuella.setText("Cargar huella");
 
-        fechaNacim.setDateFormatString("dd-MM-yyyy");
+        fechaNacim.setDateFormatString("yyyy-MM-dd");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);

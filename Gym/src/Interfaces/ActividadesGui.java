@@ -199,7 +199,7 @@ public class ActividadesGui extends javax.swing.JInternalFrame {
 
         jLabel3.setText("Vigente desde");
 
-        desde.setDateFormatString("yyyy,MM,dd");
+        desde.setDateFormatString("yyyy-MM-dd");
         desde.setEnabled(false);
 
         categoria.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Aeróbico", "Pilates", "Spinning", "Musculación", "Combo" }));

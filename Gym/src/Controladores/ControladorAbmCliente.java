@@ -11,14 +11,17 @@ import Interfaces.FichaMedicaGui;
 import Interfaces.RegistrarPagoGui;
 import Modelos.Arancel;
 import Modelos.Socio;
+import Modelos.Socioarancel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
+import org.javalite.activejdbc.LazyList;
 import org.javalite.activejdbc.Model;
 
 /**
@@ -164,7 +167,34 @@ public class ControladorAbmCliente implements ActionListener {
             clienteGui.getBotModif().setEnabled(false);
             clienteGui.getBotGuardar().setEnabled(true);
             isNuevo=false;
-
+            clienteGui.getTablaActivDefault().setRowCount(0);
+            LazyList<Arancel> list = Arancel.findAll();
+            Iterator<Arancel> it = list.iterator();
+            while(it.hasNext()){
+                Arancel a = it.next();
+                Object row1[] = new Object[2];
+                row1[0] = a.getString("nombre");
+                row1[1] = false;
+                clienteGui.getTablaActivDefault().addRow(row1);
+            }
+            Socio socio = Socio.first("DNI = ?", clienteGui.getDni().getText());
+            LazyList<Socioarancel> socaran = Socioarancel.where("id_socio = ?", socio.get("ID_DATOS_PERS"));
+            Iterator<Socioarancel> iter = socaran.iterator();
+            while(iter.hasNext()){
+                Socioarancel sa = iter.next();
+                Arancel ar = Arancel.first("id = ?", sa.get("id_arancel"));
+                System.out.println("que onda1");
+                int i ;
+                for(i = 0; i < clienteGui.getTablaActivDefault().getRowCount(); i++){
+                    System.out.println("que onda2");
+                    if(clienteGui.getTablaActivDefault().getValueAt(i, 0) == ar.getString("nombre")){
+                        System.out.println("que onda3");
+                        clienteGui.getTablaActivDefault().setValueAt(true, i, 1);
+                    }
+                }
+                System.out.println("que onda");
+            }
+        
         }
         if (ae.getSource() == clienteGui.getBotNuevo()) {
             System.out.println("Boton nuevo pulsado");

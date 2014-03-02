@@ -12,6 +12,7 @@ import Interfaces.PagosGui;
 import Modelos.Arancel;
 import Modelos.Pago;
 import Modelos.Socio;
+import Modelos.Socioarancel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
@@ -111,12 +112,14 @@ public class ControladorClientes implements ActionListener {
             altaClienteGui.getLabelFechaIngreso().setText(s.getString("FECHA_ING"));
             altaClienteGui.getLabelFechaVenci().setText(s.getString("FECHA_PROX_PAGO")); 
              altaClienteGui.getTablaActivDefault().setRowCount(0);
-            LazyList<Arancel> ListAran = Arancel.findAll();
-            Iterator<Arancel> ite = ListAran.iterator();
+            LazyList<Socioarancel> ListSocAran = Socioarancel.where("id_socio = ?", s.get("ID_DATOS_PERS"));
+            Iterator<Socioarancel> ite = ListSocAran.iterator();
                 while(ite.hasNext()){
-                    Arancel a = ite.next();
+                    Socioarancel sa = ite.next();
+                    Arancel a = Arancel.first("id = ?", sa.get("id_arancel"));
                     Object row1[] = new Object[2];
                     row1[0] = a.getString("nombre");
+                    row1[1] = true;
                     altaClienteGui.getTablaActivDefault().addRow(row1);
             /*Se debe abrir la ventana de clientes para permitir el alta de giles*/
                 }
