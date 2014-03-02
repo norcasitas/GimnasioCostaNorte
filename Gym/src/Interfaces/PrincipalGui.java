@@ -36,6 +36,7 @@ public class PrincipalGui extends javax.swing.JFrame {
         this.botSalir.addActionListener(lis);
         this.botActividades.addActionListener(lis);
         this.botUsuario.addActionListener(lis);
+        this.ingreso.addActionListener(lis);
     }
 
     public JMenuItem getBotDesconectar() {
@@ -61,6 +62,10 @@ public class PrincipalGui extends javax.swing.JFrame {
     public JButton getBotActividades() {
         return botActividades;
     }
+
+    public JButton getIngreso() {
+        return ingreso;
+    }
     
 
     
@@ -80,6 +85,7 @@ public class PrincipalGui extends javax.swing.JFrame {
         botSocios = new javax.swing.JButton();
         botActividades = new javax.swing.JButton();
         botUsuario = new javax.swing.JButton();
+        ingreso = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         botDesconectar = new javax.swing.JMenuItem();
@@ -90,7 +96,6 @@ public class PrincipalGui extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gimnasio Costa Norte");
         setIconImage(new ImageIcon(getClass().getResource("/Imagenes/icono.png")).getImage());
-        getContentPane().setLayout(new java.awt.BorderLayout());
 
         botSocios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/clients.png"))); // NOI18N
         botSocios.setToolTipText("Gestión de socios");
@@ -101,6 +106,9 @@ public class PrincipalGui extends javax.swing.JFrame {
         botUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/usuario.png"))); // NOI18N
         botUsuario.setToolTipText("Gestión de usuarios");
 
+        ingreso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/ingreso.png"))); // NOI18N
+        ingreso.setToolTipText("Ingreso de clientes");
+
         javax.swing.GroupLayout panelBotonesLayout = new javax.swing.GroupLayout(panelBotones);
         panelBotones.setLayout(panelBotonesLayout);
         panelBotonesLayout.setHorizontalGroup(
@@ -108,6 +116,7 @@ public class PrincipalGui extends javax.swing.JFrame {
             .addComponent(botSocios, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(botActividades, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(botUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(ingreso, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         panelBotonesLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {botActividades, botSocios, botUsuario});
@@ -120,7 +129,9 @@ public class PrincipalGui extends javax.swing.JFrame {
                 .addComponent(botActividades, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(botUsuario)
-                .addGap(0, 30, Short.MAX_VALUE))
+                .addGap(0, 0, 0)
+                .addComponent(ingreso)
+                .addGap(0, 0, 0))
         );
 
         panelBotonesLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {botActividades, botSocios, botUsuario});
@@ -171,6 +182,7 @@ public class PrincipalGui extends javax.swing.JFrame {
     private javax.swing.JMenuItem botSalir;
     private javax.swing.JButton botSocios;
     private javax.swing.JButton botUsuario;
+    private javax.swing.JButton ingreso;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;

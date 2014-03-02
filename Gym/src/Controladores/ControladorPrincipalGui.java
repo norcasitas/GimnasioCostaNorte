@@ -7,6 +7,7 @@ package Controladores;
 import Interfaces.AbmClienteGui;
 import Interfaces.ActividadesGui;
 import Interfaces.BusquedaGui;
+import Interfaces.IngresoGui;
 import Interfaces.PrincipalGui;
 import Interfaces.UsuarioGui;
 import java.awt.Cursor;
@@ -33,6 +34,8 @@ public class ControladorPrincipalGui implements ActionListener {
     private ControladorActividades controladorActividades;
     private UsuarioGui usuarioGui;
     private ControladorUsuario controladorUsuario;
+    private ControladorIngreso controladorIngreso;
+    private IngresoGui ingresoGui;
 
     public ControladorPrincipalGui() {
         try {
@@ -59,6 +62,11 @@ public class ControladorPrincipalGui implements ActionListener {
         principalGui.getDesktop().add(actividadesGui);
         usuarioGui= new UsuarioGui();
         controladorUsuario= new ControladorUsuario(usuarioGui);
+        ingresoGui= new IngresoGui();
+        controladorIngreso= new ControladorIngreso(ingresoGui);
+        ingresoGui.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        ingresoGui.setVisible(true);
+        principalGui.toFront();
         principalGui.getDesktop().add(usuarioGui);
         principalGui.setCursor(Cursor.DEFAULT_CURSOR);
     }
@@ -88,6 +96,12 @@ public class ControladorPrincipalGui implements ActionListener {
         if(ae.getSource()==principalGui.getBotUsuario()){
             usuarioGui.setVisible(true);
             usuarioGui.toFront();
+        }
+        if(ae.getSource()==principalGui.getIngreso()){
+            System.out.println("ingreso presionado wachin");
+            ingresoGui.setVisible(true);
+            ingresoGui.toFront();
+            ingresoGui.setLocationRelativeTo(null);
         }
 
 

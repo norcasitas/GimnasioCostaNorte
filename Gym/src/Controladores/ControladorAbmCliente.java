@@ -5,10 +5,14 @@
 package Controladores;
 
 import Interfaces.AbmClienteGui;
+import Interfaces.CargarHuellaGui;
 import Interfaces.FichaMedicaGui;
 import Interfaces.RegistrarPagoGui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 
@@ -22,6 +26,7 @@ public class ControladorAbmCliente implements ActionListener {
     private boolean isNuevo;
     private RegistrarPagoGui pagoGui;
     private FichaMedicaGui fichaMedicaGui;
+    private CargarHuellaGui cargarHuellaGui;
 
     public ControladorAbmCliente(AbmClienteGui clienteGui) {
         this.clienteGui = clienteGui;
@@ -65,11 +70,22 @@ public class ControladorAbmCliente implements ActionListener {
             }
             else{
                 System.out.println("Boton guardó uno nuevito");
+                //debe mantener abierta la ventana y que se habilite el botón de la huella, la huella
+                //solo puede ser creada si el usuario existe
+                
             }
 
         }
         if (ae.getSource() == clienteGui.getBotHuella()) {
             System.out.println("Boton huella pulsado");
+            try {
+                cargarHuellaGui= new CargarHuellaGui(null, 1);//Aca va el ID del cliente !
+            } catch (SQLException ex) {
+                Logger.getLogger(ControladorAbmCliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            cargarHuellaGui.setLocationRelativeTo(null);
+            cargarHuellaGui.setVisible(true);
+            
 
         }
         if (ae.getSource() == clienteGui.getBotModif()) {
