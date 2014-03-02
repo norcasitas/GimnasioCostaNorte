@@ -13,13 +13,10 @@ import Modelos.Arancel;
 import Modelos.Socio;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-<<<<<<< HEAD
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-=======
 import java.util.LinkedList;
->>>>>>> 5a31b83ea9f85417ce45897f6e96f948bce690a4
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import org.javalite.activejdbc.Model;
@@ -34,11 +31,8 @@ public class ControladorAbmCliente implements ActionListener {
     private boolean isNuevo;
     private RegistrarPagoGui pagoGui;
     private FichaMedicaGui fichaMedicaGui;
-<<<<<<< HEAD
     private CargarHuellaGui cargarHuellaGui;
-=======
     private ABMSocios abmsocio;
->>>>>>> 5a31b83ea9f85417ce45897f6e96f948bce690a4
 
     public ControladorAbmCliente(AbmClienteGui clienteGui) {
         this.clienteGui = clienteGui;
@@ -120,10 +114,8 @@ public class ControladorAbmCliente implements ActionListener {
             }
             else{
                 System.out.println("Boton guardó uno nuevito");
-<<<<<<< HEAD
                 //debe mantener abierta la ventana y que se habilite el botón de la huella, la huella
                 //solo puede ser creada si el usuario existe
-=======
                 Socio s = new Socio();
                 CargarDatosSocio(s);
                 if(s.getString("DNI").equals("") || s.getString("APELLIDO").equals("")){
@@ -149,7 +141,6 @@ public class ControladorAbmCliente implements ActionListener {
                     }
                 }
                 
->>>>>>> 5a31b83ea9f85417ce45897f6e96f948bce690a4
                 
             }
 

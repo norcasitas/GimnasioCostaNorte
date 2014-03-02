@@ -4,7 +4,6 @@
  */
 package Controladores;
 
-import Interfaces.AbmClienteGui;
 import Interfaces.ActividadesGui;
 import Interfaces.BusquedaGui;
 import Interfaces.IngresoGui;
@@ -16,11 +15,10 @@ import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
-import java.util.Locale;
-import java.util.Properties;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import org.javalite.activejdbc.LazyList;
 
 /**
@@ -47,12 +45,11 @@ public class ControladorPrincipalGui implements ActionListener {
                                                 com.jtattoo.plaf.aero.AeroLookAndFeel.setTheme("Green-Large-Font");
 
             UIManager.setLookAndFeel("com.jtattoo.plaf.aero.AeroLookAndFeel");
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
         }
         principalGui = new PrincipalGui();
         controladorLogin = new ControladorLogin(principalGui);
-        controladorLogin.run();//inicio el thread para la pantalla login asií se carga todo mientras inicias sesion
+        controladorLogin.start();//inicio el thread para la pantalla login asií se carga todo mientras inicias sesion
         principalGui.setExtendedState(JFrame.MAXIMIZED_BOTH);
         principalGui.setCursor(Cursor.WAIT_CURSOR); //cambio el cursor por si se inicia sesión antes de cargar las cosas
 
