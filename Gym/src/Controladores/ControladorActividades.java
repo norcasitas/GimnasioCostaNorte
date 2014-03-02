@@ -100,6 +100,29 @@ public class ControladorActividades implements ActionListener {
             if (!isNuevo) {
                 /*Aca va todo para guardar uno modificado*/
                 System.out.println("Se modificó uno que existia");
+                Arancel a = new Arancel();
+                a.set("fecha", actividadesGui.getDesde().getDate());
+                a.set("precio",actividadesGui.getPrecio().getText());
+                a.set("activo", 1);
+                a.set("nombre", actividadesGui.getActividad().getText().toUpperCase());
+                a.set("id", actividadesGui.getTablaActividadesDefault().getValueAt(actividadesGui.getTablaActividades().getSelectedRow(), 0));
+                if(abmAranceles.modificar(a)){
+                    JOptionPane.showMessageDialog(actividadesGui, "Actividad modificado exitosamente!");
+                    actividadesGui.bloquearCampos(true);
+                    LazyList ListAranceles = Arancel.where("activo = ?", 1);
+                    actividadesGui.getTablaActividadesDefault().setRowCount(0);
+                    Iterator<Arancel> it = ListAranceles.iterator();
+                    while(it.hasNext()){
+                        Arancel ar = it.next();
+                        Object row[] = new Object[3];
+                        row[0] = ar.getInteger("id");
+                        row[1] = ar.getString("nombre");
+                        row[2] = ar.getFloat("precio");
+                        actividadesGui.getTablaActividadesDefault().addRow(row);
+                     }
+                }else{
+                    JOptionPane.showMessageDialog(actividadesGui, "Ocurrió un error, revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
+                }
                 
             } else {
                 Arancel a = new Arancel();
