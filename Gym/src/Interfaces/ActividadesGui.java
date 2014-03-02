@@ -137,7 +137,6 @@ public class ActividadesGui extends javax.swing.JInternalFrame {
         setResizable(true);
         setTitle("Gestión de actividades");
         setPreferredSize(new java.awt.Dimension(635, 475));
-        getContentPane().setLayout(new java.awt.BorderLayout());
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Actividades-Promociones"));
 
@@ -177,7 +176,7 @@ public class ActividadesGui extends javax.swing.JInternalFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
                 .addGap(0, 0, 0))
         );
         jPanel2Layout.setVerticalGroup(
@@ -200,6 +199,7 @@ public class ActividadesGui extends javax.swing.JInternalFrame {
 
         jLabel3.setText("Vigente desde");
 
+        desde.setDateFormatString("yyyy,MM,dd");
         desde.setEnabled(false);
 
         categoria.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Aeróbico", "Pilates", "Spinning", "Musculación", "Combo" }));
@@ -223,7 +223,7 @@ public class ActividadesGui extends javax.swing.JInternalFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(precio)
                             .addComponent(actividad)
-                            .addComponent(desde, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(desde, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -294,7 +294,7 @@ public class ActividadesGui extends javax.swing.JInternalFrame {
         );
         panelImage1Layout.setVerticalGroup(
             panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 66, Short.MAX_VALUE)
+            .addGap(0, 86, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);

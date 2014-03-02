@@ -10,14 +10,18 @@ import Interfaces.BusquedaGui;
 import Interfaces.IngresoGui;
 import Interfaces.PrincipalGui;
 import Interfaces.UsuarioGui;
+import Modelos.Arancel;
+import Modelos.Socio;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Properties;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import org.javalite.activejdbc.LazyList;
 
 /**
  *
@@ -87,11 +91,45 @@ public class ControladorPrincipalGui implements ActionListener {
             System.out.println("boton socios pulsado");
             socios.setVisible(true);
             socios.toFront();
+            LazyList<Socio> ListSocios= Socio.findAll();
+            socios.getTablaClientesDefault().setRowCount(0);
+             Iterator<Socio> it = ListSocios.iterator();
+             while(it.hasNext()){
+                Socio a = it.next();
+                String row[] = new String[4];
+                row[0] = a.getString("NOMBRE");
+                row[1] = a.getString("APELLIDO");
+                row[2] = a.getString("DNI");
+                row[3] = a.getString("TEL");
+                socios.getTablaClientesDefault().addRow(row);
+             }
+             socios.getLabelResult3().setText(Integer.toString(ListSocios.size()));
+             LazyList lista = Arancel.where("ACTIVO = ?", 1);
+             Iterator<Arancel> iter = lista.iterator();
+             String d[] = new String[100];
+             int i = 1;
+             while(iter.hasNext()){
+                 Arancel a = iter.next();
+                 d[i] = a.getString("nombre");
+                 i++;
+             }
+             socios.getActividades().setListData(d);
         }
         if (ae.getSource() == principalGui.getBotActividades()) {
             System.out.println("actividades pulsado");
             actividadesGui.setVisible(true);
             actividadesGui.toFront();
+            actividadesGui.getTablaActividadesDefault().setRowCount(0);
+            LazyList ListAranceles = Arancel.where("activo = ?", 1);
+            Iterator<Arancel> it = ListAranceles.iterator();
+            while(it.hasNext()){
+                        Arancel ar = it.next();
+                        Object row[] = new Object[3];
+                        row[0] = ar.getInteger("id");
+                        row[1] = ar.getString("nombre");
+                        row[2] = ar.getFloat("precio");
+                        actividadesGui.getTablaActividadesDefault().addRow(row);
+             }
         }
         if(ae.getSource()==principalGui.getBotUsuario()){
             usuarioGui.setVisible(true);
@@ -108,6 +146,7 @@ public class ControladorPrincipalGui implements ActionListener {
     }
 
     public static void main(String[] args) throws InterruptedException {
+        
         ControladorPrincipalGui appl = new ControladorPrincipalGui();
 
     }

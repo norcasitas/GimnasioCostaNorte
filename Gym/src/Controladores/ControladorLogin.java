@@ -12,6 +12,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import org.javalite.activejdbc.Base;
 
 /**
  *
@@ -48,6 +49,8 @@ public class ControladorLogin extends Thread implements ActionListener {
                     log.dispose();
                     app.getBotDesconectar().setText("Cerrar sesión ("+ "NICO"+")");
                     app.setVisible(true);
+                    
+        
                     //} else {
                     //log.getTextPass().setText("");
                     //JOptionPane.showMessageDialog(app, "INTENTE NUEVAMENTE", "¡DATOS INCORRECTOS!", JOptionPane.ERROR_MESSAGE);
@@ -65,6 +68,9 @@ public class ControladorLogin extends Thread implements ActionListener {
                     log.dispose();
                     app.getBotDesconectar().setText("Cerrar sesión ("+ "NICO"+")");
                     app.setVisible(true);
+                    if (!Base.hasConnection()) {
+                         Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/GYM", "root", "root");
+                     }
         }
         if (b.equals(log.getBotSalir())) {
             System.exit(0);
