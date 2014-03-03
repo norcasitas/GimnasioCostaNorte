@@ -6,6 +6,7 @@
 package Interfaces;
 
 import BD.ConexionBD;
+import Controladores.ControladorIngreso;
 import com.digitalpersona.onetouch.DPFPFingerIndex;
 import com.digitalpersona.onetouch.DPFPGlobal;
 import com.digitalpersona.onetouch.DPFPTemplate;
@@ -43,6 +44,7 @@ public class CargarHuellaGui extends javax.swing.JDialog {
     private DPFPTemplate templateIndividual;
     private DPFPFingerIndex fingerIndividual;
     private int idCliente;
+   
 
     /**
      * Creates new form CargarHuellaGui
@@ -55,6 +57,7 @@ public class CargarHuellaGui extends javax.swing.JDialog {
     public CargarHuellaGui(Frame owner, int id) throws SQLException {
         super(owner, true);
         initComponents();
+        ControladorIngreso.Lector.stopCapture();
         Connection c = con.conectar();
         String query = "SELECT * FROM huellas where client_id="+id;
         PreparedStatement stmt = c.prepareStatement(query);
@@ -75,7 +78,7 @@ public class CargarHuellaGui extends javax.swing.JDialog {
         fingers.addAll(template.keySet());
         panelEnrolamiento.setEnrolledFingers(fingers);
         panelEnrolamiento.setMaxEnrollFingerCount(1);
-
+        System.out.println("algo anda mal");
         panelEnrolamiento.addEnrollmentListener(new DPFPEnrollmentListener() {
             public void fingerDeleted(DPFPEnrollmentEvent e) throws DPFPEnrollmentVetoException {
 
@@ -100,7 +103,9 @@ public class CargarHuellaGui extends javax.swing.JDialog {
         JButton closeButton = new JButton("cerrar");
         closeButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                dispose();                //End Dialog
+                ControladorIngreso.Lector.startCapture();//End Dialog
+                dispose(); 
+                
             }
         });
 
@@ -136,14 +141,13 @@ public class CargarHuellaGui extends javax.swing.JDialog {
         Integer tamañoHuella = templateIndividual.serialize().length;
 
         //Pregunta el nombre de la persona a la cual corresponde dicha huella
-        String nombre = JOptionPane.showInputDialog("Nombre:");
         try {
             //Establece los valores para la sentencia SQL
             Connection c = con.conectar(); //establece la conexion con la BD
             try (PreparedStatement guardarStmt = c.prepareStatement("INSERT INTO huellas(huella, dedo,client_id) values(?,?,?)")) {
                 guardarStmt.setBinaryStream(1, datosHuella, tamañoHuella);
                 guardarStmt.setString(2, fingerIndividual.toString());
-                guardarStmt.setInt(3, 1);
+                guardarStmt.setInt(3, idCliente);
                 //Ejecuta la sentencia
                 guardarStmt.execute();
             }

@@ -4,6 +4,7 @@
  */
 package Controladores;
 
+import Interfaces.IngresoGui;
 import Interfaces.LoginGUI;
 import Interfaces.PrincipalGui;
 import java.awt.event.ActionEvent;
@@ -24,9 +25,11 @@ public class ControladorLogin extends Thread implements ActionListener {
     private char[] pass;
     private PrincipalGui app;
     private LoginGUI log;
+    private IngresoGui ingreso;
 
-    public ControladorLogin(PrincipalGui app) {
+    public ControladorLogin(PrincipalGui app, IngresoGui ingresoGui) {
         this.app = app;
+        this.ingreso= ingresoGui;
     }
 
     public void run() {
@@ -48,7 +51,10 @@ public class ControladorLogin extends Thread implements ActionListener {
                     //if (mu.login(user, pass)) {
                     log.dispose();
                     app.getBotDesconectar().setText("Cerrar sesión ("+ "NICO"+")");
+                    ingreso.setVisible(true);
                     app.setVisible(true);
+                    app.toFront();
+                    abrirBase();
                     
         
                     //} else {
@@ -66,16 +72,21 @@ public class ControladorLogin extends Thread implements ActionListener {
         JButton b = (JButton) ae.getSource();
         if (b.equals(log.getBotConectar())) {
                     log.dispose();
-                    app.getBotDesconectar().setText("Cerrar sesión ("+ "NICO"+")");
+                    app.getBotDesconectar().setText("Cerrar sesión  ("+ "NICO"+")");
+                     ingreso.setVisible(true);
                     app.setVisible(true);
-                    if (!Base.hasConnection()) {
-                         Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/GYM", "root", "root");
-                     }
+                    app.toFront();
+                    abrirBase();
         }
         if (b.equals(log.getBotSalir())) {
             System.exit(0);
         }
 
 
+    }
+    public void abrirBase(){
+                        if (!Base.hasConnection()) {
+                         Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/GYM", "root", "root");
+                     }
     }
 }

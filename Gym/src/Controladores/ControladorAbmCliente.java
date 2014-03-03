@@ -20,9 +20,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
-import javax.swing.JRadioButton;
+import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.LazyList;
-import org.javalite.activejdbc.Model;
 
 /**
  *
@@ -36,6 +35,7 @@ public class ControladorAbmCliente implements ActionListener {
     private FichaMedicaGui fichaMedicaGui;
     private CargarHuellaGui cargarHuellaGui;
     private ABMSocios abmsocio;
+    private Socio s;
 
     public ControladorAbmCliente(AbmClienteGui clienteGui) {
         this.clienteGui = clienteGui;
@@ -94,12 +94,12 @@ public class ControladorAbmCliente implements ActionListener {
         if (ae.getSource() == clienteGui.getBotGuardar()) {
             if(!isNuevo){
                     System.out.println("Se modificó uno que existia");
-                    Socio s = new Socio();
+                    s = new Socio();
                     CargarDatosSocio(s);
                     int rows = clienteGui.getTablaActivDefault().getRowCount();
                     LinkedList listaran = new LinkedList();
                     for(int i = 1; i< rows; i++){
-                        if(clienteGui.getTablaActividades().getValueAt(i, 1) == true){
+                        if((boolean)clienteGui.getTablaActividades().getValueAt(i, 1) == true){
                             Arancel a = Arancel.first("nombre = ?", clienteGui.getTablaActividades().getValueAt(i, 0));
                             listaran.add(a);
                         }
@@ -119,7 +119,7 @@ public class ControladorAbmCliente implements ActionListener {
                 System.out.println("Boton guardó uno nuevito");
                 //debe mantener abierta la ventana y que se habilite el botón de la huella, la huella
                 //solo puede ser creada si el usuario existe
-                Socio s = new Socio();
+                s = new Socio();
                 CargarDatosSocio(s);
                 if(s.getString("DNI").equals("") || s.getString("APELLIDO").equals("")){
                     JOptionPane.showMessageDialog(clienteGui, "Faltan datos obligatorios", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -127,7 +127,7 @@ public class ControladorAbmCliente implements ActionListener {
                      int rows = clienteGui.getTablaActivDefault().getRowCount();
                      LinkedList listaran = new LinkedList();
                      for(int i = 1; i< rows; i++){
-                        if(clienteGui.getTablaActividades().getValueAt(i, 1) == true){
+                        if((boolean)clienteGui.getTablaActividades().getValueAt(i, 1) == true){
                             Arancel a = Arancel.first("nombre = ?", clienteGui.getTablaActividades().getValueAt(i, 0));
                             listaran.add(a);
                         }
@@ -138,6 +138,8 @@ public class ControladorAbmCliente implements ActionListener {
                         //clienteGui.limpiarCampos();
                         clienteGui.getBotNuevo().setEnabled(true);
                         clienteGui.getBotGuardar().setEnabled(false);
+                        clienteGui.getBotHuella().setEnabled(true);
+                        clienteGui.getBotFicha().setEnabled(true);
                         
                     } else {
                         JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -151,7 +153,8 @@ public class ControladorAbmCliente implements ActionListener {
         if (ae.getSource() == clienteGui.getBotHuella()) {
             System.out.println("Boton huella pulsado");
             try {
-                cargarHuellaGui= new CargarHuellaGui(null, 1);//Aca va el ID del cliente !
+                System.out.println(s==null);
+                cargarHuellaGui= new CargarHuellaGui(null, s.getInteger("ID_DATOS_PERS"));//Aca va el ID del cliente !
             } catch (SQLException ex) {
                 Logger.getLogger(ControladorAbmCliente.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -219,5 +222,21 @@ public class ControladorAbmCliente implements ActionListener {
         this.isNuevo = isNuevo;
     }
     
-    
+        public void abrirBase(){
+         if (!Base.hasConnection()) {
+            Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/GYM", "root", "root");
+        }
+        }
+        
+                public void cerrarBase(){
+         if (Base.hasConnection()) {
+            Base.close();
+        }
+        }
+
+    public void setSocio(Socio s) {
+        this.s = s;
+    }
+                
+                
 }

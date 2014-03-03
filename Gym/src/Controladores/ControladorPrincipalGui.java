@@ -49,9 +49,12 @@ public class ControladorPrincipalGui implements ActionListener {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
         }
         principalGui = new PrincipalGui();
-        controladorLogin = new ControladorLogin(principalGui);
+        ingresoGui= new IngresoGui();
+        controladorIngreso= new ControladorIngreso(ingresoGui);
+        controladorLogin = new ControladorLogin(principalGui,ingresoGui);
         controladorLogin.start();//inicio el thread para la pantalla login asií se carga todo mientras inicias sesion
         principalGui.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        ingresoGui.setExtendedState(JFrame.MAXIMIZED_BOTH);
         principalGui.setCursor(Cursor.WAIT_CURSOR); //cambio el cursor por si se inicia sesión antes de cargar las cosas
 
         socios = new BusquedaGui();
@@ -64,11 +67,6 @@ public class ControladorPrincipalGui implements ActionListener {
         principalGui.getDesktop().add(actividadesGui);
         usuarioGui= new UsuarioGui();
         controladorUsuario= new ControladorUsuario(usuarioGui);
-        ingresoGui= new IngresoGui();
-        controladorIngreso= new ControladorIngreso(ingresoGui);
-        ingresoGui.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        ingresoGui.setVisible(true);
-        principalGui.toFront();
         principalGui.getDesktop().add(usuarioGui);
         principalGui.setCursor(Cursor.DEFAULT_CURSOR);
     }
@@ -89,30 +87,7 @@ public class ControladorPrincipalGui implements ActionListener {
             System.out.println("boton socios pulsado");
             socios.setVisible(true);
             socios.toFront();
-            LazyList<Socio> ListSocios= Socio.findAll();
-            socios.getTablaClientesDefault().setRowCount(0);
-             Iterator<Socio> it = ListSocios.iterator();
-             while(it.hasNext()){
-                Socio a = it.next();
-                String row[] = new String[4];
-                row[0] = a.getString("NOMBRE");
-                row[1] = a.getString("APELLIDO");
-                row[2] = a.getString("DNI");
-                row[3] = a.getString("TEL");
-                socios.getTablaClientesDefault().addRow(row);
-             }
-             socios.getLabelResult3().setText(Integer.toString(ListSocios.size()));
-             LazyList lista = Arancel.where("ACTIVO = ?", 1);
-             Iterator<Arancel> iter = lista.iterator();
-             String d[] = new String[100];
-             int i = 1;
-             while(iter.hasNext()){
-                 Arancel a = iter.next();
-                 d[i] = a.getString("nombre");
-                 i++;
-             }
-             socios.getActividades().setListData(d);
-             ABMSocios abm = new ABMSocios();
+            controladorClientes.cargarSocios();
              /*
               * ESTO SE EJECUTA UNA VEZ!
               */

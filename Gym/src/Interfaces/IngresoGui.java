@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import org.edisoncor.gui.panel.PanelImage;
 
@@ -58,6 +59,10 @@ public class IngresoGui extends javax.swing.JFrame {
         for (Component array1 : array) {
             ((JLabel) array1).setText("");
         }
+    }
+
+    public JPanel getPanelAsistencia() {
+        return panelAsistencia;
     }
 
     public JMenuItem getBusquedaManual() {
