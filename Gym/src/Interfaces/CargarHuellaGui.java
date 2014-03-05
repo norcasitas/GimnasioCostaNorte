@@ -17,6 +17,8 @@ import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.ByteArrayInputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -103,7 +105,6 @@ public class CargarHuellaGui extends javax.swing.JDialog {
         JButton closeButton = new JButton("cerrar");
         closeButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ControladorIngreso.Lector.startCapture();//End Dialog
                 dispose(); 
                 
             }
@@ -116,6 +117,14 @@ public class CargarHuellaGui extends javax.swing.JDialog {
 
         pack();
         setLocationRelativeTo(null);
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosed(WindowEvent e){
+                System.out.println("Se cerró la ventana");
+                if(!ControladorIngreso.Lector.isStarted())
+                                ControladorIngreso.Lector.startCapture();//End Dialog
+
+            }
+        });
     }
 
     private void borrarHuella() {
@@ -173,6 +182,7 @@ public class CargarHuellaGui extends javax.swing.JDialog {
         panelEnrolamiento = new com.digitalpersona.onetouch.ui.swing.DPFPEnrollmentControl();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setUndecorated(true);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

@@ -15,6 +15,7 @@ import Modelos.Socioarancel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,10 +47,11 @@ public class ControladorAbmCliente implements ActionListener {
     private void CargarDatosSocio(Socio s){
         s.set("NOMBRE", clienteGui.getNombre().getText().toUpperCase());
         s.set("APELLIDO", clienteGui.getApellido().getText().toUpperCase());
-        s.set("TEL", clienteGui.getTelefono().getText());
-        s.set("DNI", clienteGui.getDni().getText());
+        s.set("TEL", clienteGui.getTelefono().getText().toUpperCase());
+        s.set("DNI", clienteGui.getDni().getText().toUpperCase());
+        System.out.println(clienteGui.getDireccion().getText().toUpperCase());
         s.set("DIR", clienteGui.getDireccion().getText().toUpperCase());
-       // s.set("FECHA_NAC", clienteGui.getFechaNacimJDate().getCalendar().getTime());
+        s.set("FECHA_NAC", dateToMySQLDate(clienteGui.getFechaNacimJDate().getCalendar().getTime()));
         if(clienteGui.getSexo().getSelectedIndex()==1){
             s.set("SEXO", "M");
         }else{
@@ -58,6 +60,11 @@ public class ControladorAbmCliente implements ActionListener {
         
     }
 
+        public String dateToMySQLDate(Date fecha) {
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(fecha);
+    }
+        
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == clienteGui.getBotEliminarCancelar()) {
@@ -140,6 +147,7 @@ public class ControladorAbmCliente implements ActionListener {
                         clienteGui.getBotGuardar().setEnabled(false);
                         clienteGui.getBotHuella().setEnabled(true);
                         clienteGui.getBotFicha().setEnabled(true);
+                        s= Socio.findFirst("DNI = ? ", clienteGui.getDni().getText());
                         
                     } else {
                         JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -159,8 +167,7 @@ public class ControladorAbmCliente implements ActionListener {
                 Logger.getLogger(ControladorAbmCliente.class.getName()).log(Level.SEVERE, null, ex);
             }
             cargarHuellaGui.setLocationRelativeTo(null);
-            cargarHuellaGui.setVisible(true);
-            
+            cargarHuellaGui.setVisible(true);            
 
         }
         if (ae.getSource() == clienteGui.getBotModif()) {

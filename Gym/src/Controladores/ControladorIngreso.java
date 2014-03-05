@@ -154,6 +154,9 @@ public class ControladorIngreso implements ActionListener {
                         EnviarTexto("El dedo ha sido colocado sobre el Lector de Huella");
                         ingresoGui.setVisible(true);
                         ingresoGui.toFront();
+                        ingresoGui.requestFocus();
+                        //Aca debe abrirse la ventana cuando no está minimiza
+                        
                     }
                 });
             }
@@ -261,7 +264,7 @@ public class ControladorIngreso implements ActionListener {
             //stmt.setInt(1,id);
             ResultSet rs = stmt.executeQuery(query);
             //Ejecuta la sentencia
-            if (rs.next()) {
+            while (rs.next()) {
                 fingerIndividual = DPFPFingerIndex.valueOf(rs.getString(3));
                 byte templateBuffer[] = rs.getBytes(2);
                 idCliente = rs.getInt(4);
@@ -284,22 +287,27 @@ public class ControladorIngreso implements ActionListener {
                     EnviarTexto("Verificación correcta,la huella capturada es de " + socio.getString("NOMBRE") + " " + socio.getString("APELLIDO"));
                     cargarDatos(socio);
                     try {
-                        cargarSonido("correcto.wav");
+                        if (Long.valueOf(ingresoGui.getCantDias().getText()) < 0) {
+                            System.out.println("vencido! :O");
+                            cargarSonido("vencido.wav");
+                            ingresoGui.getFechaVence().setText(ingresoGui.getFechaVence().getText().concat(" ¡VENCIDO!"));
+                        } else {
+                            cargarSonido("correcto.wav");
+                        }
                     } catch (Exception ex) {
                         Logger.getLogger(ControladorIngreso.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     return;
                 }
-                else{
-                                        try {
-                        cargarSonido("error.wav");
-                    } catch (Exception ex) {
-                        Logger.getLogger(ControladorIngreso.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
+
             }
             //Si no encuentra alguna huella correspondiente al nombre lo indica con un mensaje
-
+            try {
+                cargarSonido("error.wav");
+                System.out.println("no te conozco wacho");
+            } catch (Exception ex) {
+                Logger.getLogger(ControladorIngreso.class.getName()).log(Level.SEVERE, null, ex);
+            }
             EnviarTexto("No existe ningún registro que coincida con la huella");
             setTemplate(null);
             ingresoGui.noIdentifado();
@@ -379,27 +387,16 @@ public class ControladorIngreso implements ActionListener {
 
         // calcular la diferencia en milisengundos
         // conseguir la representacion de la fecha en milisegundos
-
         long milis1 = cal1.getTimeInMillis();
 
         long milis2 = cal2.getTimeInMillis();
 
         long diff = milis2 - milis1;
 
-
-
-
         long diffDays = diff / (24 * 60 * 60 * 1000);
 
         System.out.println(diffDays);
-        if(diffDays<0){
-            try {
-                System.out.println("vencido! :O");
-                cargarSonido("vencido.wav");
-            } catch (Exception ex) {
-                Logger.getLogger(ControladorIngreso.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+
         ingresoGui.getCantDias().setText(String.valueOf(diffDays));
 
         cargarAsistencia();

@@ -38,7 +38,7 @@ public class ABMSocios {
     public boolean alta(Socio s, LinkedList act) {
         if (!findSocio(s)) {
             Base.openTransaction();
-            Socio nuevo = Socio.create("NOMBRE", s.get("NOMBRE"), "APELLIDO", s.get("APELLIDO"), "DNI", s.get("DNI"), "FECHA_NAC", s.get("FECHA_NAC"), "TEL", s.get("TEL"), "SEXO", s.get("SEXO"), "ACTIVO", 1);
+            Socio nuevo = Socio.create("NOMBRE", s.get("NOMBRE"), "APELLIDO", s.get("APELLIDO"), "DNI", s.get("DNI"), "FECHA_NAC", s.get("FECHA_NAC"), "TEL", s.get("TEL"), "SEXO", s.get("SEXO"), "ACTIVO", 1, "DIR", s.get("DIR"));
             nuevo.set("FECHA_ING", getFechaActual());
             nuevo.saveIt();
             Iterator<Arancel> it = act.iterator();
