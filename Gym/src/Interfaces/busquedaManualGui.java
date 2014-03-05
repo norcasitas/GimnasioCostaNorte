@@ -35,6 +35,7 @@ public class busquedaManualGui extends javax.swing.JDialog {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if(evt.getClickCount()==2){
                     cargarDatos();
+                    dispose();
                 }
             }
         });

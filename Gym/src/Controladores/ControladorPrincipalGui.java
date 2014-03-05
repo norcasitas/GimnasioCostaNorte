@@ -40,7 +40,7 @@ public class ControladorPrincipalGui implements ActionListener {
     private ControladorIngreso controladorIngreso;
     private IngresoGui ingresoGui;
 
-    public ControladorPrincipalGui() {
+    public ControladorPrincipalGui() throws Exception {
         try {
             JFrame.setDefaultLookAndFeelDecorated(true);
                                                 com.jtattoo.plaf.aero.AeroLookAndFeel.setTheme("Green-Large-Font");
@@ -123,7 +123,7 @@ public class ControladorPrincipalGui implements ActionListener {
 
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, Exception {
         
         ControladorPrincipalGui appl = new ControladorPrincipalGui();
 

@@ -7,7 +7,6 @@ package Controladores;
 
 import ABMs.ABMSocios;
 import BD.ConexionBD;
-import Interfaces.BusquedaGui;
 import Interfaces.IngresoGui;
 import Interfaces.busquedaManualGui;
 import Modelos.Asistencia;
@@ -30,18 +29,13 @@ import com.digitalpersona.onetouch.capture.event.DPFPSensorEvent;
 import com.digitalpersona.onetouch.processing.DPFPEnrollment;
 import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
 import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
-import com.digitalpersona.onetouch.ui.swing.DPFPVerificationEvent;
-import com.digitalpersona.onetouch.ui.swing.DPFPVerificationListener;
-import com.digitalpersona.onetouch.ui.swing.DPFPVerificationVetoException;
 import com.digitalpersona.onetouch.verification.DPFPVerification;
 import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
-import com.mysql.jdbc.exceptions.MySQLDataException;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
-import java.awt.color.ColorSpace;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -49,10 +43,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
@@ -68,15 +66,12 @@ public class ControladorIngreso implements ActionListener {
 // con sus distintos metodos.
 
     public static DPFPCapture Lector = DPFPGlobal.getCaptureFactory().createCapture();
-
 //Varible que permite establecer las capturas de la huellas, para determina sus caracteristicas
 // y poder estimar la creacion de un template de la huella para luego poder guardarla
     private DPFPEnrollment Reclutador = DPFPGlobal.getEnrollmentFactory().createEnrollment();
-
 //Esta variable tambien captura una huella del lector y crea sus caracteristcas para auntetificarla
 // o verificarla con alguna guardada en la BD
     private DPFPVerification Verificador = DPFPGlobal.getVerificationFactory().createVerification();
-
 //Variable que para crear el template de la huella luego de que se hallan creado las caracteriticas
 // necesarias de la huella si no ha ocurrido ningun problema
     private DPFPTemplate template;
@@ -92,7 +87,7 @@ public class ControladorIngreso implements ActionListener {
     private Socio socio;
     private Asistencia asistencia;
 
-    public ControladorIngreso(IngresoGui ingresoGui) {
+    public ControladorIngreso(IngresoGui ingresoGui) throws Exception {
         this.ingresoGui = ingresoGui;
         ingresoGui.limpiar();
         ingresoGui.setActionListener(this);
@@ -276,26 +271,31 @@ public class ControladorIngreso implements ActionListener {
                 //Envia la plantilla creada al objeto contendor de Template del componente de huella digital
                 setTemplate(templateIndividual);
 
-       // Compara las caracteriticas de la huella recientemente capturda con la
+                // Compara las caracteriticas de la huella recientemente capturda con la
                 // alguna plantilla guardada en la base de datos que coincide con ese tipo
                 DPFPVerificationResult result = Verificador.verify(featuresverificacion, getTemplate());
 
-       //compara las plantilas (actual vs bd)
+                //compara las plantilas (actual vs bd)
                 //Si encuentra correspondencia dibuja el mapa
                 //e indica el nombre de la persona que coincidió.
                 if (result.isVerified()) {//ACA DEBE IR RESULT.ISveRIFIED() ESTOY PROBANDO
                     //crea la imagen de los datos guardado de las huellas guardadas en la base de datos
                     socio = Socio.findFirst("ID_DATOS_PERS = ?", idCliente);
                     EnviarTexto("Verificación correcta,la huella capturada es de " + socio.getString("NOMBRE") + " " + socio.getString("APELLIDO"));
-                    asistencia = Asistencia.findFirst("ID_DATOS_PERS = ? and FECHA = ?", idCliente, dateToMySQLDate(Calendar.getInstance().getTime()));
-                    if (asistencia == null) {
-                        Base.openTransaction();
-                        Asistencia.createIt("ID_DATOS_PERS", idCliente, "FECHA", dateToMySQLDate(Calendar.getInstance().getTime()));
-                        Base.commitTransaction();
-                    }
                     cargarDatos(socio);
-                    //Aca cargo toda la gilada del usuario
+                    try {
+                        cargarSonido("correcto.wav");
+                    } catch (Exception ex) {
+                        Logger.getLogger(ControladorIngreso.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     return;
+                }
+                else{
+                                        try {
+                        cargarSonido("error.wav");
+                    } catch (Exception ex) {
+                        Logger.getLogger(ControladorIngreso.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
             //Si no encuentra alguna huella correspondiente al nombre lo indica con un mensaje
@@ -321,7 +321,7 @@ public class ControladorIngreso implements ActionListener {
         ingresoGui.repaint();
     }
 
-    public static void main(String... args) {
+    public static void main(String... args) throws Exception {
         IngresoGui ing = new IngresoGui();
         ControladorIngreso cr = new ControladorIngreso(ing);
         ing.setVisible(true);
@@ -336,7 +336,7 @@ public class ControladorIngreso implements ActionListener {
         }
         if (e.getSource() == ingresoGui.getBusquedaManual()) {
             System.out.println("busqueda manual");
-            busquedaManualGui bus= new busquedaManualGui(ingresoGui, true, this);
+            busquedaManualGui bus = new busquedaManualGui(ingresoGui, true, this);
             bus.cargarSocios();
             bus.setVisible(true);
         }
@@ -356,23 +356,28 @@ public class ControladorIngreso implements ActionListener {
         }
 
     }
-    
-    
-    
-    public void cargarDatos(Socio socio){
+
+    public void cargarDatos(Socio socio) {
+
+        asistencia = Asistencia.findFirst("ID_DATOS_PERS = ? and FECHA = ?", idCliente, dateToMySQLDate(Calendar.getInstance().getTime()));
+        if (asistencia == null) {
+            Base.openTransaction();
+            Asistencia.createIt("ID_DATOS_PERS", idCliente, "FECHA", dateToMySQLDate(Calendar.getInstance().getTime()));
+            Base.commitTransaction();
+        }
         ingresoGui.getNombre().setText(socio.getString("NOMBRE"));
-                    ingresoGui.getApellido().setText(socio.getString("APELLIDO"));
-                    ingresoGui.getNombre().setText(socio.getString("NOMBRE"));
-                    ingresoGui.getFechaUltPago().setText(socio.getString("FECHA_ULT_PAGO"));
-                    ingresoGui.getFechaVence().setText(socio.getString("FECHA_PROX_PAGO"));
-                    /// calcular la diferencia en dias
+        ingresoGui.getApellido().setText(socio.getString("APELLIDO"));
+        ingresoGui.getNombre().setText(socio.getString("NOMBRE"));
+        ingresoGui.getFechaUltPago().setText(socio.getString("FECHA_ULT_PAGO"));
+        ingresoGui.getFechaVence().setText(socio.getString("FECHA_PROX_PAGO"));
+        /// calcular la diferencia en dias
 // Crear 2 instancias de Calendar
 
         Calendar cal1 = Calendar.getInstance();
         Calendar cal2 = Calendar.getInstance();
         cal2.setTime(socio.getDate("FECHA_PROX_PAGO"));
 
-         // calcular la diferencia en milisengundos
+        // calcular la diferencia en milisengundos
         // conseguir la representacion de la fecha en milisegundos
 
         long milis1 = cal1.getTimeInMillis();
@@ -382,13 +387,38 @@ public class ControladorIngreso implements ActionListener {
         long diff = milis2 - milis1;
 
 
- 
+
 
         long diffDays = diff / (24 * 60 * 60 * 1000);
 
-                    System.out.println(diffDays);
-                    ingresoGui.getCantDias().setText(String.valueOf(diffDays));
-                    
-                    cargarAsistencia();
+        System.out.println(diffDays);
+        if(diffDays<0){
+            try {
+                System.out.println("vencido! :O");
+                cargarSonido("vencido.wav");
+            } catch (Exception ex) {
+                Logger.getLogger(ControladorIngreso.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        ingresoGui.getCantDias().setText(String.valueOf(diffDays));
+
+        cargarAsistencia();
+    }
+
+    public void cargarSonido(String nombre) throws Exception {
+        File soundFile = new File(getClass().getResource("/Sonidos/" + nombre).toURI());
+        AudioInputStream soundIn = AudioSystem.getAudioInputStream(soundFile);
+        AudioFormat format = soundIn.getFormat();
+        DataLine.Info info = new DataLine.Info(Clip.class, format);
+
+        Clip clip = (Clip) AudioSystem.getLine(info);
+        clip.open(soundIn);
+        //clip.start();
+        clip.loop(1);
+        {
+            //    Thread.yield();
+        }
+        //clip.stop();
+
     }
 }
