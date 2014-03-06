@@ -37,6 +37,7 @@ public class PrincipalGui extends javax.swing.JFrame {
         this.botActividades.addActionListener(lis);
         this.botUsuario.addActionListener(lis);
         this.ingreso.addActionListener(lis);
+        this.declaracion.addActionListener(lis);
     }
 
     public JMenuItem getBotDesconectar() {
@@ -53,6 +54,10 @@ public class PrincipalGui extends javax.swing.JFrame {
 
     public JButton getBotSocios() {
         return botSocios;
+    }
+
+    public JMenuItem getDeclaracion() {
+        return declaracion;
     }
 
     public DesktopPaneImage getDesktop() {
@@ -90,6 +95,8 @@ public class PrincipalGui extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         botDesconectar = new javax.swing.JMenuItem();
         botSalir = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        declaracion = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         tecPro = new javax.swing.JMenuItem();
 
@@ -151,6 +158,13 @@ public class PrincipalGui extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
+        jMenu3.setText("Documentos");
+
+        declaracion.setText("Declaración jurada");
+        jMenu3.add(declaracion);
+
+        jMenuBar1.add(jMenu3);
+
         jMenu2.setText("Acerca de");
 
         tecPro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/acerca.png"))); // NOI18N
@@ -182,9 +196,11 @@ public class PrincipalGui extends javax.swing.JFrame {
     private javax.swing.JMenuItem botSalir;
     private javax.swing.JButton botSocios;
     private javax.swing.JButton botUsuario;
+    private javax.swing.JMenuItem declaracion;
     private javax.swing.JButton ingreso;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel panelBotones;
     private javax.swing.JMenuItem tecPro;

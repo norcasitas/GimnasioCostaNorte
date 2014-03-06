@@ -13,9 +13,16 @@ import Interfaces.UsuarioGui;
 import Modelos.Arancel;
 import Modelos.Socio;
 import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -43,15 +50,15 @@ public class ControladorPrincipalGui implements ActionListener {
     public ControladorPrincipalGui() throws Exception {
         try {
             JFrame.setDefaultLookAndFeelDecorated(true);
-                                                com.jtattoo.plaf.aero.AeroLookAndFeel.setTheme("Green-Large-Font");
+            com.jtattoo.plaf.aero.AeroLookAndFeel.setTheme("Green-Large-Font");
 
             UIManager.setLookAndFeel("com.jtattoo.plaf.aero.AeroLookAndFeel");
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
         }
         principalGui = new PrincipalGui();
-        ingresoGui= new IngresoGui();
-        controladorIngreso= new ControladorIngreso(ingresoGui);
-        controladorLogin = new ControladorLogin(principalGui,ingresoGui);
+        ingresoGui = new IngresoGui();
+        controladorIngreso = new ControladorIngreso(ingresoGui);
+        controladorLogin = new ControladorLogin(principalGui, ingresoGui);
         controladorLogin.start();//inicio el thread para la pantalla login asií se carga todo mientras inicias sesion
         principalGui.setExtendedState(JFrame.MAXIMIZED_BOTH);
         ingresoGui.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -65,10 +72,11 @@ public class ControladorPrincipalGui implements ActionListener {
         actividadesGui = new ActividadesGui();
         controladorActividades = new ControladorActividades(actividadesGui);
         principalGui.getDesktop().add(actividadesGui);
-        usuarioGui= new UsuarioGui();
-        controladorUsuario= new ControladorUsuario(usuarioGui);
+        usuarioGui = new UsuarioGui();
+        controladorUsuario = new ControladorUsuario(usuarioGui);
         principalGui.getDesktop().add(usuarioGui);
         principalGui.setCursor(Cursor.DEFAULT_CURSOR);
+
     }
 
     @Override
@@ -88,10 +96,10 @@ public class ControladorPrincipalGui implements ActionListener {
             socios.setVisible(true);
             socios.toFront();
             controladorClientes.cargarSocios();
-             /*
-              * ESTO SE EJECUTA UNA VEZ!
-              */
-           //  abm.modbase();
+            /*
+             * ESTO SE EJECUTA UNA VEZ!
+             */
+            //  abm.modbase();
         }
         if (ae.getSource() == principalGui.getBotActividades()) {
             System.out.println("actividades pulsado");
@@ -100,31 +108,45 @@ public class ControladorPrincipalGui implements ActionListener {
             actividadesGui.getTablaActividadesDefault().setRowCount(0);
             LazyList ListAranceles = Arancel.where("activo = ?", 1);
             Iterator<Arancel> it = ListAranceles.iterator();
-            while(it.hasNext()){
-                        Arancel ar = it.next();
-                        Object row[] = new Object[3];
-                        row[0] = ar.getInteger("id");
-                        row[1] = ar.getString("nombre");
-                        row[2] = ar.getFloat("precio");
-                        actividadesGui.getTablaActividadesDefault().addRow(row);
-             }
+            while (it.hasNext()) {
+                Arancel ar = it.next();
+                Object row[] = new Object[3];
+                row[0] = ar.getInteger("id");
+                row[1] = ar.getString("nombre");
+                row[2] = ar.getFloat("precio");
+                actividadesGui.getTablaActividadesDefault().addRow(row);
+            }
         }
-        if(ae.getSource()==principalGui.getBotUsuario()){
+        if (ae.getSource() == principalGui.getBotUsuario()) {
             usuarioGui.setVisible(true);
             usuarioGui.toFront();
         }
-        if(ae.getSource()==principalGui.getIngreso()){
+        if (ae.getSource() == principalGui.getIngreso()) {
             System.out.println("ingreso presionado wachin");
             ingresoGui.setVisible(true);
             ingresoGui.toFront();
             ingresoGui.setLocationRelativeTo(null);
+        }
+        if (ae.getSource() == principalGui.getDeclaracion()) {
+
+            try {
+                File path;
+                try {
+                    path = new File(getClass().getResource("/Documentos/declaracion.pdf").toURI());
+                    Desktop.getDesktop().open(path);
+                } catch (URISyntaxException ex) {
+                    Logger.getLogger(ControladorPrincipalGui.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(principalGui, "Corrobore si tiene instalado un lector PDF \n "+ex, "¡Error!", JOptionPane.ERROR_MESSAGE);
+            }
         }
 
 
     }
 
     public static void main(String[] args) throws InterruptedException, Exception {
-        
+
         ControladorPrincipalGui appl = new ControladorPrincipalGui();
 
     }

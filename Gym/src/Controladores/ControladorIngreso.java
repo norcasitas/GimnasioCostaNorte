@@ -105,7 +105,7 @@ public class ControladorIngreso implements ActionListener {
     }
 
     public String dateToMySQLDate(Date fecha) {
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd-MM-yyyy");
         return sdf.format(fecha);
     }
 
@@ -376,8 +376,8 @@ public class ControladorIngreso implements ActionListener {
         ingresoGui.getNombre().setText(socio.getString("NOMBRE"));
         ingresoGui.getApellido().setText(socio.getString("APELLIDO"));
         ingresoGui.getNombre().setText(socio.getString("NOMBRE"));
-        ingresoGui.getFechaUltPago().setText(socio.getString("FECHA_ULT_PAGO"));
-        ingresoGui.getFechaVence().setText(socio.getString("FECHA_PROX_PAGO"));
+        ingresoGui.getFechaUltPago().setText(dateToMySQLDate(socio.getDate("FECHA_ULT_PAGO")));
+        ingresoGui.getFechaVence().setText(dateToMySQLDate(socio.getDate(("FECHA_PROX_PAGO"))));
         /// calcular la diferencia en dias
 // Crear 2 instancias de Calendar
 
@@ -402,6 +402,8 @@ public class ControladorIngreso implements ActionListener {
         cargarAsistencia();
     }
 
+    
+    
     public void cargarSonido(String nombre) throws Exception {
         File soundFile = new File(getClass().getResource("/Sonidos/" + nombre).toURI());
         AudioInputStream soundIn = AudioSystem.getAudioInputStream(soundFile);

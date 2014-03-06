@@ -4,6 +4,12 @@
  */
 package Interfaces;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+
 /**
  *
  * @author nico
@@ -161,8 +167,19 @@ public class AcercaDe extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jXHyperlink1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jXHyperlink1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jXHyperlink1ActionPerformed
+URL url=null;
+try {
+    url = new URL("http://www.facebook.com/TecProSoftware");
+    try {
+        Desktop.getDesktop().browse(url.toURI());
+    } catch (IOException e) {
+        e.printStackTrace();
+    } catch (URISyntaxException e) {
+        e.printStackTrace();
+    }
+} catch (MalformedURLException e1) {
+    e1.printStackTrace();
+}    }//GEN-LAST:event_jXHyperlink1ActionPerformed
 
     /**
      * @param args the command line arguments
