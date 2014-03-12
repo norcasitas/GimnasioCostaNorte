@@ -86,7 +86,7 @@ public class ControladorLogin extends Thread implements ActionListener {
     }
     public void abrirBase(){
                         if (!Base.hasConnection()) {
-                         Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/GYM", "root", "root");
+                         Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/gym", "root", "root");
                      }
     }
 }

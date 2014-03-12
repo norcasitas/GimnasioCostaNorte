@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 import org.javalite.activejdbc.LazyList;
 
 /**
@@ -37,8 +38,10 @@ public class ControladorClientes implements ActionListener {
     private ControladorAbmCliente controladorAbmCliente;
     private PagosGui pagosGui;
     private ABMSocios abmSocios;
-
+    private DefaultTableModel tablaSocDefault;
+    
     public ControladorClientes(BusquedaGui clientes, DesktopPaneImage desktop) {
+        
         this.clientesGui = clientes;
         clientes.setActionListener(this);
         altaClienteGui = new AbmClienteGui();
@@ -49,6 +52,7 @@ public class ControladorClientes implements ActionListener {
         desktop.add(pagosGui);
         pagosGui.setActionListener(this);
         tablaClientes = this.clientesGui.getTablaClientes();
+        tablaSocDefault = this.clientesGui.getTablaClientesDefault();
         tablaClientes.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -158,13 +162,14 @@ public class ControladorClientes implements ActionListener {
                 int ret=JOptionPane.showConfirmDialog(clientesGui, "¿Desea eliminar a "+tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0)+" "+tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 1)+" ?",null,JOptionPane.YES_NO_OPTION);
                 if(ret== JOptionPane.YES_OPTION){
                     System.out.println("elimino el de la fila "+tablaClientes.getSelectedRow());
-                  /*  Socio s = new Socio();
-                    s.set("DNI", tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 2));
-                    abmSocios.baja(s);*/
                     Socio s = Socio.first("DNI = ?", tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 2));
-                    System.out.println(s.get("DNI"));
-                    s.set("ACTIVO", 0);
-                    s.saveIt();
+                    if(abmSocios.baja(s)){
+                        JOptionPane.showMessageDialog(clientesGui, "Socio dado de baja exitosamente!");
+                        clientesGui.getTablaClientesDefault().removeRow(clientesGui.getTablaClientes().getSelectedRow());
+                        //tablaSocDefault.removeRow(tablaClientes.getSelectedRow());
+                    }else{
+                        JOptionPane.showMessageDialog(clientesGui, "Ocurrio un error inesperado");
+                    }
                 }
             }
         }
@@ -205,7 +210,7 @@ public class ControladorClientes implements ActionListener {
     }
     
     public void cargarSocios(){
-        LazyList<Socio> ListSocios= Socio.findAll();
+        LazyList<Socio> ListSocios= Socio.where("ACTIVO = ?", 1);
             clientesGui.getTablaClientesDefault().setRowCount(0);
              Iterator<Socio> it = ListSocios.iterator();
              while(it.hasNext()){
@@ -228,6 +233,6 @@ public class ControladorClientes implements ActionListener {
                  i++;
              }
              clientesGui.getActividades().setListData(d);
-             ABMSocios abm = new ABMSocios();
+             //ABMSocios abm = new ABMSocios();
     }
 }

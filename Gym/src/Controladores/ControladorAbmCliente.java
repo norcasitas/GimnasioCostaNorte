@@ -124,20 +124,32 @@ public class ControladorAbmCliente implements ActionListener {
             }
             else{
                 System.out.println("Boton guardó uno nuevito");
+                for(int i = 0; i< 12; i++){
+                    System.out.println(clienteGui.getTablaActividades().getValueAt(i, 1));
+                }
+                //System.out.println(clienteGui.getTablaActividades().getValueAt(0, 0));
                 //debe mantener abierta la ventana y que se habilite el botón de la huella, la huella
                 //solo puede ser creada si el usuario existe
                 s = new Socio();
+               // boolean val;
                 CargarDatosSocio(s);
                 if(s.getString("DNI").equals("") || s.getString("APELLIDO").equals("")){
                     JOptionPane.showMessageDialog(clienteGui, "Faltan datos obligatorios", "Error!", JOptionPane.ERROR_MESSAGE);
                 }else{
                      int rows = clienteGui.getTablaActivDefault().getRowCount();
+                     System.out.println("La cant de rows es "+rows);
                      LinkedList listaran = new LinkedList();
-                     for(int i = 1; i< rows; i++){
-                        if((boolean)clienteGui.getTablaActividades().getValueAt(i, 1) == true){
-                            Arancel a = Arancel.first("nombre = ?", clienteGui.getTablaActividades().getValueAt(i, 0));
-                            listaran.add(a);
-                        }
+                     for(int i = 0; i< rows; i++){
+                        // System.out.println(clienteGui.getTablaActividades().getValueAt(i, 0));
+                     //    val = (boolean) clienteGui.getTablaActividades().getValueAt(i, 1); 
+                       //  System.out.println("se te pudrio");
+                         if( clienteGui.getTablaActividades().getValueAt(i, 1) != null){
+                             Arancel a = Arancel.first("nombre = ?", clienteGui.getTablaActividades().getValueAt(i, 0));
+                             listaran.add(a);
+                             System.out.println("esta GIL");
+                         }else{
+                             System.out.println("no esta GIL");
+                         }
                     }
                     if(abmsocio.alta(s, listaran)){
                         JOptionPane.showMessageDialog(clienteGui, "Socio guardado exitosamente!");
@@ -178,19 +190,40 @@ public class ControladorAbmCliente implements ActionListener {
             clienteGui.getBotGuardar().setEnabled(true);
             isNuevo=false;
             clienteGui.getTablaActivDefault().setRowCount(0);
-            LazyList<Arancel> list = Arancel.findAll();
-            Iterator<Arancel> it = list.iterator();
-            while(it.hasNext()){
-                Arancel a = it.next();
-                Object row1[] = new Object[2];
-                row1[0] = a.getString("nombre");
-                row1[1] = false;
-                clienteGui.getTablaActivDefault().addRow(row1);
-            }
             Socio socio = Socio.first("DNI = ?", clienteGui.getDni().getText());
             LazyList<Socioarancel> socaran = Socioarancel.where("id_socio = ?", socio.get("ID_DATOS_PERS"));
             Iterator<Socioarancel> iter = socaran.iterator();
+            LinkedList<Arancel> tieneAran = new LinkedList();
             while(iter.hasNext()){
+                Socioarancel arsoc = iter.next();
+                Arancel ar = Arancel.first("id = ?", arsoc.get("id_arancel"));
+                tieneAran.add(ar);
+                System.out.println(ar.get("nombre"));
+            }
+            LazyList<Arancel> listArancel = Arancel.findAll();
+            Iterator<Arancel> it = listArancel.iterator();
+            Iterator<Arancel> itiene = tieneAran.iterator();
+            while(it.hasNext()){
+                Arancel a = it.next();
+                while(itiene.hasNext()){
+                    Arancel b = itiene.next();
+                    if(a.getString("nombre") == b.getString("nombre")){
+                        Object row[] = new Object[2];
+                        row[0] = a.getString("nombre");
+                        row[1] = true;
+                        clienteGui.getTablaActivDefault().addRow(row);
+                    }else{
+                        Object row[] = new Object[2];
+                        row[0] = a.getString("nombre");
+                        row[1] = false;
+                        clienteGui.getTablaActivDefault().addRow(row);
+                    }
+                }
+                
+                
+            }
+            
+          /*  while(iter.hasNext()){
                 Socioarancel sa = iter.next();
                 Arancel ar = Arancel.first("id = ?", sa.get("id_arancel"));
                 System.out.println("que onda1");
@@ -203,7 +236,7 @@ public class ControladorAbmCliente implements ActionListener {
                     }
                 }
                 System.out.println("que onda");
-            }
+            }*/
         
         }
         if (ae.getSource() == clienteGui.getBotNuevo()) {
