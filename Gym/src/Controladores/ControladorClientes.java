@@ -165,8 +165,18 @@ public class ControladorClientes implements ActionListener {
                     Socio s = Socio.first("DNI = ?", tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 2));
                     if(abmSocios.baja(s)){
                         JOptionPane.showMessageDialog(clientesGui, "Socio dado de baja exitosamente!");
-                        clientesGui.getTablaClientesDefault().removeRow(clientesGui.getTablaClientes().getSelectedRow());
-                        //tablaSocDefault.removeRow(tablaClientes.getSelectedRow());
+                        LazyList<Socio> ListSocios= Socio.where("ACTIVO = ?", 1);
+                        clientesGui.getTablaClientesDefault().setRowCount(0);
+                        Iterator<Socio> it = ListSocios.iterator();
+                        while(it.hasNext()){
+                              Socio a = it.next();
+                              String row[] = new String[4];
+                              row[0] = a.getString("NOMBRE");
+                              row[1] = a.getString("APELLIDO");
+                              row[2] = a.getString("DNI");
+                              row[3] = a.getString("TEL");
+                              clientesGui.getTablaClientesDefault().addRow(row);
+                        }   
                     }else{
                         JOptionPane.showMessageDialog(clientesGui, "Ocurrio un error inesperado");
                     }

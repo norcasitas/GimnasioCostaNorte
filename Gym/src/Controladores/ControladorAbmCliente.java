@@ -198,30 +198,37 @@ public class ControladorAbmCliente implements ActionListener {
                 Socioarancel arsoc = iter.next();
                 Arancel ar = Arancel.first("id = ?", arsoc.get("id_arancel"));
                 tieneAran.add(ar);
-                System.out.println(ar.get("nombre"));
+                System.out.println(ar.get("nombre")+ " gil");
             }
-            LazyList<Arancel> listArancel = Arancel.findAll();
-            Iterator<Arancel> it = listArancel.iterator();
             Iterator<Arancel> itiene = tieneAran.iterator();
+            while(itiene.hasNext()){
+                Arancel tiene = itiene.next();
+                Object row[] = new Object[2];
+                row[0] = tiene.getString("nombre");
+                row[1] = true;
+                clienteGui.getTablaActivDefault().addRow(row);
+            }
+            
+            /////////////////////////////////////////////////////
+            
+            ////////////////////////////////////////////////////
+            LazyList<Arancel> listArancel = Arancel.findAll();
+            LinkedList<Arancel> Aranceles = new LinkedList();
+            Iterator<Arancel> it = listArancel.iterator();
             while(it.hasNext()){
                 Arancel a = it.next();
-                while(itiene.hasNext()){
-                    Arancel b = itiene.next();
-                    if(a.getString("nombre") == b.getString("nombre")){
-                        Object row[] = new Object[2];
-                        row[0] = a.getString("nombre");
-                        row[1] = true;
-                        clienteGui.getTablaActivDefault().addRow(row);
-                    }else{
-                        Object row[] = new Object[2];
-                        row[0] = a.getString("nombre");
-                        row[1] = false;
-                        clienteGui.getTablaActivDefault().addRow(row);
-                    }
-                }
-                
-                
+                Aranceles.add(a);
             }
+            Aranceles.removeAll(tieneAran);
+            Iterator<Arancel> itt = Aranceles.iterator();
+            while(itt.hasNext()){
+                Arancel tiene2 = itt.next();
+                Object row[] = new Object[2];
+                row[0] = tiene2.getString("nombre");
+                //row[1] = false;
+                clienteGui.getTablaActivDefault().addRow(row);
+            }
+            
             
           /*  while(iter.hasNext()){
                 Socioarancel sa = iter.next();
@@ -262,6 +269,32 @@ public class ControladorAbmCliente implements ActionListener {
         this.isNuevo = isNuevo;
     }
     
+    private void diferenciaListas(LinkedList tiene, LazyList todos){
+     /*   Iterator<Arancel> itiene = tiene.iterator();
+        Iterator<Arancel> itodos = todos.iterator();
+        while(itiene.hasNext()){
+            Arancel atiene = itiene.next();
+            while(itodos.hasNext()){
+                Arancel atodos = itodos.next();
+                System.out.println("antes if");
+                if(atiene == atodos){
+                    System.out.println("ENTRO al if");
+                    itodos.remove();
+                }
+                System.out.println("despues al if");
+            }
+        }*/
+        
+        for(int i = 0; i < tiene.size(); i++){
+            Arancel a = (Arancel) tiene.get(i);
+            for(int j = 0; j < todos.size(); j++){
+                if(tiene.get(i) == todos.get(j)){
+                    todos.remove(j);
+                }
+            }
+        }
+       
+    }
         public void abrirBase(){
          if (!Base.hasConnection()) {
             Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/GYM", "root", "root");
