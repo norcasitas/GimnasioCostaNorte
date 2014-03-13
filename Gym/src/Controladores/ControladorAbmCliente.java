@@ -51,7 +51,7 @@ public class ControladorAbmCliente implements ActionListener {
         s.set("DNI", clienteGui.getDni().getText().toUpperCase());
         System.out.println(clienteGui.getDireccion().getText().toUpperCase());
         s.set("DIR", clienteGui.getDireccion().getText().toUpperCase());
-        s.set("FECHA_NAC", dateToMySQLDate(clienteGui.getFechaNacimJDate().getCalendar().getTime()));
+       // s.set("FECHA_NAC", dateToMySQLDate(clienteGui.getFechaNacimJDate().getCalendar().getTime()));
         if(clienteGui.getSexo().getSelectedIndex()==1){
             s.set("SEXO", "M");
         }else{
@@ -106,7 +106,7 @@ public class ControladorAbmCliente implements ActionListener {
                     int rows = clienteGui.getTablaActivDefault().getRowCount();
                     LinkedList listaran = new LinkedList();
                     for(int i = 1; i< rows; i++){
-                        if((boolean)clienteGui.getTablaActividades().getValueAt(i, 1) == true){
+                        if(clienteGui.getTablaActividades().getValueAt(i, 1) != null){
                             Arancel a = Arancel.first("nombre = ?", clienteGui.getTablaActividades().getValueAt(i, 0));
                             listaran.add(a);
                         }
@@ -193,18 +193,18 @@ public class ControladorAbmCliente implements ActionListener {
             Socio socio = Socio.first("DNI = ?", clienteGui.getDni().getText());
             LazyList<Socioarancel> socaran = Socioarancel.where("id_socio = ?", socio.get("ID_DATOS_PERS"));
             Iterator<Socioarancel> iter = socaran.iterator();
-            LinkedList<Arancel> tieneAran = new LinkedList();
+            LinkedList<String> tieneAran = new LinkedList();
             while(iter.hasNext()){
                 Socioarancel arsoc = iter.next();
                 Arancel ar = Arancel.first("id = ?", arsoc.get("id_arancel"));
-                tieneAran.add(ar);
+                tieneAran.add(ar.getString("nombre"));
                 System.out.println(ar.get("nombre")+ " gil");
             }
-            Iterator<Arancel> itiene = tieneAran.iterator();
+            Iterator<String> itiene = tieneAran.iterator();
             while(itiene.hasNext()){
-                Arancel tiene = itiene.next();
+                String tiene = itiene.next();
                 Object row[] = new Object[2];
-                row[0] = tiene.getString("nombre");
+                row[0] = tiene;
                 row[1] = true;
                 clienteGui.getTablaActivDefault().addRow(row);
             }
@@ -213,18 +213,18 @@ public class ControladorAbmCliente implements ActionListener {
             
             ////////////////////////////////////////////////////
             LazyList<Arancel> listArancel = Arancel.findAll();
-            LinkedList<Arancel> Aranceles = new LinkedList();
+            LinkedList<String> Aranceles = new LinkedList();
             Iterator<Arancel> it = listArancel.iterator();
             while(it.hasNext()){
                 Arancel a = it.next();
-                Aranceles.add(a);
+                Aranceles.add(a.getString("nombre"));
             }
             Aranceles.removeAll(tieneAran);
-            Iterator<Arancel> itt = Aranceles.iterator();
+            Iterator<String> itt = Aranceles.iterator();
             while(itt.hasNext()){
-                Arancel tiene2 = itt.next();
+                String tiene2 = itt.next();
                 Object row[] = new Object[2];
-                row[0] = tiene2.getString("nombre");
+                row[0] = tiene2;
                 //row[1] = false;
                 clienteGui.getTablaActivDefault().addRow(row);
             }
