@@ -54,6 +54,7 @@ public class ControladorActividades implements ActionListener {
         actividadesGui.getActividad().setText(ar.getString("nombre"));
         actividadesGui.getPrecio().setText(String.valueOf(ar.getFloat("precio")));
         actividadesGui.getDesde().setDate(ar.getDate("fecha"));
+        actividadesGui.getCategoria().setSelectedItem(ar.get("categoria"));
         /*Cargo la info de las actividades en los campos! */
     }
 
@@ -105,6 +106,7 @@ public class ControladorActividades implements ActionListener {
                 a.set("fecha", actividadesGui.getDesde().getDate());
                 a.set("precio",actividadesGui.getPrecio().getText());
                 a.set("activo", 1);
+                a.set("categoria", actividadesGui.getCategoria().getSelectedItem().toString().toUpperCase());
                 a.set("nombre", actividadesGui.getActividad().getText().toUpperCase());
                 a.set("id", actividadesGui.getTablaActividadesDefault().getValueAt(actividadesGui.getTablaActividades().getSelectedRow(), 0));
                 if(abmAranceles.modificar(a)){
@@ -131,6 +133,7 @@ public class ControladorActividades implements ActionListener {
                 a.set("precio",actividadesGui.getPrecio().getText());
                 a.set("activo", 1);
                 a.set("nombre", actividadesGui.getActividad().getText().toUpperCase());
+                a.set("categoria", actividadesGui.getCategoria().getSelectedItem().toString().toUpperCase());
                 System.out.println("Boton guardó uno nuevito");
                 if(abmAranceles.alta(a)){
                     JOptionPane.showMessageDialog(actividadesGui, "Actividad guardada exitosamente!");

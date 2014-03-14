@@ -250,11 +250,11 @@
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="5">
-                        <StringItem index="0" value="Aer&#xf3;bico"/>
-                        <StringItem index="1" value="Pilates"/>
-                        <StringItem index="2" value="Spinning"/>
-                        <StringItem index="3" value="Musculaci&#xf3;n"/>
-                        <StringItem index="4" value="Combo"/>
+                        <StringItem index="0" value="AEROBICO"/>
+                        <StringItem index="1" value="PILATES"/>
+                        <StringItem index="2" value="SPINNING"/>
+                        <StringItem index="3" value="MUSCULACION"/>
+                        <StringItem index="4" value="COMBO"/>
                       </StringArray>
                     </Property>
                     <Property name="enabled" type="boolean" value="false"/>

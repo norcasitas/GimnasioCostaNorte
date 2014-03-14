@@ -25,7 +25,7 @@ public class ABMAranceles {
     public boolean alta(Arancel s) {
         if (!findArancel(s)) {
             Base.openTransaction();
-            Arancel nuevo = Arancel.create("nombre",s.get("nombre"), "precio", s.get("precio"), "fecha", s.get("fecha"), "activo", s.get("activo"));
+            Arancel nuevo = Arancel.create("nombre",s.get("nombre"), "precio", s.get("precio"), "fecha", s.get("fecha"), "activo", s.get("activo"),"categoria", s.get("categoria"));
             nuevo.saveIt();
             Base.commitTransaction();
             return true;

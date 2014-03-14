@@ -8,6 +8,7 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -72,6 +73,12 @@ public class ActividadesGui extends javax.swing.JInternalFrame {
     public JTable getTablaActividades() {
         return tablaActividades;
     }
+
+    public JComboBox getCategoria() {
+        return categoria;
+    }
+    
+    
 
     public void setBotonesNuevo(boolean si) {
         this.botModif.setEnabled(!si);
@@ -201,7 +208,7 @@ public class ActividadesGui extends javax.swing.JInternalFrame {
 
         desde.setEnabled(false);
 
-        categoria.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Aeróbico", "Pilates", "Spinning", "Musculación", "Combo" }));
+        categoria.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "AEROBICO", "PILATES", "SPINNING", "MUSCULACION", "COMBO" }));
         categoria.setEnabled(false);
 
         jLabel4.setText("Categoría");
