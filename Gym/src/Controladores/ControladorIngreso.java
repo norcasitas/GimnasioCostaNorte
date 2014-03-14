@@ -8,6 +8,7 @@ package Controladores;
 import ABMs.ABMSocios;
 import BD.ConexionBD;
 import Interfaces.IngresoGui;
+import Interfaces.RegistrarPagoGui;
 import Interfaces.busquedaManualGui;
 import Modelos.Asistencia;
 import Modelos.Socio;
@@ -104,9 +105,16 @@ public class ControladorIngreso implements ActionListener {
         }
     }
 
-    public String dateToMySQLDate(Date fecha) {
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd-MM-yyyy");
-        return sdf.format(fecha);
+    /*va true si se quiere usar para mostrarla por pantalla es decir 12/12/2014 y false si va 
+     para la base de datos, es decir 2014/12/12*/
+    public String dateToMySQLDate(Date fecha, boolean paraMostrar) {
+        if (paraMostrar) {
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
+            return sdf.format(fecha);
+        } else {
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+            return sdf.format(fecha);
+        }
     }
 
     protected void Iniciar() {
@@ -156,7 +164,7 @@ public class ControladorIngreso implements ActionListener {
                         ingresoGui.toFront();
                         ingresoGui.requestFocus();
                         //Aca debe abrirse la ventana cuando no está minimiza
-                        
+
                     }
                 });
             }
@@ -286,17 +294,7 @@ public class ControladorIngreso implements ActionListener {
                     socio = Socio.findFirst("ID_DATOS_PERS = ?", idCliente);
                     EnviarTexto("Verificación correcta,la huella capturada es de " + socio.getString("NOMBRE") + " " + socio.getString("APELLIDO"));
                     cargarDatos(socio);
-                    try {
-                        if (Long.valueOf(ingresoGui.getCantDias().getText()) < 0) {
-                            System.out.println("vencido! :O");
-                            cargarSonido("vencido.wav");
-                            ingresoGui.getFechaVence().setText(ingresoGui.getFechaVence().getText().concat(" ¡VENCIDO!"));
-                        } else {
-                            cargarSonido("correcto.wav");
-                        }
-                    } catch (Exception ex) {
-                        Logger.getLogger(ControladorIngreso.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+
                     return;
                 }
 
@@ -348,6 +346,13 @@ public class ControladorIngreso implements ActionListener {
             bus.cargarSocios();
             bus.setVisible(true);
         }
+        if (e.getSource() == ingresoGui.getDarDeAlta()) {
+            System.out.println("dar de alta");
+            Base.openTransaction();
+            RegistrarPagoGui pagoGui = new RegistrarPagoGui(ingresoGui, true, socio);
+            pagoGui.setLocationRelativeTo(null);
+            pagoGui.setVisible(true);
+        }
     }
 
     private void cargarAsistencia() {
@@ -358,7 +363,7 @@ public class ControladorIngreso implements ActionListener {
         Iterator<Asistencia> it = asistencias.iterator();
         int i = 0;
         while (it.hasNext() && i < 30) {
-            ((JLabel) array[i]).setText(it.next().getString("FECHA"));
+            ((JLabel) array[i]).setText(dateToMySQLDate(it.next().getDate("FECHA"), true));
             i++;
 
         }
@@ -366,18 +371,18 @@ public class ControladorIngreso implements ActionListener {
     }
 
     public void cargarDatos(Socio socio) {
-
-        asistencia = Asistencia.findFirst("ID_DATOS_PERS = ? and FECHA = ?", idCliente, dateToMySQLDate(Calendar.getInstance().getTime()));
+        idCliente = socio.getInteger("ID_DATOS_PERS");
+        asistencia = Asistencia.findFirst("ID_DATOS_PERS = ? and FECHA = ?", idCliente, dateToMySQLDate(Calendar.getInstance().getTime(), false));
         if (asistencia == null) {
             Base.openTransaction();
-            Asistencia.createIt("ID_DATOS_PERS", idCliente, "FECHA", dateToMySQLDate(Calendar.getInstance().getTime()));
+            Asistencia.createIt("ID_DATOS_PERS", idCliente, "FECHA", dateToMySQLDate(Calendar.getInstance().getTime(), false));
             Base.commitTransaction();
         }
         ingresoGui.getNombre().setText(socio.getString("NOMBRE"));
         ingresoGui.getApellido().setText(socio.getString("APELLIDO"));
         ingresoGui.getNombre().setText(socio.getString("NOMBRE"));
-        ingresoGui.getFechaUltPago().setText(dateToMySQLDate(socio.getDate("FECHA_ULT_PAGO")));
-        ingresoGui.getFechaVence().setText(dateToMySQLDate(socio.getDate(("FECHA_PROX_PAGO"))));
+        ingresoGui.getFechaUltPago().setText(dateToMySQLDate(socio.getDate("FECHA_ULT_PAGO"), true));
+        ingresoGui.getFechaVence().setText(dateToMySQLDate(socio.getDate(("FECHA_PROX_PAGO")), true));
         /// calcular la diferencia en dias
 // Crear 2 instancias de Calendar
 
@@ -400,10 +405,23 @@ public class ControladorIngreso implements ActionListener {
         ingresoGui.getCantDias().setText(String.valueOf(diffDays));
 
         cargarAsistencia();
+        try {
+            if (Long.valueOf(ingresoGui.getCantDias().getText()) < 0) {
+                System.out.println("vencido! :O");
+                cargarSonido("vencido.wav");
+                ingresoGui.getFechaVence().setText(ingresoGui.getFechaVence().getText().concat(" ¡VENCIDO!"));
+            } else {
+                cargarSonido("correcto.wav");
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(ControladorIngreso.class.getName()).log(Level.SEVERE, null, ex);
+        }
+           ingresoGui.getDarDeAlta().setEnabled(!socio.getBoolean("ACTIVO"));
+        
+        
+
     }
 
-    
-    
     public void cargarSonido(String nombre) throws Exception {
         File soundFile = new File(getClass().getResource("/Sonidos/" + nombre).toURI());
         AudioInputStream soundIn = AudioSystem.getAudioInputStream(soundFile);

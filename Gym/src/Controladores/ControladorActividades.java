@@ -9,6 +9,7 @@ import Interfaces.ActividadesGui;
 import Modelos.Arancel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import java.util.Iterator;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -174,5 +175,18 @@ public class ControladorActividades implements ActionListener {
 
         }
 
+    }
+    
+        /*va true si se quiere usar para mostrarla por pantalla es decir 12/12/2014 y false si va 
+    para la base de datos, es decir 2014/12/12*/
+    public String dateToMySQLDate(Date fecha, boolean paraMostrar) {
+        if(paraMostrar){
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(fecha);
+        }
+        else{
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(fecha);
+        }
     }
 }

@@ -51,7 +51,7 @@ public class ControladorAbmCliente implements ActionListener {
         s.set("DNI", clienteGui.getDni().getText().toUpperCase());
         System.out.println(clienteGui.getDireccion().getText().toUpperCase());
         s.set("DIR", clienteGui.getDireccion().getText().toUpperCase());
-       // s.set("FECHA_NAC", dateToMySQLDate(clienteGui.getFechaNacimJDate().getCalendar().getTime()));
+        s.set("FECHA_NAC", dateToMySQLDate(clienteGui.getFechaNacimJDate().getCalendar().getTime(),false));
         if(clienteGui.getSexo().getSelectedIndex()==1){
             s.set("SEXO", "M");
         }else{
@@ -60,9 +60,17 @@ public class ControladorAbmCliente implements ActionListener {
         
     }
 
-        public String dateToMySQLDate(Date fecha) {
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+    /*va true si se quiere usar para mostrarla por pantalla es decir 12/12/2014 y false si va 
+    para la base de datos, es decir 2014/12/12*/
+    public String dateToMySQLDate(Date fecha, boolean paraMostrar) {
+        if(paraMostrar){
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
         return sdf.format(fecha);
+        }
+        else{
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(fecha);
+        }
     }
         
     @Override
@@ -105,7 +113,7 @@ public class ControladorAbmCliente implements ActionListener {
                     CargarDatosSocio(s);
                     int rows = clienteGui.getTablaActivDefault().getRowCount();
                     LinkedList listaran = new LinkedList();
-                    for(int i = 1; i< rows; i++){
+                    for(int i = 1; i< rows; i++){ //¿ANDA ARRANCANDO DESDE 1, NO SE SALTEA EL PRIMERO?
                         if(clienteGui.getTablaActividades().getValueAt(i, 1) != null){
                             Arancel a = Arancel.first("nombre = ?", clienteGui.getTablaActividades().getValueAt(i, 0));
                             listaran.add(a);
@@ -258,7 +266,7 @@ public class ControladorAbmCliente implements ActionListener {
             System.out.println("Boton pago pulsado");
             /*SE DEBERÁ MODIFICAR EL CONSTRUCTOR DE REGISTRARPAGOGUI PARA QUE TOME
              UN CLIENTE ASÍ SE HACE EL PAGO TODO DESDE ESA CLASE*/
-            pagoGui= new RegistrarPagoGui(null, true);
+            pagoGui= new RegistrarPagoGui(null, true, s);
             pagoGui.setLocationRelativeTo(null);
             pagoGui.setVisible(true);
 

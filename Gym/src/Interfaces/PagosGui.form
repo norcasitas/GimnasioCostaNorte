@@ -9,7 +9,6 @@
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
-    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -151,7 +150,6 @@
     <Component class="com.toedter.calendar.JDateChooser" name="hasta">
       <Properties>
         <Property name="toolTipText" type="java.lang.String" value="Ver pagos hasta la fecha"/>
-        <Property name="dateFormatString" type="java.lang.String" value="dd-MM-yyyy"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
@@ -167,7 +165,6 @@
     <Component class="com.toedter.calendar.JDateChooser" name="desde">
       <Properties>
         <Property name="toolTipText" type="java.lang.String" value="Ver pagos desde la fecha"/>
-        <Property name="dateFormatString" type="java.lang.String" value="dd-MM-yyyy"/>
       </Properties>
     </Component>
   </SubComponents>

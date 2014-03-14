@@ -4,12 +4,25 @@
  */
 package Interfaces;
 
+import ABMs.ABMSocios;
+import Modelos.Arancel;
+import Modelos.Pago;
+import Modelos.Socio;
+import Modelos.Socioarancel;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
+import java.util.LinkedList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import org.javalite.activejdbc.Base;
+import org.javalite.activejdbc.LazyList;
+import org.javalite.activejdbc.Model;
 
 /**
  *
@@ -17,12 +30,16 @@ import javax.swing.JOptionPane;
  */
 public class RegistrarPagoGui extends javax.swing.JDialog {
 
+    Socio socio;
+    DefaultTableModel tablaDefault;
     /**
      * Creates new form RegistrarPagoGui
      */
-    public RegistrarPagoGui(java.awt.Frame parent, boolean modal) {
+    public RegistrarPagoGui(java.awt.Frame parent, boolean modal, Socio socio) {
         super(parent, modal);
         initComponents();
+        tablaDefault= (DefaultTableModel)tablaActividades.getModel();
+        this.socio= socio;
          fecha.addPropertyChangeListener(new PropertyChangeListener() {
 
             @Override
@@ -35,10 +52,95 @@ public class RegistrarPagoGui extends javax.swing.JDialog {
         });
          fecha.setDate(Calendar.getInstance().getTime());
         System.out.println(fecha.getDate());
-       
+        nombreCliente.setText(socio.getString("NOMBRE")+" "+socio.getString("APELLIDO"));
+        cargarActividades();
+        calcularTotal();
+        System.out.println("esta todo legal");
+       tablaActividades.addPropertyChangeListener(new PropertyChangeListener() {
+
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                calcularTotal();
+            }
+        });
        
     }
 
+    private void calcularTotal(){
+         BigDecimal totalB= new BigDecimal(0);
+        if(tablaDefault.getRowCount()>-1){
+        int rows = tablaDefault.getRowCount();
+                    for(int i = 0; i< rows; i++){
+                        if((boolean)tablaActividades.getValueAt(i, 2) ==true){
+                            BigDecimal precio=(BigDecimal)tablaActividades.getValueAt(i, 1);
+                            
+                            totalB= totalB.add(BigDecimal.valueOf(precio.doubleValue()));
+                        }
+                    }
+                                        total.setText(totalB.setScale(2, RoundingMode.CEILING).toString());
+
+        }
+    }
+    
+    private void cargarActividades(){
+        tablaDefault.setRowCount(0);
+            LazyList<Socioarancel> socaran = Socioarancel.where("id_socio = ?", socio.get("ID_DATOS_PERS"));
+            Iterator<Socioarancel> iter = socaran.iterator();
+            LinkedList<Arancel> tieneAran = new LinkedList();
+            while(iter.hasNext()){
+                Socioarancel arsoc = iter.next();
+                Arancel ar = Arancel.first("id = ?", arsoc.get("id_arancel"));
+                tieneAran.add(ar);
+                System.out.println(ar.get("nombre")+ " gil");
+            }
+            Iterator<Arancel> itiene = tieneAran.iterator();
+            while(itiene.hasNext()){
+                Arancel arancel= itiene.next();
+                String nombre = arancel.getString("nombre");
+                BigDecimal precio= arancel.getBigDecimal("precio");
+                Object row[] = new Object[3];
+                row[0] = nombre;
+                row[1] = precio;
+                row[2] = true;
+                tablaDefault.addRow(row);
+            }
+            
+            /////////////////////////////////////////////////////
+            
+            ////////////////////////////////////////////////////
+            LazyList<Arancel> listArancel = Arancel.findAll();
+            LinkedList<Arancel> aranceles = new LinkedList();
+            Iterator<Arancel> it = listArancel.iterator();
+            while(it.hasNext()){
+                Arancel a = it.next();
+                aranceles.add(a);
+            }
+            aranceles.removeAll(tieneAran);
+            Iterator<Arancel> itt = aranceles.iterator();
+            while(itt.hasNext()){
+                Arancel ar=itt.next();
+                String nombre = ar.getString("nombre");
+                 BigDecimal precio= ar.getBigDecimal("precio");
+                 Object[] fil= new Object[3];
+                fil[0] = nombre;
+                fil[1] = precio;
+                fil[2] = false;
+                                tablaDefault.addRow(fil);
+            }
+    }
+    
+    
+        /*va true si se quiere usar para mostrarla por pantalla es decir 12/12/2014 y false si va 
+     para la base de datos, es decir 2014/12/12*/
+    public String dateToMySQLDate(Date fecha, boolean paraMostrar) {
+        if (paraMostrar) {
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
+            return sdf.format(fecha);
+        } else {
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+            return sdf.format(fecha);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -81,7 +183,7 @@ public class RegistrarPagoGui extends javax.swing.JDialog {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Float.class, java.lang.Boolean.class
+                java.lang.String.class, java.math.BigDecimal.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, true
@@ -98,11 +200,18 @@ public class RegistrarPagoGui extends javax.swing.JDialog {
         tablaActividades.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         tablaActividades.setShowHorizontalLines(false);
         tablaActividades.setShowVerticalLines(false);
+        tablaActividades.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                tablaActividadesPropertyChange(evt);
+            }
+        });
         jScrollPane1.setViewportView(tablaActividades);
-        tablaActividades.getColumnModel().getColumn(0).setPreferredWidth(200);
-        tablaActividades.getColumnModel().getColumn(1).setPreferredWidth(30);
-        tablaActividades.getColumnModel().getColumn(2).setResizable(false);
-        tablaActividades.getColumnModel().getColumn(2).setPreferredWidth(1);
+        if (tablaActividades.getColumnModel().getColumnCount() > 0) {
+            tablaActividades.getColumnModel().getColumn(0).setPreferredWidth(200);
+            tablaActividades.getColumnModel().getColumn(1).setPreferredWidth(30);
+            tablaActividades.getColumnModel().getColumn(2).setResizable(false);
+            tablaActividades.getColumnModel().getColumn(2).setPreferredWidth(1);
+        }
 
         jPanel4.add(jScrollPane1);
 
@@ -135,11 +244,8 @@ public class RegistrarPagoGui extends javax.swing.JDialog {
 
         jLabel3.setText("Fecha");
 
-        fecha.setDateFormatString("dd-MM-yyyy");
-
         jLabel4.setText("Vence");
 
-        fechaVence.setDateFormatString("dd-MM-yyyy");
         fechaVence.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -212,51 +318,38 @@ public class RegistrarPagoGui extends javax.swing.JDialog {
 
     private void realizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_realizarActionPerformed
         /*ACA VA TODA LA GILADA DEL PAGO, NO SE PUEDE AHCER EN UN CONTROLADOR*/
-        System.out.println("pago realizado!");
-        this.dispose();
+        BigDecimal totalB= new BigDecimal(0);
+        int rows = tablaDefault.getRowCount();
+                    LinkedList listaran = new LinkedList();
+                    for(int i = 0; i< rows; i++){
+                        if((boolean)tablaActividades.getValueAt(i, 2)==true){
+                            Arancel a = Arancel.first("nombre = ?", tablaActividades.getValueAt(i, 0));
+                            listaran.add(a);
+                            BigDecimal precio=(BigDecimal)tablaActividades.getValueAt(i, 1);
+                            System.out.println(precio);
+                            totalB= totalB.add(BigDecimal.valueOf(precio.doubleValue()));
+                        }
+                    }
+                    //Object o = clienteGui.getTablaActividades().getValueAt(1, 1).equals(true);
+                    ABMSocios abmsocio= new ABMSocios();
+                    Base.openTransaction();
+                    Pago.createIt("ID_DATOS_PERS",socio.getString("ID_DATOS_PERS"),"FECHA",dateToMySQLDate(fecha.getDate(), false),"MONTO", totalB.setScale(2, RoundingMode.CEILING));
+                    socio.setBoolean("ACTIVO",true).saveIt();
+                    Base.commitTransaction();
+                    if(abmsocio.modificar(socio, listaran)){
+                        JOptionPane.showMessageDialog(this, "Socio dado de alta correctamente!");
+                          
+                         System.out.println("pago realizado!");
+                         this.dispose();
+                    }
     }//GEN-LAST:event_realizarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RegistrarPagoGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RegistrarPagoGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RegistrarPagoGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RegistrarPagoGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void tablaActividadesPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tablaActividadesPropertyChange
+                
+       
+    }//GEN-LAST:event_tablaActividadesPropertyChange
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                RegistrarPagoGui dialog = new RegistrarPagoGui(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelar;
     private com.toedter.calendar.JDateChooser fecha;

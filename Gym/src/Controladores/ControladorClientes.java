@@ -15,6 +15,7 @@ import Modelos.Socio;
 import Modelos.Socioarancel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.JList;
@@ -113,7 +114,7 @@ public class ControladorClientes implements ActionListener {
             }else{
                 altaClienteGui.getSexo().setSelectedIndex(0);
             }
-            altaClienteGui.getFechaNacimJDate().setDate(s.getDate("FECHA_NAC"));
+            altaClienteGui.getFechaNacimJDate().setDate(s.getDate("FECHA_NAC")); ;
             altaClienteGui.getLabelFechaIngreso().setText(s.getString("FECHA_ING"));
             altaClienteGui.getLabelFechaVenci().setText(s.getString("FECHA_PROX_PAGO")); 
              altaClienteGui.getTablaActivDefault().setRowCount(0);
@@ -244,5 +245,18 @@ public class ControladorClientes implements ActionListener {
              }
              clientesGui.getActividades().setListData(d);
              //ABMSocios abm = new ABMSocios();
+    }
+    
+        /*va true si se quiere usar para mostrarla por pantalla es decir 12/12/2014 y false si va 
+    para la base de datos, es decir 2014/12/12*/
+    public String dateToMySQLDate(Date fecha, boolean paraMostrar) {
+        if(paraMostrar){
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(fecha);
+        }
+        else{
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(fecha);
+        }
     }
 }

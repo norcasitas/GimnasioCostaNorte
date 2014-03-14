@@ -74,6 +74,7 @@ public class busquedaManualGui extends javax.swing.JDialog {
     private void cargarDatos(){
                             int row = tablaClientes.getSelectedRow();
                 Socio s = Socio.first("DNI = ?", tablaClientes.getValueAt(row, 2));
+                System.out.println(s.getString("ID_DATOS_PERS"));
                 this.contr.cargarDatos(s);
     }
         public void busquedaKeyReleased(java.awt.event.KeyEvent evt) {

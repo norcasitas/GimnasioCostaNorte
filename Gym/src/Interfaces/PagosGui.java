@@ -121,14 +121,12 @@ public class PagosGui extends javax.swing.JInternalFrame {
         });
 
         hasta.setToolTipText("Ver pagos hasta la fecha");
-        hasta.setDateFormatString("dd-MM-yyyy");
 
         jLabel3.setText("Desde");
 
         jLabel1.setText("Hasta");
 
         desde.setToolTipText("Ver pagos desde la fecha");
-        desde.setDateFormatString("dd-MM-yyyy");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

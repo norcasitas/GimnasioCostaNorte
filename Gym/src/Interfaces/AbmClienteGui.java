@@ -247,8 +247,6 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
 
         BotHuella.setText("Cargar huella");
 
-        fechaNacim.setDateFormatString("yyyy-MM-dd");
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -393,7 +391,9 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
         tablaActividades.setShowHorizontalLines(false);
         tablaActividades.setShowVerticalLines(false);
         jScrollPane1.setViewportView(tablaActividades);
-        tablaActividades.getColumnModel().getColumn(1).setMaxWidth(60);
+        if (tablaActividades.getColumnModel().getColumnCount() > 0) {
+            tablaActividades.getColumnModel().getColumn(1).setMaxWidth(60);
+        }
 
         jPanel4.add(jScrollPane1);
 

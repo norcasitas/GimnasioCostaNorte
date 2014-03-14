@@ -243,7 +243,6 @@
                 </Component>
                 <Component class="com.toedter.calendar.JDateChooser" name="desde">
                   <Properties>
-                    <Property name="dateFormatString" type="java.lang.String" value="yyyy-MM-dd"/>
                     <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                 </Component>
