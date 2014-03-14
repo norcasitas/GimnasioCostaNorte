@@ -50,7 +50,7 @@ public class ABMAranceles {
         Arancel viejo = Arancel.first("id = ?", s.getString("id"));
         if (viejo != null) {
             Base.openTransaction();
-            viejo.set("fecha", s.get("fecha"), "precio", s.get("precio"));
+            viejo.set("nombre", s.get("nombre"),"fecha", s.get("fecha"), "precio", s.get("precio"), "categoria", s.get("categoria"));
             viejo.saveIt();
             Base.commitTransaction();
             return true;
