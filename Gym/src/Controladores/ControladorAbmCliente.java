@@ -113,10 +113,13 @@ public class ControladorAbmCliente implements ActionListener {
                     CargarDatosSocio(s);
                     int rows = clienteGui.getTablaActivDefault().getRowCount();
                     LinkedList listaran = new LinkedList();
-                    for(int i = 1; i< rows; i++){ //¿ANDA ARRANCANDO DESDE 1, NO SE SALTEA EL PRIMERO?
-                        if(clienteGui.getTablaActividades().getValueAt(i, 1) != null){
+                    for(int i = 0; i< rows; i++){ //ahora si :P abajo en el alta estaba bien, aca en el modificar no lo habia cambiado :P
+                      // boolean val =  clienteGui.getTablaActividades().getValueAt(i, 1).equals(false);
+                        if(clienteGui.getTablaActividades().getValueAt(i, 1) != null || clienteGui.getTablaActividades().getValueAt(i, 1).equals(false)){
                             Arancel a = Arancel.first("nombre = ?", clienteGui.getTablaActividades().getValueAt(i, 0));
                             listaran.add(a);
+                            System.out.println(a.get("nombre"));
+                        } else {
                         }
                     }
                     //Object o = clienteGui.getTablaActividades().getValueAt(1, 1).equals(true);

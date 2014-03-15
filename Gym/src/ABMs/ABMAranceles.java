@@ -5,9 +5,12 @@
 package ABMs;
 
 import Modelos.Arancel;
+import Modelos.Socioarancel;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import org.javalite.activejdbc.Base;
+import org.javalite.activejdbc.LazyList;
 
 /**
  *
@@ -38,8 +41,16 @@ public class ABMAranceles {
         Arancel viejo = Arancel.first("id = ?", s.getString("id"));
         if (viejo != null) {
             Base.openTransaction();
-                viejo.set("activo", 0);
-                viejo.saveIt();
+                LazyList<Socioarancel> listAran = Socioarancel.where("id_arancel = ?", viejo.get("id"));
+                Iterator<Socioarancel> it = listAran.iterator();
+                while(it.hasNext()){
+                    Socioarancel soar = it.next();
+                    soar.delete();
+                    
+                }
+                viejo.delete();
+                
+                
             Base.commitTransaction();
             return true;
         }
