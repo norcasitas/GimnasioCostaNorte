@@ -79,14 +79,14 @@ public class ControladorAbmCliente implements ActionListener {
             System.out.println("Boton eliminar pulsado");
             if(clienteGui.getBotEliminarCancelar().getText().equals("Eliminar")){
                 clienteGui.bloquearCampos(true);
-                int ret=JOptionPane.showConfirmDialog(clienteGui, "¿Desea borrar a "+ clienteGui.getNombre()+" "+clienteGui.getApellido()+" ? "/*ATENCIÓN: Este procedimiento solo marcara a dicho socio como INACTIVO."*/,null,JOptionPane.YES_NO_OPTION);
-                if(ret== JOptionPane.YES_OPTION){
+                //int ret=JOptionPane.showConfirmDialog(null, "¿Desea borrar a "+ clienteGui.getNombre()+" "+clienteGui.getApellido()+" ? ",null,JOptionPane.YES_NO_OPTION);
+               // if(ret== JOptionPane.YES_OPTION){
                 /*    Socio s = new Socio();
                     s.set("DNI", clienteGui.getDni());
                     abmsocio.baja(s);
                    */ clienteGui.limpiarCampos();
                     clienteGui.setVisible(false);
-                }
+                //}
             }
             else{
                 System.out.println("cancelé !");
@@ -115,12 +115,17 @@ public class ControladorAbmCliente implements ActionListener {
                     LinkedList listaran = new LinkedList();
                     for(int i = 0; i< rows; i++){ //ahora si :P abajo en el alta estaba bien, aca en el modificar no lo habia cambiado :P
                       // boolean val =  clienteGui.getTablaActividades().getValueAt(i, 1).equals(false);
-                        if(clienteGui.getTablaActividades().getValueAt(i, 1) != null || clienteGui.getTablaActividades().getValueAt(i, 1).equals(false)){
+                        System.out.println(clienteGui.getTablaActividades().getValueAt(i, 1) != null );
+                       // System.out.println( clienteGui.getTablaActividades().getValueAt(i, 1).equals(false));
+                        if(clienteGui.getTablaActividades().getValueAt(i, 1) != null ){//|| clienteGui.getTablaActividades().getValueAt(i, 1).equals(false)){
+                                                    if(clienteGui.getTablaActividades().getValueAt(i, 1).equals(true)){
+
                             Arancel a = Arancel.first("nombre = ?", clienteGui.getTablaActividades().getValueAt(i, 0));
                             listaran.add(a);
                             System.out.println(a.get("nombre"));
-                        } else {
+                                                    }
                         }
+
                     }
                     //Object o = clienteGui.getTablaActividades().getValueAt(1, 1).equals(true);
                     if(abmsocio.modificar(s, listaran)){
@@ -129,6 +134,7 @@ public class ControladorAbmCliente implements ActionListener {
                         //clienteGui.limpiarCampos();
                         clienteGui.getBotNuevo().setEnabled(true);
                         clienteGui.getBotGuardar().setEnabled(false);
+                        clienteGui.getBotEliminarCancelar().setText("Eliminar");
                     } else {
                         JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
                     }
@@ -236,7 +242,7 @@ public class ControladorAbmCliente implements ActionListener {
                 String tiene2 = itt.next();
                 Object row[] = new Object[2];
                 row[0] = tiene2;
-                //row[1] = false;
+               // row[1] = false;
                 clienteGui.getTablaActivDefault().addRow(row);
             }
             

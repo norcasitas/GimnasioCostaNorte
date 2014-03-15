@@ -358,7 +358,7 @@ public class ControladorIngreso implements ActionListener {
     private void cargarAsistencia() {
         Component[] array = ingresoGui.getPanelAsistencia().getComponents();
         socio = Socio.findFirst("ID_DATOS_PERS = ?", idCliente);
-        LazyList<Asistencia> asistencias = Asistencia.where("ID_DATOS_PERS = ? and FECHA > ?", idCliente, socio.getDate("FECHA_ULT_PAGO"));
+        LazyList<Asistencia> asistencias = Asistencia.where("ID_DATOS_PERS = ? and FECHA >= ?", idCliente, socio.getDate("FECHA_ULT_PAGO"));
         asistencias.orderBy("FECHA");
         Iterator<Asistencia> it = asistencias.iterator();
         int i = 0;

@@ -98,11 +98,11 @@ public class ControladorClientes implements ActionListener {
             altaClienteGui.setBotonesNuevo(false);
             altaClienteGui.bloquearCampos(true);
             altaClienteGui.limpiarCampos();
-            altaClienteGui.setTitle("Información del socio");
-            altaClienteGui.setVisible(true);
-            altaClienteGui.toFront();
              int row = tablaClientes.getSelectedRow();
             Socio s = Socio.first("DNI = ?", tablaClientes.getValueAt(row, 2));
+            altaClienteGui.setTitle(s.getString("APELLIDO")+" "+ s.getString("NOMBRE"));
+            altaClienteGui.setVisible(true);
+            altaClienteGui.toFront();
             controladorAbmCliente.setSocio(s);
             altaClienteGui.getNombre().setText(s.getString("NOMBRE"));
             altaClienteGui.getApellido().setText(s.getString("APELLIDO"));
@@ -115,8 +115,8 @@ public class ControladorClientes implements ActionListener {
                 altaClienteGui.getSexo().setSelectedIndex(0);
             }
             altaClienteGui.getFechaNacimJDate().setDate(s.getDate("FECHA_NAC")); ;
-            altaClienteGui.getLabelFechaIngreso().setText(s.getString("FECHA_ING"));
-            altaClienteGui.getLabelFechaVenci().setText(s.getString("FECHA_PROX_PAGO")); 
+            altaClienteGui.getLabelFechaIngreso().setText(dateToMySQLDate(s.getDate("FECHA_ING"),true));
+            altaClienteGui.getLabelFechaVenci().setText(dateToMySQLDate(s.getDate("FECHA_PROX_PAGO"), true)); 
              altaClienteGui.getTablaActivDefault().setRowCount(0);
             LazyList<Socioarancel> ListSocAran = Socioarancel.where("id_socio = ?", s.get("ID_DATOS_PERS"));
             Iterator<Socioarancel> ite = ListSocAran.iterator();
@@ -250,6 +250,7 @@ public class ControladorClientes implements ActionListener {
         /*va true si se quiere usar para mostrarla por pantalla es decir 12/12/2014 y false si va 
     para la base de datos, es decir 2014/12/12*/
     public String dateToMySQLDate(Date fecha, boolean paraMostrar) {
+        if(fecha!=null){
         if(paraMostrar){
         java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
         return sdf.format(fecha);
@@ -257,6 +258,10 @@ public class ControladorClientes implements ActionListener {
         else{
             java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(fecha);
+        }
+        }
+        else{
+            return "";
         }
     }
 }

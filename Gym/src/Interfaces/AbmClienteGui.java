@@ -140,6 +140,8 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
         dni.setText("");
         direccion.setText("");
         telefono.setText("");
+        labelFechaIngreso.setText("");
+        labelFechaVenci.setText("");
         fechaNacim.setDate(Calendar.getInstance().getTime());
         tablaActividades.clearSelection();
     }
@@ -399,7 +401,11 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Fecha de ingreso:");
 
+        labelFechaIngreso.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+
         jLabel8.setText("Próximo vencimiento:");
+
+        labelFechaVenci.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
 
         botPago.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/pagar.png"))); // NOI18N
         botPago.setText("Registrar Pago");
