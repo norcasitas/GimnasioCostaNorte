@@ -4,7 +4,12 @@
  */
 package Interfaces;
 
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
 
 /**
  *
@@ -20,6 +25,92 @@ public class FichaMedicaGui extends javax.swing.JDialog {
         initComponents();
     }
 
+    public JButton getAceptar() {
+        return aceptar;
+    }
+
+    public JCheckBox getArtrosis() {
+        return artrosis;
+    }
+
+    public JButton getCancelar() {
+        return cancelar;
+    }
+
+    public JCheckBox getCardiaco() {
+        return cardiaco;
+    }
+
+    public JCheckBox getDiabetes() {
+        return diabetes;
+    }
+
+    public JCheckBox getEmbarazo() {
+        return embarazo;
+    }
+
+    public JCheckBox getEndocrinologia() {
+        return endocrinologia;
+    }
+
+    public JCheckBox getEnfPulmonar() {
+        return enfPulmonar;
+    }
+
+    public JCheckBox getEpileptico() {
+        return epileptico;
+    }
+
+    public JCheckBox getHipertension() {
+        return hipertension;
+    }
+
+    public JCheckBox getHuesoLigam() {
+        return huesoLigam;
+    }
+
+    public JButton getjButton1() {
+        return jButton1;
+    }
+
+    public JCheckBox getLesionDeportiva() {
+        return lesionDeportiva;
+    }
+
+    public JComboBox getLetraSangui() {
+        return letraSangui;
+    }
+
+    public JCheckBox getObesidad() {
+        return obesidad;
+    }
+
+    public JTextPane getObservaciones() {
+        return observaciones;
+    }
+
+    public JCheckBox getReuma() {
+        return reuma;
+    }
+
+    public JComboBox getSigno() {
+        return signo;
+    }
+
+    public JTextField getTelEmergencia() {
+        return telEmergencia;
+    }
+
+    public JTextField getTextoAlergias() {
+        return textoAlergias;
+    }
+
+    public JTextField getTextoMedicamentos() {
+        return textoMedicamentos;
+    }
+
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -34,7 +125,6 @@ public class FichaMedicaGui extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         letraSangui = new javax.swing.JComboBox();
         signo = new javax.swing.JComboBox();
-        alergia = new javax.swing.JCheckBox();
         artrosis = new javax.swing.JCheckBox();
         diabetes = new javax.swing.JCheckBox();
         huesoLigam = new javax.swing.JCheckBox();
@@ -48,7 +138,6 @@ public class FichaMedicaGui extends javax.swing.JDialog {
         endocrinologia = new javax.swing.JCheckBox();
         enfPulmonar = new javax.swing.JCheckBox();
         lesionDeportiva = new javax.swing.JCheckBox();
-        medicamentos = new javax.swing.JCheckBox();
         textoMedicamentos = new javax.swing.JTextField();
         textoAlergias = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
@@ -57,6 +146,8 @@ public class FichaMedicaGui extends javax.swing.JDialog {
         aceptar = new javax.swing.JButton();
         cancelar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Ficha Médica");
@@ -66,16 +157,9 @@ public class FichaMedicaGui extends javax.swing.JDialog {
 
         jLabel2.setText("Grupo Sanguíneo");
 
-        letraSangui.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A", "B", "AB", "0" }));
+        letraSangui.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A", "B", "AB", "0", "NE" }));
 
-        signo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "+", "-" }));
-
-        alergia.setText("Alérgias");
-        alergia.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                alergiaActionPerformed(evt);
-            }
-        });
+        signo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "+", "-", "NE" }));
 
         artrosis.setText("Artrosis");
 
@@ -102,13 +186,6 @@ public class FichaMedicaGui extends javax.swing.JDialog {
         enfPulmonar.setText("enf. Pulmonares");
 
         lesionDeportiva.setText("Lesiones deportivas");
-
-        medicamentos.setText("Medicamentos");
-        medicamentos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                medicamentosActionPerformed(evt);
-            }
-        });
 
         textoMedicamentos.setEnabled(false);
 
@@ -153,20 +230,25 @@ public class FichaMedicaGui extends javax.swing.JDialog {
             }
         });
 
+        jLabel3.setText("Alergias");
+
+        jLabel4.setText("Medicamentos");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(telEmergencia, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(alergia)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(13, 13, 13)
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
                         .addComponent(textoAlergias, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(huesoLigam)
                     .addGroup(layout.createSequentialGroup()
@@ -200,14 +282,15 @@ public class FichaMedicaGui extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lesionDeportiva))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(medicamentos)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textoMedicamentos)))
+                        .addGap(9, 9, 9)
+                        .addComponent(jLabel4)
+                        .addGap(18, 18, 18)
+                        .addComponent(textoMedicamentos, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 12, Short.MAX_VALUE)
+                        .addGap(0, 16, Short.MAX_VALUE)
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(aceptar)
@@ -231,8 +314,8 @@ public class FichaMedicaGui extends javax.swing.JDialog {
                             .addComponent(signo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(alergia)
-                            .addComponent(textoAlergias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(textoAlergias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(artrosis)
@@ -259,30 +342,16 @@ public class FichaMedicaGui extends javax.swing.JDialog {
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(medicamentos)
                     .addComponent(textoMedicamentos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(aceptar)
                     .addComponent(cancelar)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(jLabel4))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void alergiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alergiaActionPerformed
-        textoAlergias.setEnabled(alergia.isSelected());
-        if(!textoAlergias.isEnabled()){
-            textoAlergias.setText("");
-        }
-    }//GEN-LAST:event_alergiaActionPerformed
-
-    private void medicamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_medicamentosActionPerformed
-        textoMedicamentos.setEnabled(medicamentos.isEnabled());
-        if(!textoMedicamentos.isEnabled()){
-            textoMedicamentos.setText("");
-        }
-    }//GEN-LAST:event_medicamentosActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //Aca va todo para borrar la ficha
@@ -342,7 +411,6 @@ public class FichaMedicaGui extends javax.swing.JDialog {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aceptar;
-    private javax.swing.JCheckBox alergia;
     private javax.swing.JCheckBox artrosis;
     private javax.swing.JCheckBox asma;
     private javax.swing.JButton cancelar;
@@ -357,11 +425,12 @@ public class FichaMedicaGui extends javax.swing.JDialog {
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JCheckBox lesionDeportiva;
     private javax.swing.JComboBox letraSangui;
-    private javax.swing.JCheckBox medicamentos;
     private javax.swing.JCheckBox obesidad;
     private javax.swing.JTextPane observaciones;
     private javax.swing.JCheckBox reuma;

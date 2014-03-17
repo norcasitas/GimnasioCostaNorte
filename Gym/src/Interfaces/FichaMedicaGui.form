@@ -27,15 +27,16 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="telEmergencia" min="-2" pref="138" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="alergia" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
+                      <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="textoAlergias" min="-2" pref="241" max="-2" attributes="0"/>
                   </Group>
                   <Component id="huesoLigam" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -80,16 +81,17 @@
                       <Component id="lesionDeportiva" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="medicamentos" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="textoMedicamentos" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                      <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="textoMedicamentos" min="-2" pref="187" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jPanel1" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="0" pref="12" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="16" max="32767" attributes="0"/>
                       <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="aceptar" min="-2" max="-2" attributes="0"/>
@@ -119,8 +121,8 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="alergia" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="textoAlergias" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -155,11 +157,11 @@
               </Group>
               <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="medicamentos" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="textoMedicamentos" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="aceptar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cancelar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -182,11 +184,12 @@
     <Component class="javax.swing.JComboBox" name="letraSangui">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
+          <StringArray count="5">
             <StringItem index="0" value="A"/>
             <StringItem index="1" value="B"/>
             <StringItem index="2" value="AB"/>
             <StringItem index="3" value="0"/>
+            <StringItem index="4" value="NE"/>
           </StringArray>
         </Property>
       </Properties>
@@ -194,20 +197,13 @@
     <Component class="javax.swing.JComboBox" name="signo">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="2">
+          <StringArray count="3">
             <StringItem index="0" value="+"/>
             <StringItem index="1" value="-"/>
+            <StringItem index="2" value="NE"/>
           </StringArray>
         </Property>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="alergia">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Al&#xe9;rgias"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="alergiaActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JCheckBox" name="artrosis">
       <Properties>
@@ -273,14 +269,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Lesiones deportivas"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="medicamentos">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Medicamentos"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="medicamentosActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="textoMedicamentos">
       <Properties>
@@ -359,6 +347,16 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel3">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Alergias"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel4">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Medicamentos"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

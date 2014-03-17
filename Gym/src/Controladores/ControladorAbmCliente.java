@@ -10,6 +10,7 @@ import Interfaces.CargarHuellaGui;
 import Interfaces.FichaMedicaGui;
 import Interfaces.RegistrarPagoGui;
 import Modelos.Arancel;
+import Modelos.Ficha;
 import Modelos.Socio;
 import Modelos.Socioarancel;
 import java.awt.event.ActionEvent;
@@ -59,6 +60,26 @@ public class ControladorAbmCliente implements ActionListener {
         }
         
     }
+    
+    public void CargarFicha(Ficha ficha){
+        if(ficha.get("FACTOR") == "RH+"){
+            fichaMedicaGui.getSigno().setSelectedItem("+");
+        }
+        if(ficha.get("FACTOR") == "RH-"){
+            fichaMedicaGui.getSigno().setSelectedItem("-");
+        }
+        if(ficha.get("FACTOR") == null){
+            fichaMedicaGui.getSigno().setSelectedItem("NE");
+        }
+        if(ficha.get("GRUPO_SANG") != null){
+            fichaMedicaGui.getLetraSangui().setSelectedItem(ficha.get("GRUPO_SANG"));
+        }else{
+            fichaMedicaGui.getLetraSangui().setSelectedItem("NE");
+        }
+        fichaMedicaGui.getTelEmergencia().setText(ficha.getString("TEL_EMERG"));
+        fichaMedicaGui.getTextoAlergias().setText(ficha.getString("ALERGICO"));
+        fichaMedicaGui.getTextoMedicamentos().setText(ficha.getString("MEDICAM"));
+    }
 
     /*va true si se quiere usar para mostrarla por pantalla es decir 12/12/2014 y false si va 
     para la base de datos, es decir 2014/12/12*/
@@ -102,6 +123,9 @@ public class ControladorAbmCliente implements ActionListener {
             System.out.println("Boton ficha pulsado");
             fichaMedicaGui= new FichaMedicaGui(null, true);
             fichaMedicaGui.setLocationRelativeTo(null);
+            //Socio socio = Socio.first("DNI = ?", clienteGui.getDni().getText());
+            Ficha ficha = Ficha.first("ID_DATOS_PERS = ?", clienteGui.getDni().getText());
+            CargarFicha(ficha);
             fichaMedicaGui.setVisible(true);
             
 
