@@ -62,10 +62,10 @@ public class ControladorAbmCliente implements ActionListener {
     }
     
     public void CargarFicha(Ficha ficha){
-        if(ficha.get("FACTOR") == "RH+"){
+        if(ficha.getString("FACTOR") == "RH+"){
             fichaMedicaGui.getSigno().setSelectedItem("+");
         }
-        if(ficha.get("FACTOR") == "RH-"){
+        if(ficha.getString("FACTOR") == "RH-"){
             fichaMedicaGui.getSigno().setSelectedItem("-");
         }
         if(ficha.get("FACTOR") == null){
@@ -79,6 +79,7 @@ public class ControladorAbmCliente implements ActionListener {
         fichaMedicaGui.getTelEmergencia().setText(ficha.getString("TEL_EMERG"));
         fichaMedicaGui.getTextoAlergias().setText(ficha.getString("ALERGICO"));
         fichaMedicaGui.getTextoMedicamentos().setText(ficha.getString("MEDICAM"));
+        fichaMedicaGui.getObservaciones().setText(ficha.getString("OBSERV"));
     }
 
     /*va true si se quiere usar para mostrarla por pantalla es decir 12/12/2014 y false si va 
@@ -123,11 +124,17 @@ public class ControladorAbmCliente implements ActionListener {
             System.out.println("Boton ficha pulsado");
             fichaMedicaGui= new FichaMedicaGui(null, true);
             fichaMedicaGui.setLocationRelativeTo(null);
-            //Socio socio = Socio.first("DNI = ?", clienteGui.getDni().getText());
-            Ficha ficha = Ficha.first("ID_DATOS_PERS = ?", clienteGui.getDni().getText());
-            CargarFicha(ficha);
-            fichaMedicaGui.setVisible(true);
-            
+            Socio socio = Socio.first("DNI = ?", clienteGui.getDni().getText());
+            Ficha f = Ficha.first("ID_DATOS_PERS = ?", socio.get("ID_DATOS_PERS"));
+            if(f == null){
+                int ret=JOptionPane.showConfirmDialog(clienteGui, "Socio sin ficha, ¿Desea crear ficha?",null,JOptionPane.YES_NO_OPTION);
+                if(ret== JOptionPane.YES_OPTION){
+                    fichaMedicaGui.setVisible(true);
+                }
+            }else{
+                 CargarFicha(f); // faltan todos los ticks!!!!!!!!!!!
+                 fichaMedicaGui.setVisible(true);
+            }
 
         }
         if (ae.getSource() == clienteGui.getBotGuardar()) {
