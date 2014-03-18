@@ -201,8 +201,8 @@ public class ControladorAbmCliente implements ActionListener {
                 JOptionPane.showMessageDialog(fichaMedicaGui, "Socio sin ficha, debe cargar ficha");
                 fichaMedicaGui.setVisible(true);
                 System.out.println("el valor es "+fichaNueva);
-                }else{
-                    CargarFicha(f); // faltan todos los ticks!!!!!!!!!!!
+            }else{
+                    CargarFicha(f); 
                     fichaMedicaGui.setVisible(true);
                     fichaNueva = false;
                     System.out.println("el valor es "+fichaNueva);
@@ -367,9 +367,6 @@ public class ControladorAbmCliente implements ActionListener {
             ESTO PERTENECE AL CONTROLADOR DE LA FICHA MEDICA
         */
         if(ae.getSource() == fichaMedicaGui.getAceptar()){
-            System.out.println("madafaka");
-            System.out.println(fichaNueva);
-            Socio s = Socio.first(" DNI = ?", clienteGui.getDni().getText());
             if(fichaNueva){
                if(altaFicha()){
                    JOptionPane.showMessageDialog(fichaMedicaGui, "Ficha creada exitosamente!");
@@ -377,12 +374,96 @@ public class ControladorAbmCliente implements ActionListener {
                    JOptionPane.showMessageDialog(fichaMedicaGui, "Ocurrio un error", "Error", JOptionPane.ERROR_MESSAGE);
                }
             }
+            if(!fichaNueva){
+                int ret=JOptionPane.showConfirmDialog(null, "Desea modificar la ficha?",null,JOptionPane.YES_NO_OPTION);
+                if(ret== JOptionPane.YES_OPTION){
+                  if(modFicha()){
+                     JOptionPane.showMessageDialog(fichaMedicaGui, "Ficha modificada exitosamente!");
+                 }else{
+                   JOptionPane.showMessageDialog(fichaMedicaGui, "Ocurrio un error", "Error", JOptionPane.ERROR_MESSAGE);
+               }
+                
+            }
         }
+    }
     }
     
     private boolean altaFicha(){
         Socio s = Socio.first(" DNI = ?", clienteGui.getDni().getText());
         Ficha nueva = Ficha.create("ID_DATOS_PERS", s.get("ID_DATOS_PERS"), "TEL_EMERG", fichaMedicaGui.getTelEmergencia().getText(), "ALERGICO", fichaMedicaGui.getTextoAlergias().getText(), "MEDICAM", fichaMedicaGui.getTextoMedicamentos().getText(), "OBSERV", fichaMedicaGui.getObservaciones().getText(), "GRUPO_SANG", fichaMedicaGui.getLetraSangui().getSelectedItem(), "FACTOR", fichaMedicaGui.getSigno().getSelectedItem());
+        if(fichaMedicaGui.getArtrosis().isSelected()){
+            nueva.set("ARTROSIS", 1);
+        }else{
+            nueva.set("ARTROSIS", 0);
+        }
+        if(fichaMedicaGui.getAsma().isSelected()){
+            nueva.set("ASMA", 1);
+        }else{
+            nueva.set("ASMA", 0);
+        }
+        if(fichaMedicaGui.getCardiaco().isSelected()){
+            nueva.set("CARDIACO", 1);
+        }else{
+            nueva.set("CARDIACO", 0);
+        }
+        if(fichaMedicaGui.getDiabetes().isSelected()){
+            nueva.set("DIABETES", 1);
+        }else{
+            nueva.set("DIABETES", 0);
+        }
+        if(fichaMedicaGui.getEmbarazo().isSelected()){
+            nueva.set("EMBARAZO", 1);
+        }else{
+            nueva.set("EMBARAZO", 0);
+        }
+        if(fichaMedicaGui.getEndocrinologia().isSelected()){
+            nueva.set("ENDOCRINOLOGIA", 1);
+        }else{
+            nueva.set("ENDOCRINOLOGIA", 0);
+        }
+        if(fichaMedicaGui.getHuesoLigam().isSelected()){
+            nueva.set("HUESOS", 1);
+        }else{
+            nueva.set("HUESOS", 0);
+        }
+        if(fichaMedicaGui.getEnfPulmonar().isSelected()){
+            nueva.set("PULMONARES", 1);
+        }else{
+            nueva.set("PULMONARES", 0);
+        }
+        if(fichaMedicaGui.getEpileptico().isSelected()){
+            nueva.set("EPILEPTICO", 1);
+        }else{
+            nueva.set("EPILEPTICO", 0);
+        }
+        if(fichaMedicaGui.getHipertension().isSelected()){
+            nueva.set("HIPERTENSION", 1);
+        }else{
+            nueva.set("HIPERTENSION", 0);
+        }
+        if(fichaMedicaGui.getLesionDeportiva().isSelected()){
+            nueva.set("DEPORTIVA", 1);
+        }else{
+            nueva.set("DEPORTIVA", 0);
+        }
+        if(fichaMedicaGui.getObesidad().isSelected()){
+            nueva.set("OBESIDAD", 1);
+        }else{
+            nueva.set("OBESIDAD", 0);
+        }
+        if(fichaMedicaGui.getReuma().isSelected()){
+            nueva.set("REUMA", 1);
+        }else{
+            nueva.set("REUMA", 0);
+        }
+        nueva.saveIt();
+        return true;
+    }
+    
+    private boolean modFicha(){
+        Socio s = Socio.first(" DNI = ?", clienteGui.getDni().getText());
+        Ficha nueva = Ficha.first("ID_DATOS_PERS = ?", s.get("ID_DATOS_PERS"));
+        nueva.set("TEL_EMERG", fichaMedicaGui.getTelEmergencia().getText(), "ALERGICO", fichaMedicaGui.getTextoAlergias().getText(), "MEDICAM", fichaMedicaGui.getTextoMedicamentos().getText(), "OBSERV", fichaMedicaGui.getObservaciones().getText(), "GRUPO_SANG", fichaMedicaGui.getLetraSangui().getSelectedItem(), "FACTOR", fichaMedicaGui.getSigno().getSelectedItem());
         if(fichaMedicaGui.getArtrosis().isSelected()){
             nueva.set("ARTROSIS", 1);
         }else{
