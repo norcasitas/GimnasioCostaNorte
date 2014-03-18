@@ -30,6 +30,12 @@ public class FichaMedicaGui extends javax.swing.JDialog {
         return aceptar;
     }
 
+    public JCheckBox getAsma() {
+        return asma;
+    }
+    
+    
+
     public JCheckBox getArtrosis() {
         return artrosis;
     }
