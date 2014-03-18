@@ -64,13 +64,22 @@ public class ControladorAbmCliente implements ActionListener {
     }
     
     public void CargarFicha(Ficha ficha){
-        if(ficha.getString("FACTOR") == "RH+" || ficha.getString("FACTOR") == "+"){
+        if(ficha.getString("FACTOR") == "RH+"){
             fichaMedicaGui.getSigno().setSelectedItem("+");
         }
-        if(ficha.getString("FACTOR") == "RH-" || ficha.getString("FACTOR") == "-"){
+        if(ficha.getString("FACTOR") == "+"){
+            fichaMedicaGui.getSigno().setSelectedItem("+");
+        }
+        if(ficha.getString("FACTOR") == "RH-"){
+            fichaMedicaGui.getSigno().setSelectedItem("-");
+        }
+        if(ficha.getString("FACTOR") == "-"){
             fichaMedicaGui.getSigno().setSelectedItem("-");
         }
         if(ficha.get("FACTOR") == null){
+            fichaMedicaGui.getSigno().setSelectedItem("NE");
+        }
+        if(ficha.get("FACTOR") == "NE"){
             fichaMedicaGui.getSigno().setSelectedItem("NE");
         }
         if(ficha.get("GRUPO_SANG") != null){
