@@ -53,7 +53,8 @@ public class ControladorAbmCliente implements ActionListener {
         s.set("DNI", clienteGui.getDni().getText().toUpperCase());
         System.out.println(clienteGui.getDireccion().getText().toUpperCase());
         s.set("DIR", clienteGui.getDireccion().getText().toUpperCase());
-        s.set("FECHA_NAC", dateToMySQLDate(clienteGui.getFechaNacimJDate().getCalendar().getTime(),false));
+        if(clienteGui.getFechaNacimJDate().getCalendar()!=null)
+             s.set("FECHA_NAC", dateToMySQLDate(clienteGui.getFechaNacimJDate().getCalendar().getTime(),false));
         if(clienteGui.getSexo().getSelectedIndex()==1){
             s.set("SEXO", "M");
         }else{
@@ -170,6 +171,10 @@ public class ControladorAbmCliente implements ActionListener {
                         //clienteGui.limpiarCampos();
                         clienteGui.getBotNuevo().setEnabled(true);
                         clienteGui.getBotGuardar().setEnabled(false);
+                        clienteGui.getBotModif().setEnabled(true);
+                        clienteGui.getBotPago().setEnabled(true);
+                        clienteGui.getBotHuella().setEnabled(true);
+                        clienteGui.getBotFicha().setEnabled(true);
                         clienteGui.getBotEliminarCancelar().setText("Eliminar");
                     } else {
                         JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -212,6 +217,9 @@ public class ControladorAbmCliente implements ActionListener {
                         clienteGui.getBotGuardar().setEnabled(false);
                         clienteGui.getBotHuella().setEnabled(true);
                         clienteGui.getBotFicha().setEnabled(true);
+                        clienteGui.getBotModif().setEnabled(true);
+                        clienteGui.getBotPago().setEnabled(true);
+                        clienteGui.getBotEliminarCancelar().setText("Eliminar");
                         s= Socio.findFirst("DNI = ? ", clienteGui.getDni().getText());
                         
                     } else {
@@ -241,6 +249,9 @@ public class ControladorAbmCliente implements ActionListener {
             clienteGui.getBotEliminarCancelar().setText("Cancelar");
             clienteGui.getBotModif().setEnabled(false);
             clienteGui.getBotGuardar().setEnabled(true);
+            clienteGui.getBotPago().setEnabled(false);
+            clienteGui.getBotHuella().setEnabled(false);
+            clienteGui.getBotFicha().setEnabled(false);
             isNuevo=false;
             clienteGui.getTablaActivDefault().setRowCount(0);
             Socio socio = Socio.first("DNI = ?", clienteGui.getDni().getText());

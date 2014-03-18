@@ -9,8 +9,11 @@ import Interfaces.ActividadesGui;
 import Modelos.Arancel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.LinkedList;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -27,7 +30,10 @@ public class ControladorActividades implements ActionListener {
     private DefaultTableModel tablaActividadesDefault;
     private boolean isNuevo;
     private ABMAranceles abmAranceles;
-
+    private JTable tablaActCombo;
+    private DefaultTableModel tablaActComboDefault;
+    private Arancel ar;
+    
     public ControladorActividades(ActividadesGui actividadesGui) {
         this.actividadesGui = actividadesGui;
         abmAranceles = new ABMAranceles();
@@ -40,8 +46,50 @@ public class ControladorActividades implements ActionListener {
                 tablaMouseClicked(evt);
             }
         });
+        tablaActCombo = this.actividadesGui.getTablaActCombo();
+        tablaActComboDefault= this.actividadesGui.getTablaActComboDefault();
+        this.actividadesGui.getCategoria().addPropertyChangeListener(new PropertyChangeListener() {
+
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                habilitarTablaCombo();
+                    
+                
+            }
+        });
     }
 
+    public void habilitarTablaCombo(){
+        if(actividadesGui.getCategoria().getSelectedItem().equals("Combo")){
+            tablaActCombo.setEnabled(true);
+            cargarActividadesCombo(ar.getInteger("id"));
+        }
+        else{
+            tablaActComboDefault.setRowCount(0);
+            tablaActCombo.setEnabled(false);
+        }
+    }
+    
+    
+    private void cargarActividadesCombo(int idCombo){
+        System.out.println(idCombo);
+        /*ACA VA LA GILADA PARA QUE CARGUE LA TABLA DE LAS ACTIVIDADES DEL COMBO
+        EL ID QUE SE PASA COMO PARAMETRO ES EL ID DEL COMBO QUE ESTÁ SELECCIONADO*/
+    }
+    
+    
+    /*Esta la voy a usar para guando pongas guardar*/
+    private LinkedList<Object> retActivComboSelec(){
+        int rows= tablaActCombo.getRowCount();
+        LinkedList<Object> ret = new LinkedList<>();
+        for (int i=0;i<rows;i++){
+            if(tablaActCombo.getValueAt(i, 3).equals(true)){
+                System.out.println("la filita es del combo");
+                ret.add(tablaActCombo.getValueAt(i, 0)); // agrego el ID DE LA ACT!
+            }
+        }
+        return ret;
+    }
     public void tablaMouseClicked(java.awt.event.MouseEvent evt) {
         actividadesGui.bloquearCampos(true);
         actividadesGui.getBotGuardar().setEnabled(false);
@@ -50,7 +98,7 @@ public class ControladorActividades implements ActionListener {
         actividadesGui.getBotEliminarCancelar().setText("Eliminar");
         System.out.println("hice click en una actividad");
         int row = actividadesGui.getTablaActividades().getSelectedRow();
-        Arancel ar = Arancel.first("id = ?", actividadesGui.getTablaActividadesDefault().getValueAt(row, 0));
+        ar = Arancel.first("id = ?", actividadesGui.getTablaActividades().getValueAt(row, 0));
         actividadesGui.getActividad().setText(ar.getString("nombre"));
         actividadesGui.getPrecio().setText(String.valueOf(ar.getFloat("precio")));
         actividadesGui.getDesde().setDate(ar.getDate("fecha"));
