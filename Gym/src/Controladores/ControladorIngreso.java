@@ -87,7 +87,7 @@ public class ControladorIngreso implements ActionListener {
     private ABMSocios abmSocio;
     private Socio socio;
     private Asistencia asistencia;
-
+    
     public ControladorIngreso(IngresoGui ingresoGui) throws Exception {
         this.ingresoGui = ingresoGui;
         ingresoGui.limpiar();
@@ -327,12 +327,7 @@ public class ControladorIngreso implements ActionListener {
         ingresoGui.repaint();
     }
 
-    public static void main(String... args) throws Exception {
-        IngresoGui ing = new IngresoGui();
-        ControladorIngreso cr = new ControladorIngreso(ing);
-        ing.setVisible(true);
-
-    }
+   
 
     @Override
     public void actionPerformed(ActionEvent e) {

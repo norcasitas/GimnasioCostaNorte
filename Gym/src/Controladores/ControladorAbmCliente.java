@@ -39,11 +39,13 @@ public class ControladorAbmCliente implements ActionListener {
     private ABMSocios abmsocio;
     private Socio s;
     private boolean fichaNueva;
+    private ActualizarDatos actualizarDatos;
 
-    public ControladorAbmCliente(AbmClienteGui clienteGui) {
+    public ControladorAbmCliente(AbmClienteGui clienteGui, ActualizarDatos actualizarDatos) {
         this.clienteGui = clienteGui;
         this.clienteGui.setActionListener(this);
         abmsocio = new ABMSocios();
+        this.actualizarDatos= actualizarDatos;
     }
     
     private void CargarDatosSocio(Socio s){
@@ -252,6 +254,7 @@ public class ControladorAbmCliente implements ActionListener {
                         clienteGui.getBotHuella().setEnabled(true);
                         clienteGui.getBotFicha().setEnabled(true);
                         clienteGui.getBotEliminarCancelar().setText("Eliminar");
+                        actualizarDatos.cargarSocios();
                     } else {
                         JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
                     }
@@ -296,6 +299,7 @@ public class ControladorAbmCliente implements ActionListener {
                         clienteGui.getBotModif().setEnabled(true);
                         clienteGui.getBotPago().setEnabled(true);
                         clienteGui.getBotEliminarCancelar().setText("Eliminar");
+                        actualizarDatos.cargarSocios();
                         s= Socio.findFirst("DNI = ? ", clienteGui.getDni().getText());
                         
                     } else {

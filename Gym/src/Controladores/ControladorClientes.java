@@ -40,14 +40,16 @@ public class ControladorClientes implements ActionListener {
     private PagosGui pagosGui;
     private ABMSocios abmSocios;
     private DefaultTableModel tablaSocDefault;
+    private ActualizarDatos actualizarDAtos;
     
-    public ControladorClientes(BusquedaGui clientes, DesktopPaneImage desktop) {
+    public ControladorClientes(BusquedaGui clientes, DesktopPaneImage desktop, ActualizarDatos actualizarDatos) {
         
         this.clientesGui = clientes;
         clientes.setActionListener(this);
         altaClienteGui = new AbmClienteGui();
         abmSocios = new ABMSocios();
-        controladorAbmCliente = new ControladorAbmCliente(altaClienteGui);
+        this.actualizarDAtos=actualizarDatos;
+        controladorAbmCliente = new ControladorAbmCliente(altaClienteGui,actualizarDatos );
         desktop.add(altaClienteGui);
         pagosGui= new PagosGui();
         desktop.add(pagosGui);
@@ -220,7 +222,7 @@ public class ControladorClientes implements ActionListener {
         }
     }
     
-    public void cargarSocios(){
+    /*public void cargarSocios(){
         LazyList<Socio> ListSocios= Socio.where("ACTIVO = ?", 1);
             clientesGui.getTablaClientesDefault().setRowCount(0);
              Iterator<Socio> it = ListSocios.iterator();
@@ -245,7 +247,7 @@ public class ControladorClientes implements ActionListener {
              }
              clientesGui.getActividades().setListData(d);
              //ABMSocios abm = new ABMSocios();
-    }
+    }*/
     
         /*va true si se quiere usar para mostrarla por pantalla es decir 12/12/2014 y false si va 
     para la base de datos, es decir 2014/12/12*/

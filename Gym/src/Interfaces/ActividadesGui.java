@@ -156,7 +156,7 @@ public class ActividadesGui extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setResizable(true);
         setTitle("Gestión de actividades");
-        setPreferredSize(new java.awt.Dimension(635, 475));
+        setPreferredSize(new java.awt.Dimension(770, 440));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Actividades-Promociones"));
 

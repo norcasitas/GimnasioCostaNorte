@@ -46,6 +46,7 @@ public class ControladorPrincipalGui implements ActionListener {
     private ControladorUsuario controladorUsuario;
     private ControladorIngreso controladorIngreso;
     private IngresoGui ingresoGui;
+    private ActualizarDatos actualizarDatos;
 
     public ControladorPrincipalGui() throws Exception {
         try {
@@ -65,7 +66,8 @@ public class ControladorPrincipalGui implements ActionListener {
         principalGui.setCursor(Cursor.WAIT_CURSOR); //cambio el cursor por si se inicia sesión antes de cargar las cosas
 
         socios = new BusquedaGui();
-        controladorClientes = new ControladorClientes(socios, principalGui.getDesktop());
+        this.actualizarDatos= new ActualizarDatos(socios);
+        controladorClientes = new ControladorClientes(socios, principalGui.getDesktop(),actualizarDatos);
         principalGui.setActionListener(this);
         principalGui.getDesktop().add(socios);
 
@@ -75,6 +77,7 @@ public class ControladorPrincipalGui implements ActionListener {
         usuarioGui = new UsuarioGui();
         controladorUsuario = new ControladorUsuario(usuarioGui);
         principalGui.getDesktop().add(usuarioGui);
+
         principalGui.setCursor(Cursor.DEFAULT_CURSOR);
 
     }
@@ -95,7 +98,8 @@ public class ControladorPrincipalGui implements ActionListener {
             System.out.println("boton socios pulsado");
             socios.setVisible(true);
             socios.toFront();
-            controladorClientes.cargarSocios();
+            //controladorClientes.cargarSocios();
+            actualizarDatos.cargarSocios();
             /*
              * ESTO SE EJECUTA UNA VEZ!
              */
@@ -146,7 +150,6 @@ public class ControladorPrincipalGui implements ActionListener {
     }
 
     public static void main(String[] args) throws InterruptedException, Exception {
-
         ControladorPrincipalGui appl = new ControladorPrincipalGui();
 
     }
