@@ -81,6 +81,71 @@ public class ControladorAbmCliente implements ActionListener {
         fichaMedicaGui.getTextoAlergias().setText(ficha.getString("ALERGICO"));
         fichaMedicaGui.getTextoMedicamentos().setText(ficha.getString("MEDICAM"));
         fichaMedicaGui.getObservaciones().setText(ficha.getString("OBSERV"));
+        if(ficha.getInteger("ARTROSIS") != null){
+            if(ficha.getInteger("ARTROSIS") != 0){
+              fichaMedicaGui.getArtrosis().setSelected(true);
+            }       
+        }
+        if(ficha.getInteger("ASMA") != null){
+            if(ficha.getInteger("ASMA") != 0){
+              fichaMedicaGui.getAsma().setSelected(true);
+            }       
+        }
+        if(ficha.getInteger("CARDIACO") != null){
+            if(ficha.getInteger("CARDIACO") != 0){
+              fichaMedicaGui.getCardiaco().setSelected(true);
+            }       
+        }
+        if(ficha.getInteger("DIABETES") != null){
+            if(ficha.getInteger("DIABETES") != 0){
+              fichaMedicaGui.getDiabetes().setSelected(true);
+            }       
+        }
+        if(ficha.getInteger("EMBARAZO") != null){
+            if(ficha.getInteger("EMBARAZO") != 0){
+              fichaMedicaGui.getEmbarazo().setSelected(true);
+            }       
+        }
+        if(ficha.getInteger("ENDOCRINOLOGIA") != null){
+            if(ficha.getInteger("ENDOCRINOLOGIA") != 0){
+              fichaMedicaGui.getEndocrinologia().setSelected(true);
+            }       
+        }
+        if(ficha.getInteger("HUESOS") != null){
+            if(ficha.getInteger("HUESOS") != 0){
+              fichaMedicaGui.getHuesoLigam().setSelected(true);
+            }       
+        }
+        if(ficha.getInteger("PULMONARES") != null){
+            if(ficha.getInteger("PULMONARES") != 0){
+              fichaMedicaGui.getEnfPulmonar().setSelected(true);
+            }       
+        }
+        if(ficha.getInteger("EPILEPTICO") != null){
+            if(ficha.getInteger("EPILEPTICO") != 0){
+              fichaMedicaGui.getEpileptico().setSelected(true);
+            }       
+        }
+        if(ficha.getInteger("HIPERTENSION") != null){
+            if(ficha.getInteger("HIPERTENSION") != 0){
+              fichaMedicaGui.getHipertension().setSelected(true);
+            }       
+        }
+        if(ficha.getInteger("DEPORTIVA") != null){
+            if(ficha.getInteger("DEPORTIVA") != 0){
+              fichaMedicaGui.getLesionDeportiva().setSelected(true);
+            }       
+        }
+        if(ficha.getInteger("OBESIDAD") != null){
+            if(ficha.getInteger("OBESIDAD") != 0){
+              fichaMedicaGui.getObesidad().setSelected(true);
+            }       
+        }
+        if(ficha.getInteger("REUMA") != null){
+            if(ficha.getInteger("REUMA") != 0){
+              fichaMedicaGui.getReuma().setSelected(true);
+            }       
+        }
     }
 
     /*va true si se quiere usar para mostrarla por pantalla es decir 12/12/2014 y false si va 
