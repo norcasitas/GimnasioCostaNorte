@@ -38,6 +38,7 @@ public class ControladorAbmCliente implements ActionListener {
     private CargarHuellaGui cargarHuellaGui;
     private ABMSocios abmsocio;
     private Socio s;
+    private boolean fichaNueva;
 
     public ControladorAbmCliente(AbmClienteGui clienteGui) {
         this.clienteGui = clienteGui;
@@ -62,10 +63,10 @@ public class ControladorAbmCliente implements ActionListener {
     }
     
     public void CargarFicha(Ficha ficha){
-        if(ficha.getString("FACTOR") == "RH+"){
+        if(ficha.getString("FACTOR") == "RH+" || ficha.getString("FACTOR") == "+"){
             fichaMedicaGui.getSigno().setSelectedItem("+");
         }
-        if(ficha.getString("FACTOR") == "RH-"){
+        if(ficha.getString("FACTOR") == "RH-" || ficha.getString("FACTOR") == "-"){
             fichaMedicaGui.getSigno().setSelectedItem("-");
         }
         if(ficha.get("FACTOR") == null){
@@ -123,19 +124,23 @@ public class ControladorAbmCliente implements ActionListener {
         if (ae.getSource() == clienteGui.getBotFicha()) {
             System.out.println("Boton ficha pulsado");
             fichaMedicaGui= new FichaMedicaGui(null, true);
+            fichaMedicaGui.setActionListener(this);
             fichaMedicaGui.setLocationRelativeTo(null);
             Socio socio = Socio.first("DNI = ?", clienteGui.getDni().getText());
             Ficha f = Ficha.first("ID_DATOS_PERS = ?", socio.get("ID_DATOS_PERS"));
             if(f == null){
-                int ret=JOptionPane.showConfirmDialog(clienteGui, "Socio sin ficha, ¿Desea crear ficha?",null,JOptionPane.YES_NO_OPTION);
-                if(ret== JOptionPane.YES_OPTION){
+                //int ret=JOptionPane.showConfirmDialog(clienteGui, "Socio sin ficha, ¿Desea crear ficha?",null,JOptionPane.YES_NO_OPTION);
+                //if(ret == JOptionPane.YES_OPTION){
+                JOptionPane.showMessageDialog(fichaMedicaGui, "Socio sin ficha, debe cargar ficha");
                     fichaMedicaGui.setVisible(true);
+                    fichaNueva = true;
                 }
-            }else{
+            else{
                  CargarFicha(f); // faltan todos los ticks!!!!!!!!!!!
                  fichaMedicaGui.setVisible(true);
+                 fichaNueva = false;
             }
-
+    
         }
         if (ae.getSource() == clienteGui.getBotGuardar()) {
             if(!isNuevo){
@@ -256,11 +261,7 @@ public class ControladorAbmCliente implements ActionListener {
                 row[1] = true;
                 clienteGui.getTablaActivDefault().addRow(row);
             }
-            
-            /////////////////////////////////////////////////////
-            
-            ////////////////////////////////////////////////////
-            LazyList<Arancel> listArancel = Arancel.findAll();
+             LazyList<Arancel> listArancel = Arancel.findAll();
             LinkedList<String> Aranceles = new LinkedList();
             Iterator<Arancel> it = listArancel.iterator();
             while(it.hasNext()){
@@ -276,24 +277,8 @@ public class ControladorAbmCliente implements ActionListener {
                // row[1] = false;
                 clienteGui.getTablaActivDefault().addRow(row);
             }
-            
-            
-          /*  while(iter.hasNext()){
-                Socioarancel sa = iter.next();
-                Arancel ar = Arancel.first("id = ?", sa.get("id_arancel"));
-                System.out.println("que onda1");
-                int i ;
-                for(i = 0; i < clienteGui.getTablaActivDefault().getRowCount(); i++){
-                    System.out.println("que onda2");
-                    if(clienteGui.getTablaActivDefault().getValueAt(i, 0) == ar.getString("nombre")){
-                        System.out.println("que onda3");
-                        clienteGui.getTablaActivDefault().setValueAt(true, i, 1);
-                    }
-                }
-                System.out.println("que onda");
-            }*/
+         }
         
-        }
         if (ae.getSource() == clienteGui.getBotNuevo()) {
             System.out.println("Boton nuevo pulsado");
             isNuevo=true;
@@ -311,38 +296,34 @@ public class ControladorAbmCliente implements ActionListener {
             pagoGui.setVisible(true);
 
         }
+        /*
+            ESTO PERTENECE AL CONTROLADOR DE LA FICHA MEDICA
+        */
+        if(ae.getSource() == fichaMedicaGui.getAceptar()){
+            System.out.println("madafaka");
+            System.out.println(fichaNueva);
+            Socio s = Socio.first(" DNI = ?", clienteGui.getDni().getText());
+            if(fichaNueva){
+               if(altaFicha()){
+                   JOptionPane.showMessageDialog(fichaMedicaGui, "Ficha creada exitosamente!", "Ficha", JOptionPane.OK_OPTION);
+               }else{
+                   JOptionPane.showMessageDialog(fichaMedicaGui, "Ocurrio un error", "Error", JOptionPane.ERROR_MESSAGE);
+               }
+            }
+        }
+    }
+    
+    private boolean altaFicha(){
+        Ficha nueva = Ficha.create("ID_DATOS_PERS", clienteGui.getDni().getText(), "TEL_EMERG", fichaMedicaGui.getTelEmergencia(), "ALERGICO", fichaMedicaGui.getTextoAlergias(), "MEDICAM", fichaMedicaGui.getTextoMedicamentos(), "OBSERV", fichaMedicaGui.getObservaciones(), "GRUPO_SANG", fichaMedicaGui.getLetraSangui().getSelectedItem(), "FACTOR", fichaMedicaGui.getSigno().getSelectedItem());
+        nueva.saveIt();
+        return true;
     }
 
     public void setIsNuevo(boolean isNuevo) {
         this.isNuevo = isNuevo;
     }
     
-    private void diferenciaListas(LinkedList tiene, LazyList todos){
-     /*   Iterator<Arancel> itiene = tiene.iterator();
-        Iterator<Arancel> itodos = todos.iterator();
-        while(itiene.hasNext()){
-            Arancel atiene = itiene.next();
-            while(itodos.hasNext()){
-                Arancel atodos = itodos.next();
-                System.out.println("antes if");
-                if(atiene == atodos){
-                    System.out.println("ENTRO al if");
-                    itodos.remove();
-                }
-                System.out.println("despues al if");
-            }
-        }*/
-        
-        for(int i = 0; i < tiene.size(); i++){
-            Arancel a = (Arancel) tiene.get(i);
-            for(int j = 0; j < todos.size(); j++){
-                if(tiene.get(i) == todos.get(j)){
-                    todos.remove(j);
-                }
-            }
-        }
-       
-    }
+    
         public void abrirBase(){
          if (!Base.hasConnection()) {
             Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/GYM", "root", "root");

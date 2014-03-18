@@ -4,6 +4,7 @@
  */
 package Interfaces;
 
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -109,7 +110,11 @@ public class FichaMedicaGui extends javax.swing.JDialog {
         return textoMedicamentos;
     }
 
-    
+    public void setActionListener(ActionListener lis){
+        this.aceptar.addActionListener(lis);
+        this.cancelar.addActionListener(lis);
+        this.jButton1.addActionListener(lis);
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
