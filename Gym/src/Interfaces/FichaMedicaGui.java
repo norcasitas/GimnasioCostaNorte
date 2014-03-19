@@ -170,7 +170,7 @@ public class FichaMedicaGui extends javax.swing.JDialog {
 
         letraSangui.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A", "B", "AB", "0", "NE" }));
 
-        signo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "+", "-", "NE" }));
+        signo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "RH+", "RH-", "NE" }));
 
         artrosis.setText("Artrosis");
 

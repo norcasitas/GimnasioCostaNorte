@@ -66,23 +66,25 @@ public class ControladorAbmCliente implements ActionListener {
     }
     
     public void CargarFicha(Ficha ficha){
-        if(ficha.getString("FACTOR") == "RH+"){
-            fichaMedicaGui.getSigno().setSelectedItem("+");
+       /* if(ficha.get("FACTOR") == "RH+"){
+            fichaMedicaGui.getSigno().setSelectedIndex(0);
         }
-        if(ficha.getString("FACTOR") == "+"){
-            fichaMedicaGui.getSigno().setSelectedItem("+");
+        if(ficha.get("FACTOR") == "+"){
+            fichaMedicaGui.getSigno().setSelectedIndex(0);
         }
-        if(ficha.getString("FACTOR") == "RH-"){
-            fichaMedicaGui.getSigno().setSelectedItem("-");
+        if(ficha.get("FACTOR") == "RH-"){
+            fichaMedicaGui.getSigno().setSelectedIndex(1);
         }
-        if(ficha.getString("FACTOR") == "-"){
-            fichaMedicaGui.getSigno().setSelectedItem("-");
+        if(ficha.get("FACTOR") == "-"){
+            fichaMedicaGui.getSigno().setSelectedIndex(1);
         }
         if(ficha.get("FACTOR") == null){
-            fichaMedicaGui.getSigno().setSelectedItem("NE");
-        }
-        if(ficha.get("FACTOR") == "NE"){
-            fichaMedicaGui.getSigno().setSelectedItem("NE");
+            fichaMedicaGui.getSigno().setSelectedIndex(2);
+        }*/
+        if(ficha.get("FACTOR") != null){
+            fichaMedicaGui.getSigno().setSelectedItem(ficha.get("FACTOR"));
+        }else{
+            fichaMedicaGui.getSigno().setSelectedItem(ficha.get("FACTOR"));
         }
         if(ficha.get("GRUPO_SANG") != null){
             fichaMedicaGui.getLetraSangui().setSelectedItem(ficha.get("GRUPO_SANG"));
@@ -210,6 +212,7 @@ public class ControladorAbmCliente implements ActionListener {
                 //int ret=JOptionPane.showConfirmDialog(clienteGui, "Socio sin ficha, ¿Desea crear ficha?",null,JOptionPane.YES_NO_OPTION);
                 //if(ret == JOptionPane.YES_OPTION){
                 fichaNueva = true;
+                fichaMedicaGui.getjButton1().setEnabled(false);
                 JOptionPane.showMessageDialog(fichaMedicaGui, "Socio sin ficha, debe cargar ficha");
                 fichaMedicaGui.setVisible(true);
                 System.out.println("el valor es "+fichaNueva);
@@ -217,6 +220,7 @@ public class ControladorAbmCliente implements ActionListener {
                     CargarFicha(f); 
                     fichaMedicaGui.setVisible(true);
                     fichaNueva = false;
+                    fichaMedicaGui.setEnabled(true);
                     System.out.println("el valor es "+fichaNueva);
                 }
     
@@ -394,8 +398,10 @@ public class ControladorAbmCliente implements ActionListener {
             if(fichaNueva){
                if(altaFicha()){
                    JOptionPane.showMessageDialog(fichaMedicaGui, "Ficha creada exitosamente!");
+                   fichaMedicaGui.dispose();
                }else{
                    JOptionPane.showMessageDialog(fichaMedicaGui, "Ocurrio un error", "Error", JOptionPane.ERROR_MESSAGE);
+                   fichaMedicaGui.dispose();
                }
             }
             if(!fichaNueva){
@@ -403,15 +409,36 @@ public class ControladorAbmCliente implements ActionListener {
                 if(ret== JOptionPane.YES_OPTION){
                   if(modFicha()){
                      JOptionPane.showMessageDialog(fichaMedicaGui, "Ficha modificada exitosamente!");
+                     fichaMedicaGui.dispose();
                  }else{
                    JOptionPane.showMessageDialog(fichaMedicaGui, "Ocurrio un error", "Error", JOptionPane.ERROR_MESSAGE);
-               }
+                   fichaMedicaGui.dispose();
+                  }
                 
             }
         }
     }
+      
+    if(ae.getSource() == fichaMedicaGui.getjButton1()){ // boton de eliminar ficha
+        Socio s = Socio.first(" DNI = ?", clienteGui.getDni().getText());
+        int ret=JOptionPane.showConfirmDialog(null, "Desea eliminar la ficha de "+s.getString("NOMBRE")+" "+s.getString("APELLIDO")+" ?",null,JOptionPane.YES_NO_OPTION);
+                if(ret== JOptionPane.YES_OPTION){
+                    Ficha f = Ficha.first("ID_DATOS_PERS = ?", s.get("ID_DATOS_PERS"));
+                     if(eliminarFicha(f)){
+                         JOptionPane.showMessageDialog(fichaMedicaGui, "Ficha eliminada exitosamente!");
+                         fichaMedicaGui.dispose();
+                    }else{
+                         JOptionPane.showMessageDialog(fichaMedicaGui, "Ocurrio un error", "Error", JOptionPane.ERROR_MESSAGE);
+                         fichaMedicaGui.dispose();
+                     }
+                 }
+    }    
     }
     
+    private boolean eliminarFicha(Ficha f){
+        f.delete();
+        return true;
+    }
     private boolean altaFicha(){
         Socio s = Socio.first(" DNI = ?", clienteGui.getDni().getText());
         Ficha nueva = Ficha.create("ID_DATOS_PERS", s.get("ID_DATOS_PERS"), "TEL_EMERG", fichaMedicaGui.getTelEmergencia().getText(), "ALERGICO", fichaMedicaGui.getTextoAlergias().getText(), "MEDICAM", fichaMedicaGui.getTextoMedicamentos().getText(), "OBSERV", fichaMedicaGui.getObservaciones().getText(), "GRUPO_SANG", fichaMedicaGui.getLetraSangui().getSelectedItem(), "FACTOR", fichaMedicaGui.getSigno().getSelectedItem());
