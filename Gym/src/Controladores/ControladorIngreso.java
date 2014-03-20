@@ -364,12 +364,7 @@ public class ControladorIngreso implements ActionListener {
 
     public void cargarDatos(Socio socio) {
         idCliente = socio.getInteger("ID_DATOS_PERS");
-        asistencia = Asistencia.findFirst("ID_DATOS_PERS = ? and FECHA = ?", idCliente, dateToMySQLDate(Calendar.getInstance().getTime(), false));
-        if (asistencia == null) {
-            Base.openTransaction();
-            Asistencia.createIt("ID_DATOS_PERS", idCliente, "FECHA", dateToMySQLDate(Calendar.getInstance().getTime(), false));
-            Base.commitTransaction();
-        }
+        
         ingresoGui.getNombre().setText(socio.getString("NOMBRE"));
         ingresoGui.getApellido().setText(socio.getString("APELLIDO"));
         ingresoGui.getNombre().setText(socio.getString("NOMBRE"));
@@ -394,6 +389,14 @@ public class ControladorIngreso implements ActionListener {
             long diffDays = diff / (24 * 60 * 60 * 1000);
             System.out.println(diffDays);
             ingresoGui.getCantDias().setText(String.valueOf(diffDays));
+        
+            asistencia = Asistencia.findFirst("ID_DATOS_PERS = ? and FECHA = ?", idCliente, dateToMySQLDate(Calendar.getInstance().getTime(), false));
+        if (asistencia == null) {
+            Base.openTransaction();
+            Asistencia.createIt("ID_DATOS_PERS", idCliente, "FECHA", dateToMySQLDate(Calendar.getInstance().getTime(), false));
+            Base.commitTransaction();
+        }
+        
             cargarAsistencia();
             try {
                 if (Long.valueOf(ingresoGui.getCantDias().getText()) < 0) {
