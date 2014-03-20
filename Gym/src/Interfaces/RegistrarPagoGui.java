@@ -490,24 +490,11 @@ public class RegistrarPagoGui extends javax.swing.JDialog {
         ABMSocios abmsocio = new ABMSocios();
         Base.openTransaction();
         Pago.createIt("ID_DATOS_PERS", socio.getString("ID_DATOS_PERS"), "FECHA", dateToMySQLDate(fecha.getDate(), false), "MONTO", totalB.setScale(2, RoundingMode.CEILING));
-        Date fechaUltimoPago = socio.getDate("FECHA_ULT_PAGO");
-        Date fechaVencimiento = socio.getDate("FECHA_PROX_PAGO");
-        LazyList<Asistencia> asistencias = Asistencia.where("ID_DATOS_PERS = ? and FECHA > ?", socio.get("ID_DATOS_PERS"), socio.getDate("FECHA_PROX_PAGO"));
-        asistencias.orderBy("FECHA");
-        Iterator<Asistencia> it = asistencias.iterator();
-        if (asistencias.size() > 0) {
-            Asistencia ultAsistencia = asistencias.get(asistencias.size() - 1); //ultima asistencia
-            boolean sePasoPeroNoTanto = ultAsistencia.getDate("fecha").before(Calendar.getInstance().getTime()) && ultAsistencia.getDate("fecha").after(fechaVencimiento);
-            if (sePasoPeroNoTanto) {
+   
+    
                 socio.set("FECHA_ULT_PAGO", dateToMySQLDate(fecha.getDate(), false));
                 socio.set("FECHA_PROX_PAGO", dateToMySQLDate(fechaVence.getDate(), false));
-            }
-        } else {
-            socio.set("FECHA_ULT_PAGO", dateToMySQLDate(Calendar.getInstance().getTime(), false));
-            Calendar calendario = Calendar.getInstance();
-            calendario.add(Calendar.MONTH, 1);
-            socio.set("FECHA_PROX_PAGO", dateToMySQLDate(calendario.getTime(), false));
-        }
+          
         socio.setBoolean("ACTIVO", true);
         socio.saveIt();
         Base.commitTransaction();

@@ -181,14 +181,19 @@ public class ControladorAbmCliente implements ActionListener {
             System.out.println("Boton eliminar pulsado");
             if(clienteGui.getBotEliminarCancelar().getText().equals("Eliminar")){
                 clienteGui.bloquearCampos(true);
-                //int ret=JOptionPane.showConfirmDialog(null, "¿Desea borrar a "+ clienteGui.getNombre()+" "+clienteGui.getApellido()+" ? ",null,JOptionPane.YES_NO_OPTION);
-               // if(ret== JOptionPane.YES_OPTION){
-                /*    Socio s = new Socio();
-                    s.set("DNI", clienteGui.getDni());
-                    abmsocio.baja(s);
-                   */ clienteGui.limpiarCampos();
-                    clienteGui.setVisible(false);
-                //}
+                int ret =JOptionPane.showConfirmDialog(clienteGui, "¿Desea borrar a "+ clienteGui.getNombre().getText()+" "+clienteGui.getApellido().getText()+" ? ",null,JOptionPane.YES_NO_OPTION);
+                if(ret== JOptionPane.YES_OPTION){
+                    if(abmsocio.baja(s)){
+                        JOptionPane.showMessageDialog(clienteGui, "Socio dado de baja exitosamente!");
+                        clienteGui.limpiarCampos();
+                        clienteGui.setVisible(false);
+                        actualizarDatos.cargarSocios();
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(clienteGui, "Ocurrio un error inesperado");
+                    }
+
+                }
             }
             else{
                 System.out.println("cancelé !");
@@ -251,7 +256,6 @@ public class ControladorAbmCliente implements ActionListener {
                         JOptionPane.showMessageDialog(clienteGui, "Socio modificado exitosamente!");
                         clienteGui.bloquearCampos(true);
                         //clienteGui.limpiarCampos();
-                        clienteGui.getBotNuevo().setEnabled(true);
                         clienteGui.getBotGuardar().setEnabled(false);
                         clienteGui.getBotModif().setEnabled(true);
                         clienteGui.getBotPago().setEnabled(true);
@@ -305,6 +309,7 @@ public class ControladorAbmCliente implements ActionListener {
                         clienteGui.getBotEliminarCancelar().setText("Eliminar");
                         actualizarDatos.cargarSocios();
                         s= Socio.findFirst("DNI = ? ", clienteGui.getDni().getText());
+                        clienteGui.setTitle(s.getString("APELLIDO")+" "+ s.getString("NOMBRE"));
                         
                     } else {
                         JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -330,6 +335,7 @@ public class ControladorAbmCliente implements ActionListener {
         if (ae.getSource() == clienteGui.getBotModif()) {
             System.out.println("Boton modif pulsado");
             clienteGui.bloquearCampos(false);
+            clienteGui.getDni().setEnabled(false);
             clienteGui.getBotEliminarCancelar().setText("Cancelar");
             clienteGui.getBotModif().setEnabled(false);
             clienteGui.getBotGuardar().setEnabled(true);
@@ -378,17 +384,30 @@ public class ControladorAbmCliente implements ActionListener {
             System.out.println("Boton nuevo pulsado");
             isNuevo=true;
             clienteGui.limpiarCampos();
-            clienteGui.bloquearCampos(false);
-            clienteGui.getBotGuardar().setEnabled(true);
-
+            clienteGui.bloquearCampos(false);            
+            clienteGui.setBotonesNuevo(true);
+            clienteGui.setTitle("Alta de socio");
+            clienteGui.getTablaActivDefault().setRowCount(0);
+            LazyList<Arancel> ListAran = Arancel.findAll();
+            Iterator<Arancel> ite = ListAran.iterator();
+                while(ite.hasNext()){
+                    Arancel a = ite.next();
+                    Object row[] = new Object[2];
+                    row[0] = a.getString("nombre");
+                    clienteGui.getTablaActivDefault().addRow(row);
+            /*Se debe abrir la ventana de clientes para permitir el alta de giles*/
+                }
+            
         }
         if (ae.getSource() == clienteGui.getBotPago()) {
             System.out.println("Boton pago pulsado");
             /*SE DEBERÁ MODIFICAR EL CONSTRUCTOR DE REGISTRARPAGOGUI PARA QUE TOME
              UN CLIENTE ASÍ SE HACE EL PAGO TODO DESDE ESA CLASE*/
+            s= abmsocio.getSocio(s);
             pagoGui= new RegistrarPagoGui(null, true, s);
             pagoGui.setLocationRelativeTo(null);
             pagoGui.setVisible(true);
+            cargarSocioPantalla(s);
 
         }
         /*
@@ -604,6 +623,33 @@ public class ControladorAbmCliente implements ActionListener {
     public void setSocio(Socio s) {
         this.s = s;
     }
-                
+       
+    private void cargarSocioPantalla(Socio socio){
+        clienteGui.getNombre().setText(s.getString("NOMBRE"));
+            clienteGui.getApellido().setText(s.getString("APELLIDO"));
+            clienteGui.getTelefono().setText(s.getString("TEL"));
+            clienteGui.getDni().setText(s.getString("DNI"));
+            clienteGui.getDireccion().setText(s.getString("DIR"));
+            if(s.getString("SEXO").equals("M")){
+                clienteGui.getSexo().setSelectedIndex(1);
+            }else{
+                clienteGui.getSexo().setSelectedIndex(0);
+            }
+            clienteGui.getFechaNacimJDate().setDate(s.getDate("FECHA_NAC")); ;
+            clienteGui.getLabelFechaIngreso().setText(dateToMySQLDate(s.getDate("FECHA_ING"),true));
+            clienteGui.getLabelFechaVenci().setText(dateToMySQLDate(s.getDate("FECHA_PROX_PAGO"), true)); 
+             clienteGui.getTablaActivDefault().setRowCount(0);
+            LazyList<Socioarancel> ListSocAran = Socioarancel.where("id_socio = ?", s.get("ID_DATOS_PERS"));
+            Iterator<Socioarancel> ite = ListSocAran.iterator();
+                while(ite.hasNext()){
+                    Socioarancel sa = ite.next();
+                    Arancel a = Arancel.first("id = ?", sa.get("id_arancel"));
+                    Object row1[] = new Object[2];
+                    row1[0] = a.getString("nombre");
+                    row1[1] = true;
+                    clienteGui.getTablaActivDefault().addRow(row1);
+            /*Se debe abrir la ventana de clientes para permitir el alta de giles*/
+                }
+    }
                 
 }

@@ -87,7 +87,7 @@ public class ControladorIngreso implements ActionListener {
     private ABMSocios abmSocio;
     private Socio socio;
     private Asistencia asistencia;
-    
+
     public ControladorIngreso(IngresoGui ingresoGui) throws Exception {
         this.ingresoGui = ingresoGui;
         ingresoGui.limpiar();
@@ -327,8 +327,6 @@ public class ControladorIngreso implements ActionListener {
         ingresoGui.repaint();
     }
 
-   
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == ingresoGui.getLimpiarVentana()) {
@@ -338,7 +336,6 @@ public class ControladorIngreso implements ActionListener {
         if (e.getSource() == ingresoGui.getBusquedaManual()) {
             System.out.println("busqueda manual");
             busquedaManualGui bus = new busquedaManualGui(ingresoGui, true, this);
-            bus.cargarSocios();
             bus.setVisible(true);
         }
         if (e.getSource() == ingresoGui.getDarDeAlta()) {
@@ -376,44 +373,45 @@ public class ControladorIngreso implements ActionListener {
         ingresoGui.getNombre().setText(socio.getString("NOMBRE"));
         ingresoGui.getApellido().setText(socio.getString("APELLIDO"));
         ingresoGui.getNombre().setText(socio.getString("NOMBRE"));
-        ingresoGui.getFechaUltPago().setText(dateToMySQLDate(socio.getDate("FECHA_ULT_PAGO"), true));
-        ingresoGui.getFechaVence().setText(dateToMySQLDate(socio.getDate(("FECHA_PROX_PAGO")), true));
-        /// calcular la diferencia en dias
-// Crear 2 instancias de Calendar
-
-        Calendar cal1 = Calendar.getInstance();
-        Calendar cal2 = Calendar.getInstance();
-        cal2.setTime(socio.getDate("FECHA_PROX_PAGO"));
-
-        // calcular la diferencia en milisengundos
-        // conseguir la representacion de la fecha en milisegundos
-        long milis1 = cal1.getTimeInMillis();
-
-        long milis2 = cal2.getTimeInMillis();
-
-        long diff = milis2 - milis1;
-
-        long diffDays = diff / (24 * 60 * 60 * 1000);
-
-        System.out.println(diffDays);
-
-        ingresoGui.getCantDias().setText(String.valueOf(diffDays));
-
-        cargarAsistencia();
-        try {
-            if (Long.valueOf(ingresoGui.getCantDias().getText()) < 0) {
-                System.out.println("vencido! :O");
-                cargarSonido("vencido.wav");
-                ingresoGui.getFechaVence().setText(ingresoGui.getFechaVence().getText().concat(" ¡VENCIDO!"));
-            } else {
-                cargarSonido("correcto.wav");
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(ControladorIngreso.class.getName()).log(Level.SEVERE, null, ex);
+        if (socio.getDate("FECHA_ULT_PAGO") != null) {
+            ingresoGui.getFechaUltPago().setText(dateToMySQLDate(socio.getDate("FECHA_ULT_PAGO"), true));
+        } else {
+            ingresoGui.getFechaUltPago().setText("No hay registro de pago");
         }
-           ingresoGui.getDarDeAlta().setEnabled(!socio.getBoolean("ACTIVO"));
-        
-        
+        if (socio.getDate("FECHA_PROX_PAGO") != null) {
+            ingresoGui.getFechaVence().setText(dateToMySQLDate(socio.getDate(("FECHA_PROX_PAGO")), true));
+
+            // calcular la diferencia en dias
+            // Crear 2 instancias de Calendar
+            Calendar cal1 = Calendar.getInstance();
+            Calendar cal2 = Calendar.getInstance();
+            cal2.setTime(socio.getDate("FECHA_PROX_PAGO"));
+            // calcular la diferencia en milisengundos
+            // conseguir la representacion de la fecha en milisegundos
+            long milis1 = cal1.getTimeInMillis();
+            long milis2 = cal2.getTimeInMillis();
+            long diff = milis2 - milis1;
+            long diffDays = diff / (24 * 60 * 60 * 1000);
+            System.out.println(diffDays);
+            ingresoGui.getCantDias().setText(String.valueOf(diffDays));
+            cargarAsistencia();
+            try {
+                if (Long.valueOf(ingresoGui.getCantDias().getText()) < 0) {
+                    System.out.println("vencido! :O");
+                    cargarSonido("vencido.wav");
+                    ingresoGui.getFechaVence().setText(ingresoGui.getFechaVence().getText().concat(" ¡VENCIDO!"));
+                } else {
+                    cargarSonido("correcto.wav");
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(ControladorIngreso.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else {
+            ingresoGui.getFechaVence().setText("No hay registro de vencimiento");
+        }
+
+        ingresoGui.getDarDeAlta().setEnabled(!socio.getBoolean("ACTIVO"));
 
     }
 

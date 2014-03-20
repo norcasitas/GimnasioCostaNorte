@@ -20,7 +20,7 @@ import org.javalite.activejdbc.Model;
  * @author alan
  */
 public class ABMSocios {
-        
+    
     public Socio getSocio(Socio s) {
         return Socio.first("DNI = ?", s.get("DNI"));
     }

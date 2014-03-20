@@ -200,7 +200,7 @@ public class ControladorClientes implements ActionListener {
                     row[0] = tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0);
                     row[1] = tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 1);
                     row[2] = tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 2);
-                    row[3] = p.getString("FECHA");
+                    row[3] = dateToMySQLDate(p.getDate("FECHA"),true);
                     row[4] = p.getFloat("MONTO");
                     pagosGui.getTablaPagosDefault().addRow(row);
                 }

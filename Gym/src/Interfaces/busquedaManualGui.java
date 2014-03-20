@@ -45,9 +45,10 @@ public class busquedaManualGui extends javax.swing.JDialog {
                 busquedaKeyReleased(evt);
             }
         });
+        cargarSocios("");
     }
-    public void cargarSocios(){
-        LazyList<Socio> ListSocios= Socio.findAll();
+    public void cargarSocios(String filtro){
+        LazyList<Socio> ListSocios= Socio.where("NOMBRE like ? or APELLIDO like ? or DNI like ? ", filtro + "%",filtro + "%",filtro + "%");;
             tablaClientesDefault.setRowCount(0);
              Iterator<Socio> it = ListSocios.iterator();
              while(it.hasNext()){
@@ -79,6 +80,7 @@ public class busquedaManualGui extends javax.swing.JDialog {
     }
         public void busquedaKeyReleased(java.awt.event.KeyEvent evt) {
         System.out.println("apreté el caracter" + evt.getKeyChar());
+            cargarSocios(this.busqueda.getText());
         /*Aca va la gilada para la busqueda mientras escribis se puede hacer 
          función y que se invoque a esa así tambien se llama cuando se 
          seleccionan actividades*/
