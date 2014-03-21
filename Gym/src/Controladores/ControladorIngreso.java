@@ -9,9 +9,12 @@ import ABMs.ABMSocios;
 import BD.ConexionBD;
 import Interfaces.IngresoGui;
 import Interfaces.RegistrarPagoGui;
+import Interfaces.asistenciaCombo;
 import Interfaces.busquedaManualGui;
+import Modelos.Arancel;
 import Modelos.Asistencia;
 import Modelos.Socio;
+import Modelos.Socioarancel;
 import com.digitalpersona.onetouch.DPFPDataPurpose;
 import com.digitalpersona.onetouch.DPFPFeatureSet;
 import com.digitalpersona.onetouch.DPFPFingerIndex;
@@ -54,6 +57,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.LazyList;
@@ -364,13 +368,14 @@ public class ControladorIngreso implements ActionListener {
 
     public void cargarDatos(Socio socio) {
         idCliente = socio.getInteger("ID_DATOS_PERS");
-        
+
         ingresoGui.getNombre().setText(socio.getString("NOMBRE"));
         ingresoGui.getApellido().setText(socio.getString("APELLIDO"));
         ingresoGui.getNombre().setText(socio.getString("NOMBRE"));
         if (socio.getDate("FECHA_ULT_PAGO") != null) {
             ingresoGui.getFechaUltPago().setText(dateToMySQLDate(socio.getDate("FECHA_ULT_PAGO"), true));
         } else {
+            
             ingresoGui.getFechaUltPago().setText("No hay registro de pago");
         }
         if (socio.getDate("FECHA_PROX_PAGO") != null) {
@@ -389,15 +394,7 @@ public class ControladorIngreso implements ActionListener {
             long diffDays = diff / (24 * 60 * 60 * 1000);
             System.out.println(diffDays);
             ingresoGui.getCantDias().setText(String.valueOf(diffDays));
-        
-            asistencia = Asistencia.findFirst("ID_DATOS_PERS = ? and FECHA = ?", idCliente, dateToMySQLDate(Calendar.getInstance().getTime(), false));
-        if (asistencia == null) {
-            Base.openTransaction();
-            Asistencia.createIt("ID_DATOS_PERS", idCliente, "FECHA", dateToMySQLDate(Calendar.getInstance().getTime(), false));
-            Base.commitTransaction();
-        }
-        
-            cargarAsistencia();
+
             try {
                 if (Long.valueOf(ingresoGui.getCantDias().getText()) < 0) {
                     System.out.println("vencido! :O");
@@ -405,6 +402,47 @@ public class ControladorIngreso implements ActionListener {
                     ingresoGui.getFechaVence().setText(ingresoGui.getFechaVence().getText().concat(" ¡VENCIDO!"));
                 } else {
                     cargarSonido("correcto.wav");
+                }
+                if (socio.getBoolean("ACTIVO")) {
+                    
+                    LazyList<Socioarancel> socioArancel= Socioarancel.where("id_socio = ?", idCliente);
+                    Iterator<Socioarancel> it= socioArancel.iterator();
+                    Arancel aranc = null;
+                    int asis=-1;
+                    while(it.hasNext()){
+                        Socioarancel socAr=it.next();
+                        aranc= Arancel.findFirst("id = ? and categoria = ?", socAr.get("id_arancel"),"COMBO");
+                    }
+                    if(aranc!=null){
+                        asistenciaCombo asisComboGui= new asistenciaCombo(ingresoGui, true, idCliente);
+                        asisComboGui.setVisible(true);
+                        System.out.print(asisComboGui.asiste); 
+                        asis= asisComboGui.asiste;
+                        asisComboGui.dispose();
+                    }
+                    asistencia = Asistencia.findFirst("ID_DATOS_PERS = ? and FECHA = ?", idCliente, dateToMySQLDate(Calendar.getInstance().getTime(), false));
+                        if (asistencia == null) {
+                            if(asis==-1){
+                                Base.openTransaction();
+                                Asistencia.createIt("ID_DATOS_PERS", idCliente, "FECHA", dateToMySQLDate(Calendar.getInstance().getTime(), false),"ID_ACTIV",socioArancel.get(0).get("id_arancel"));
+                                Base.commitTransaction();
+                                System.out.println("no es un combo");
+
+                            }
+                            else{
+                                Base.openTransaction();
+                                Asistencia.createIt("ID_DATOS_PERS", idCliente, "FECHA", dateToMySQLDate(Calendar.getInstance().getTime(), false),"ID_ACTIV",socioArancel.get(0).get("id_arancel"),"ID_ACTIV_COMBO", asis);
+                                Base.commitTransaction();
+                                System.out.println("Es un combo");
+                            }
+                                
+                        }
+
+                        cargarAsistencia();
+                    
+                }
+                else{
+                    JOptionPane.showMessageDialog(ingresoGui, "El socio no se encuentra activo, realice un pago para activarlo", "Socio inactivo", JOptionPane.INFORMATION_MESSAGE);
                 }
             } catch (Exception ex) {
                 Logger.getLogger(ControladorIngreso.class.getName()).log(Level.SEVERE, null, ex);

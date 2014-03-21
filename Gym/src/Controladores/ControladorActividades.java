@@ -7,17 +7,21 @@ package Controladores;
 import ABMs.ABMAranceles;
 import Interfaces.ActividadesGui;
 import Modelos.Arancel;
+import Modelos.Combo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.LazyList;
+import org.javalite.activejdbc.Model;
 
 /**
  *
@@ -48,47 +52,109 @@ public class ControladorActividades implements ActionListener {
         });
         tablaActCombo = this.actividadesGui.getTablaActCombo();
         tablaActComboDefault= this.actividadesGui.getTablaActComboDefault();
-        this.actividadesGui.getCategoria().addPropertyChangeListener(new PropertyChangeListener() {
+        this.actividadesGui.getCategoria().addActionListener(new ActionListener() {
 
             @Override
-            public void propertyChange(PropertyChangeEvent evt) {
+            public void actionPerformed(ActionEvent e) {
                 habilitarTablaCombo();
-                    
-                
             }
         });
     }
 
     public void habilitarTablaCombo(){
-        if(actividadesGui.getCategoria().getSelectedItem().equals("Combo")){
-            tablaActCombo.setEnabled(true);
-            cargarActividadesCombo(ar.getInteger("id"));
+        if(actividadesGui.getCategoria().getSelectedItem().equals("COMBO")){
+            actividadesGui.getDias().setEnabled(false);
+            tablaActCombo.setEnabled(!actividadesGui.getBotModif().isEnabled());
+                
+            
+            if(isNuevo){
+                cargarActividadesNuevoCombo();
+                System.out.println("nuevo");
+            }
+            else{
+                cargarActividadesCombo(ar.getInteger("id"));
+                System.out.println("viejo");
+            }
         }
         else{
             tablaActComboDefault.setRowCount(0);
             tablaActCombo.setEnabled(false);
+            actividadesGui.getDias().setEnabled(true);
         }
     }
     
-    
+    private void cargarActividadesNuevoCombo(){
+        tablaActComboDefault.setRowCount(0);
+        LazyList<Arancel> activs=Arancel.findAll();
+        Iterator<Arancel> itAr= activs.iterator();
+        Arancel aran;
+        while(itAr.hasNext()){
+            aran= itAr.next();
+            Object row[] = new Object[4];
+            row[0] = aran.getInteger("id");
+            row[1] = aran.getString("nombre");
+            row[2] = false;
+            row[3] = 0;
+            tablaActComboDefault.addRow(row);
+        }
+    }
     private void cargarActividadesCombo(int idCombo){
         System.out.println(idCombo);
-        /*ACA VA LA GILADA PARA QUE CARGUE LA TABLA DE LAS ACTIVIDADES DEL COMBO
-        EL ID QUE SE PASA COMO PARAMETRO ES EL ID DEL COMBO QUE ESTÁ SELECCIONADO*/
+        tablaActComboDefault.setRowCount(0);
+        LazyList<Combo> activsCombo=Combo.where("id_combo = ?", idCombo);
+        Iterator<Combo> it= activsCombo.iterator();
+        LinkedList<Integer> activsDelCombo = new LinkedList<>();
+        while(it.hasNext()){
+            Combo combo= it.next();
+            activsDelCombo.add(combo.getInteger("id_activ"));
+        }
+        LinkedList<Integer> todasActivs= new LinkedList<>();
+        LazyList<Arancel> activs=Arancel.where("categoria <> ?", "COMBO");
+        Iterator<Arancel> itAr= activs.iterator();
+        while(itAr.hasNext()){
+            Arancel aran= itAr.next();
+            todasActivs.add(aran.getInteger("id"));
+        }
+        todasActivs.removeAll(activsDelCombo);
+        it= activsCombo.iterator();
+        Arancel aran;
+        while(it.hasNext()){
+            Combo combo= it.next();
+            aran= Arancel.findFirst("id = ?",combo.getInteger("id_activ") );
+            Object row[] = new Object[4];
+            row[0] = aran.getInteger("id");
+            row[1] = aran.getString("nombre");
+            row[2] = true;
+            row[3] = combo.getInteger("dias");
+            tablaActComboDefault.addRow(row);
+        }
+        Iterator<Integer> itTodas= todasActivs.iterator();
+        while(itTodas.hasNext()){
+            aran= Arancel.findFirst("id = ?",itTodas.next());
+            Object row[] = new Object[4];
+            row[0] = aran.getInteger("id");
+            row[1] = aran.getString("nombre");
+            row[2] = false;
+            row[3] = 0;
+            tablaActComboDefault.addRow(row);
+        }
     }
     
     
     /*Esta la voy a usar para guando pongas guardar*/
-    private LinkedList<Object> retActivComboSelec(){
+    private void guardarActivs(Object idCombo){
         int rows= tablaActCombo.getRowCount();
-        LinkedList<Object> ret = new LinkedList<>();
+        Base.openTransaction();
+        Combo.delete("id_combo = ? ",  actividadesGui.getTablaActividadesDefault().getValueAt(actividadesGui.getTablaActividades().getSelectedRow(), 0) );
+        Base.commitTransaction();
         for (int i=0;i<rows;i++){
-            if(tablaActCombo.getValueAt(i, 3).equals(true)){
-                System.out.println("la filita es del combo");
-                ret.add(tablaActCombo.getValueAt(i, 0)); // agrego el ID DE LA ACT!
+            if(tablaActCombo.getValueAt(i, 2).equals(true)){
+                Base.openTransaction();
+                Combo.createIt("id_combo",idCombo,"id_activ",tablaActCombo.getValueAt(i, 0),"dias",tablaActCombo.getValueAt(i, 3));
+                Base.commitTransaction();
             }
         }
-        return ret;
+        
     }
     public void tablaMouseClicked(java.awt.event.MouseEvent evt) {
         actividadesGui.bloquearCampos(true);
@@ -103,6 +169,13 @@ public class ControladorActividades implements ActionListener {
         actividadesGui.getPrecio().setText(String.valueOf(ar.getFloat("precio")));
         actividadesGui.getDesde().setDate(ar.getDate("fecha"));
         actividadesGui.getCategoria().setSelectedItem(ar.get("categoria"));
+        if(actividadesGui.getCategoria().getSelectedItem().equals("COMBO")){
+            cargarActividadesCombo(ar.getInteger("id"));
+            
+        }
+        else{
+            tablaActComboDefault.setRowCount(0);
+        }
         /*Cargo la info de las actividades en los campos! */
     }
 
@@ -151,13 +224,21 @@ public class ControladorActividades implements ActionListener {
                 /*Aca va todo para guardar uno modificado*/
                 System.out.println("Se modificó uno que existia");
                 Arancel a = new Arancel();
+                boolean error=false;
                 a.set("fecha", actividadesGui.getDesde().getDate());
-                a.set("precio",actividadesGui.getPrecio().getText());
-                a.set("activo", 1);
+try{
+                    BigDecimal precio=BigDecimal.valueOf(Double.valueOf(actividadesGui.getPrecio().getText()));
+                                    a.set("precio",precio);
+
+                }catch(java.lang.NumberFormatException ex){
+                    error=true;
+                }                a.set("activo", 1);
                 a.set("categoria", actividadesGui.getCategoria().getSelectedItem().toString().toUpperCase());
                 a.set("nombre", actividadesGui.getActividad().getText().toUpperCase());
                 a.set("id", actividadesGui.getTablaActividadesDefault().getValueAt(actividadesGui.getTablaActividades().getSelectedRow(), 0));
+                if(!error){
                 if(abmAranceles.modificar(a)){
+                    guardarActivs(actividadesGui.getTablaActividadesDefault().getValueAt(actividadesGui.getTablaActividades().getSelectedRow(), 0));
                     JOptionPane.showMessageDialog(actividadesGui, "Actividad modificado exitosamente!");
                     actividadesGui.bloquearCampos(true);
                     LazyList ListAranceles = Arancel.where("activo = ?", 1);
@@ -171,19 +252,35 @@ public class ControladorActividades implements ActionListener {
                         row[2] = ar.getFloat("precio");
                         actividadesGui.getTablaActividadesDefault().addRow(row);
                      }
-                }else{
+
+                    
+                }else{ 
                     JOptionPane.showMessageDialog(actividadesGui, "Ocurrió un error, revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
+                                }else{
+                JOptionPane.showMessageDialog(actividadesGui, "Precio incorrecto", "error", JOptionPane.ERROR_MESSAGE);
+  
+                }
                 
-            } else {
+            }else{ 
                 Arancel a = new Arancel();
+                boolean error=false;
                 a.set("fecha", actividadesGui.getDesde().getDate());
-                a.set("precio",actividadesGui.getPrecio().getText());
+                try{
+                    BigDecimal precio=BigDecimal.valueOf(Double.valueOf(actividadesGui.getPrecio().getText()));
+                                    a.set("precio",precio);
+
+                }catch(java.lang.NumberFormatException ex){
+                    error=true;
+                }
+                
                 a.set("activo", 1);
                 a.set("nombre", actividadesGui.getActividad().getText().toUpperCase());
                 a.set("categoria", actividadesGui.getCategoria().getSelectedItem().toString().toUpperCase());
                 System.out.println("Boton guardó uno nuevito");
+                if(!error){
                 if(abmAranceles.alta(a)){
+                    guardarActivs(abmAranceles.idAlta);
                     JOptionPane.showMessageDialog(actividadesGui, "Actividad guardada exitosamente!");
                     actividadesGui.bloquearCampos(true);
                     LazyList ListAranceles = Arancel.where("activo = ?", 1);
@@ -200,14 +297,18 @@ public class ControladorActividades implements ActionListener {
                 }else{
                     JOptionPane.showMessageDialog(actividadesGui, "Ocurrió un error, revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
-            }
+                }else{
+                JOptionPane.showMessageDialog(actividadesGui, "Precio incorrecto", "error", JOptionPane.ERROR_MESSAGE);
+  
+                }
+            
             actividadesGui.limpiarCampos();
             actividadesGui.bloquearCampos(true);
             actividadesGui.getBotGuardar().setEnabled(false);
             actividadesGui.getBotModif().setEnabled(false);
             actividadesGui.getBotEliminarCancelar().setEnabled(false);
-
-        }
+            }
+                   }   
         if (ae.getSource() == actividadesGui.getBotModif()) {
             System.out.println("Boton modif pulsado");
             actividadesGui.bloquearCampos(false);
@@ -223,6 +324,7 @@ public class ControladorActividades implements ActionListener {
             actividadesGui.setBotonesNuevo(true);
             actividadesGui.limpiarCampos();
             actividadesGui.bloquearCampos(false);
+            actividadesGui.getCategoria().setSelectedIndex(0);
 
         }
 

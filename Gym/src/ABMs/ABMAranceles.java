@@ -17,7 +17,7 @@ import org.javalite.activejdbc.LazyList;
  * @author alan
  */
 public class ABMAranceles {
-    
+    public Object idAlta;
     public Arancel getArancel(Arancel s) {
         return Arancel.first("nombre = ?", s.get("nombre"));
     }
@@ -30,6 +30,7 @@ public class ABMAranceles {
             Base.openTransaction();
             Arancel nuevo = Arancel.create("nombre",s.get("nombre"), "precio", s.get("precio"), "fecha", s.get("fecha"), "activo", s.get("activo"),"categoria", s.get("categoria"));
             nuevo.saveIt();
+            idAlta= nuevo.get("id");
             Base.commitTransaction();
             return true;
         } else {

@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.util.Calendar;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -88,6 +89,10 @@ public class ActividadesGui extends javax.swing.JInternalFrame {
     public JComboBox getCategoria() {
         return categoria;
     }
+
+    public JSpinner getDias() {
+        return dias;
+    }
     
     
 
@@ -107,6 +112,8 @@ public class ActividadesGui extends javax.swing.JInternalFrame {
         desde.setEnabled(!si);
         precio.setEnabled(!si);
         categoria.setEnabled(!si);
+        dias.setEnabled(!si);
+        tablaActCombo.setEnabled(!si);
         
     }
     
@@ -114,6 +121,7 @@ public class ActividadesGui extends javax.swing.JInternalFrame {
         desde.setDate(Calendar.getInstance().getTime());
         actividad.setText("");
         precio.setText("");
+        dias.setValue(0);
         
     }
 
@@ -140,6 +148,8 @@ public class ActividadesGui extends javax.swing.JInternalFrame {
         desde = new com.toedter.calendar.JDateChooser();
         categoria = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
+        dias = new javax.swing.JSpinner();
+        jLabel5 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         botNuevo = new javax.swing.JButton();
         botModif = new javax.swing.JButton();
@@ -225,6 +235,10 @@ public class ActividadesGui extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Categoría");
 
+        dias.setEnabled(false);
+
+        jLabel5.setText("Días a la semana");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -239,9 +253,14 @@ public class ActividadesGui extends javax.swing.JInternalFrame {
                             .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(precio)
                             .addComponent(actividad)
-                            .addComponent(desde, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(desde, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(precio, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(dias, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -256,7 +275,9 @@ public class ActividadesGui extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(precio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(precio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
@@ -269,7 +290,7 @@ public class ActividadesGui extends javax.swing.JInternalFrame {
                     .addComponent(jLabel4)))
         );
 
-        jPanel5.setLayout(new java.awt.GridLayout());
+        jPanel5.setLayout(new java.awt.GridLayout(1, 0));
 
         botNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/agregar.png"))); // NOI18N
         jPanel5.add(botNuevo);
@@ -310,14 +331,14 @@ public class ActividadesGui extends javax.swing.JInternalFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "ID", "Actividad-Promocion", "Precio", "Pertenece"
+                "ID", "Actividad-Promocion", "Pertenece", "Días"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.Float.class, java.lang.Boolean.class
+                java.lang.Object.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, true
+                false, false, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -328,8 +349,10 @@ public class ActividadesGui extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tablaActCombo.setColumnSelectionAllowed(true);
         tablaActCombo.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane3.setViewportView(tablaActCombo);
+        tablaActCombo.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -337,7 +360,7 @@ public class ActividadesGui extends javax.swing.JInternalFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addGap(0, 0, 0))
         );
         jPanel4Layout.setVerticalGroup(
@@ -388,10 +411,12 @@ public class ActividadesGui extends javax.swing.JInternalFrame {
     private javax.swing.JButton botNuevo;
     private javax.swing.JComboBox categoria;
     private com.toedter.calendar.JDateChooser desde;
+    private javax.swing.JSpinner dias;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
