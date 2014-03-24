@@ -58,9 +58,13 @@ import javax.sound.sampled.DataLine;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
 import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.LazyList;
+import org.javalite.activejdbc.Model;
 
 /**
  *
@@ -359,7 +363,15 @@ public class ControladorIngreso implements ActionListener {
         Iterator<Asistencia> it = asistencias.iterator();
         int i = 0;
         while (it.hasNext() && i < 30) {
-            ((JLabel) array[i]).setText(dateToMySQLDate(it.next().getDate("FECHA"), true));
+            Asistencia asis= it.next();
+            Arancel ar= Arancel.findFirst("id = ?", asis.get("ID_ACTIV"));
+            String nombreActiv= ar.getString("nombre");
+            String nombreActivCombo="";
+            if(asis.get("ID_ACTIV_COMBO")!=null){
+                ar= Arancel.findFirst("id = ?", asis.get("ID_ACTIV_COMBO"));
+                nombreActivCombo=ar.getString("nombre");
+            }
+            ((JTextArea)((JViewport)((JScrollPane) array[i]).getComponent(0)).getView()).setText(dateToMySQLDate(asis.getDate("FECHA"), true)+" - \n"+nombreActiv +" - "+nombreActivCombo);
             i++;
 
         }
@@ -404,42 +416,33 @@ public class ControladorIngreso implements ActionListener {
                     cargarSonido("correcto.wav");
                 }
                 if (socio.getBoolean("ACTIVO")) {
-                    
                     LazyList<Socioarancel> socioArancel= Socioarancel.where("id_socio = ?", idCliente);
-                    Iterator<Socioarancel> it= socioArancel.iterator();
-                    Arancel aranc = null;
-                    int asis=-1;
-                    while(it.hasNext()){
-                        Socioarancel socAr=it.next();
-                        aranc= Arancel.findFirst("id = ? and categoria = ?", socAr.get("id_arancel"),"COMBO");
+                    boolean comboSolo=false;
+                    if(socioArancel.size()==1){
+                         Arancel aran = Arancel.findFirst("id = ?", socioArancel.get(0).get("id_arancel"));
+                        if(aran.getString("categoria").equals("COMBO"))
+                            comboSolo=true;
                     }
-                    if(aranc!=null){
-                        asistenciaCombo asisComboGui= new asistenciaCombo(ingresoGui, true, idCliente);
+                    if(socioArancel.size()>1 || comboSolo){
+                        asistenciaCombo asisComboGui= new asistenciaCombo(ingresoGui, true, socioArancel,idCliente);
                         asisComboGui.setVisible(true);
-                        System.out.print(asisComboGui.asiste); 
-                        asis= asisComboGui.asiste;
+                        int idActiv=asisComboGui.idActiv;
+                        int idActivCombo= asisComboGui.idActivCombo;
                         asisComboGui.dispose();
-                    }
-                    asistencia = Asistencia.findFirst("ID_DATOS_PERS = ? and FECHA = ?", idCliente, dateToMySQLDate(Calendar.getInstance().getTime(), false));
-                        if (asistencia == null) {
-                            if(asis==-1){
+                        if(idActiv!=-1){
+                            if(idActivCombo!=-1){
                                 Base.openTransaction();
-                                Asistencia.createIt("ID_DATOS_PERS", idCliente, "FECHA", dateToMySQLDate(Calendar.getInstance().getTime(), false),"ID_ACTIV",socioArancel.get(0).get("id_arancel"));
+                                Asistencia.createIt("ID_DATOS_PERS", idCliente, "FECHA", dateToMySQLDate(Calendar.getInstance().getTime(), false),"ID_ACTIV",idActiv,"ID_ACTIV_COMBO",idActivCombo);
                                 Base.commitTransaction();
-                                System.out.println("no es un combo");
-
                             }
                             else{
                                 Base.openTransaction();
-                                Asistencia.createIt("ID_DATOS_PERS", idCliente, "FECHA", dateToMySQLDate(Calendar.getInstance().getTime(), false),"ID_ACTIV",socioArancel.get(0).get("id_arancel"),"ID_ACTIV_COMBO", asis);
+                                Asistencia.createIt("ID_DATOS_PERS", idCliente, "FECHA", dateToMySQLDate(Calendar.getInstance().getTime(), false),"ID_ACTIV",idActiv);
                                 Base.commitTransaction();
-                                System.out.println("Es un combo");
                             }
-                                
                         }
-
-                        cargarAsistencia();
-                    
+                    }
+                    cargarAsistencia();
                 }
                 else{
                     JOptionPane.showMessageDialog(ingresoGui, "El socio no se encuentra activo, realice un pago para activarlo", "Socio inactivo", JOptionPane.INFORMATION_MESSAGE);

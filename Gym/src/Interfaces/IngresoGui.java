@@ -1,9 +1,10 @@
+package Interfaces;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Interfaces;
 
 
 import java.awt.Component;
@@ -24,7 +25,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JViewport;
 import org.edisoncor.gui.panel.PanelImage;
 
 
@@ -57,7 +60,7 @@ public class IngresoGui extends javax.swing.JFrame {
         cantDias.setText("");
         Component[] array=panelAsistencia.getComponents();
         for (Component array1 : array) {
-            ((JLabel) array1).setText("");
+            ((JTextArea)((JViewport)((JScrollPane) array1).getComponent(0)).getView()).setText("") ;
         }
     }
     
@@ -134,41 +137,71 @@ public class IngresoGui extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         panelImage1 = new org.edisoncor.gui.panel.PanelImage();
         panelImage2 = new org.edisoncor.gui.panel.PanelImage();
-        jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         textoHuella = new javax.swing.JTextArea();
         imHuella = new org.edisoncor.gui.panel.PanelImage();
+        jPanel4 = new javax.swing.JPanel();
         panelAsistencia = new javax.swing.JPanel();
-        dia1 = new javax.swing.JLabel();
-        dia2 = new javax.swing.JLabel();
-        dia3 = new javax.swing.JLabel();
-        dia4 = new javax.swing.JLabel();
-        dia5 = new javax.swing.JLabel();
-        dia6 = new javax.swing.JLabel();
-        dia7 = new javax.swing.JLabel();
-        dia8 = new javax.swing.JLabel();
-        dia9 = new javax.swing.JLabel();
-        dia10 = new javax.swing.JLabel();
-        dia11 = new javax.swing.JLabel();
-        dia12 = new javax.swing.JLabel();
-        dia13 = new javax.swing.JLabel();
-        dia14 = new javax.swing.JLabel();
-        dia15 = new javax.swing.JLabel();
-        dia16 = new javax.swing.JLabel();
-        dia17 = new javax.swing.JLabel();
-        dia18 = new javax.swing.JLabel();
-        dia19 = new javax.swing.JLabel();
-        dia20 = new javax.swing.JLabel();
-        dia21 = new javax.swing.JLabel();
-        dia22 = new javax.swing.JLabel();
-        dia23 = new javax.swing.JLabel();
-        dia24 = new javax.swing.JLabel();
-        dia25 = new javax.swing.JLabel();
-        dia26 = new javax.swing.JLabel();
-        dia27 = new javax.swing.JLabel();
-        dia28 = new javax.swing.JLabel();
-        dia29 = new javax.swing.JLabel();
-        dia30 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTextArea2 = new javax.swing.JTextArea();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTextArea3 = new javax.swing.JTextArea();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jTextArea4 = new javax.swing.JTextArea();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        jTextArea5 = new javax.swing.JTextArea();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        jTextArea6 = new javax.swing.JTextArea();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        jTextArea7 = new javax.swing.JTextArea();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        jTextArea8 = new javax.swing.JTextArea();
+        jScrollPane11 = new javax.swing.JScrollPane();
+        jTextArea9 = new javax.swing.JTextArea();
+        jScrollPane12 = new javax.swing.JScrollPane();
+        jTextArea10 = new javax.swing.JTextArea();
+        jScrollPane13 = new javax.swing.JScrollPane();
+        jTextArea11 = new javax.swing.JTextArea();
+        jScrollPane14 = new javax.swing.JScrollPane();
+        jTextArea12 = new javax.swing.JTextArea();
+        jScrollPane15 = new javax.swing.JScrollPane();
+        jTextArea13 = new javax.swing.JTextArea();
+        jScrollPane16 = new javax.swing.JScrollPane();
+        jTextArea14 = new javax.swing.JTextArea();
+        jScrollPane17 = new javax.swing.JScrollPane();
+        jTextArea15 = new javax.swing.JTextArea();
+        jScrollPane18 = new javax.swing.JScrollPane();
+        jTextArea16 = new javax.swing.JTextArea();
+        jScrollPane19 = new javax.swing.JScrollPane();
+        jTextArea17 = new javax.swing.JTextArea();
+        jScrollPane20 = new javax.swing.JScrollPane();
+        jTextArea18 = new javax.swing.JTextArea();
+        jScrollPane21 = new javax.swing.JScrollPane();
+        jTextArea19 = new javax.swing.JTextArea();
+        jScrollPane22 = new javax.swing.JScrollPane();
+        jTextArea20 = new javax.swing.JTextArea();
+        jScrollPane23 = new javax.swing.JScrollPane();
+        jTextArea21 = new javax.swing.JTextArea();
+        jScrollPane24 = new javax.swing.JScrollPane();
+        jTextArea22 = new javax.swing.JTextArea();
+        jScrollPane25 = new javax.swing.JScrollPane();
+        jTextArea23 = new javax.swing.JTextArea();
+        jScrollPane26 = new javax.swing.JScrollPane();
+        jTextArea24 = new javax.swing.JTextArea();
+        jScrollPane27 = new javax.swing.JScrollPane();
+        jTextArea25 = new javax.swing.JTextArea();
+        jScrollPane28 = new javax.swing.JScrollPane();
+        jTextArea26 = new javax.swing.JTextArea();
+        jScrollPane29 = new javax.swing.JScrollPane();
+        jTextArea27 = new javax.swing.JTextArea();
+        jScrollPane30 = new javax.swing.JScrollPane();
+        jTextArea28 = new javax.swing.JTextArea();
+        jScrollPane31 = new javax.swing.JScrollPane();
+        jTextArea29 = new javax.swing.JTextArea();
+        jScrollPane32 = new javax.swing.JScrollPane();
+        jTextArea30 = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         busquedaManual = new javax.swing.JMenuItem();
@@ -194,7 +227,7 @@ public class IngresoGui extends javax.swing.JFrame {
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.ipadx = 160;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(30, 10, 0, 16);
+        gridBagConstraints.insets = new java.awt.Insets(19, 10, 0, 6);
         jPanel1.add(nombre, gridBagConstraints);
 
         apellido.setFont(new java.awt.Font("Tahoma", 1, 60)); // NOI18N
@@ -208,7 +241,7 @@ public class IngresoGui extends javax.swing.JFrame {
         gridBagConstraints.ipadx = 165;
         gridBagConstraints.ipady = -2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(31, 6, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(20, 12, 0, 0);
         jPanel1.add(apellido, gridBagConstraints);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
@@ -218,7 +251,7 @@ public class IngresoGui extends javax.swing.JFrame {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(25, 34, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(11, 40, 0, 0);
         jPanel1.add(jLabel4, gridBagConstraints);
 
         fechaUltPago.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
@@ -231,7 +264,7 @@ public class IngresoGui extends javax.swing.JFrame {
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.ipadx = 111;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(19, 6, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(5, 6, 0, 0);
         jPanel1.add(fechaUltPago, gridBagConstraints);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
@@ -242,7 +275,7 @@ public class IngresoGui extends javax.swing.JFrame {
         gridBagConstraints.gridwidth = 4;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(28, 34, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(27, 40, 0, 0);
         jPanel1.add(jLabel6, gridBagConstraints);
 
         fechaVence.setFont(new java.awt.Font("Tahoma", 1, 40)); // NOI18N
@@ -255,7 +288,7 @@ public class IngresoGui extends javax.swing.JFrame {
         gridBagConstraints.gridwidth = 17;
         gridBagConstraints.ipadx = 177;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(6, 6, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(5, 6, 0, 0);
         jPanel1.add(fechaVence, gridBagConstraints);
 
         jLabel36.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
@@ -265,7 +298,7 @@ public class IngresoGui extends javax.swing.JFrame {
         gridBagConstraints.gridy = 6;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(29, 34, 1, 0);
+        gridBagConstraints.insets = new java.awt.Insets(23, 40, 7, 0);
         jPanel1.add(jLabel36, gridBagConstraints);
 
         cantDias.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
@@ -277,7 +310,7 @@ public class IngresoGui extends javax.swing.JFrame {
         gridBagConstraints.gridy = 6;
         gridBagConstraints.ipadx = 41;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(11, 6, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(5, 6, 0, 0);
         jPanel1.add(cantDias, gridBagConstraints);
 
         jLabel38.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
@@ -288,7 +321,7 @@ public class IngresoGui extends javax.swing.JFrame {
         gridBagConstraints.gridwidth = 8;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(29, 6, 1, 0);
+        gridBagConstraints.insets = new java.awt.Insets(23, 6, 7, 0);
         jPanel1.add(jLabel38, gridBagConstraints);
 
         jPanel2.setBackground(new java.awt.Color(236, 233, 216));
@@ -323,7 +356,7 @@ public class IngresoGui extends javax.swing.JFrame {
         );
         panelImage1Layout.setVerticalGroup(
             panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 257, Short.MAX_VALUE)
         );
 
         panelImage2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Costa Norte logo-centro.jpg"))); // NOI18N
@@ -338,8 +371,6 @@ public class IngresoGui extends javax.swing.JFrame {
             panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
-
-        jPanel3.setBackground(new java.awt.Color(236, 233, 216));
 
         textoHuella.setEditable(false);
         textoHuella.setBackground(new java.awt.Color(236, 233, 216));
@@ -357,153 +388,417 @@ public class IngresoGui extends javax.swing.JFrame {
         );
         imHuellaLayout.setVerticalGroup(
             imHuellaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 2, Short.MAX_VALUE)
+            .addGap(0, 32, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(imHuella, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1)
-                .addContainerGap())
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(imHuella, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addContainerGap())
-        );
+        jPanel4.setLayout(new java.awt.BorderLayout());
 
         panelAsistencia.setBackground(new java.awt.Color(236, 233, 216));
         panelAsistencia.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Días de asistencia", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Agency FB", 0, 14), java.awt.Color.black)); // NOI18N
-        panelAsistencia.setLayout(new java.awt.GridLayout(3, 10, 1, 0));
+        panelAsistencia.setAutoscrolls(true);
+        panelAsistencia.setLayout(new java.awt.GridLayout(3, 10));
 
-        dia1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia1);
+        jTextArea1.setEditable(false);
+        jTextArea1.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea1.setColumns(1);
+        jTextArea1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea1.setLineWrap(true);
+        jTextArea1.setRows(5);
+        jTextArea1.setTabSize(0);
+        jTextArea1.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea1.setEnabled(false);
+        jScrollPane3.setViewportView(jTextArea1);
 
-        dia2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia2);
+        panelAsistencia.add(jScrollPane3);
 
-        dia3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia3);
+        jTextArea2.setEditable(false);
+        jTextArea2.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea2.setColumns(1);
+        jTextArea2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea2.setLineWrap(true);
+        jTextArea2.setRows(5);
+        jTextArea2.setTabSize(0);
+        jTextArea2.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea2.setEnabled(false);
+        jScrollPane4.setViewportView(jTextArea2);
 
-        dia4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia4);
+        panelAsistencia.add(jScrollPane4);
 
-        dia5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia5);
+        jScrollPane5.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        dia6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia6);
+        jTextArea3.setEditable(false);
+        jTextArea3.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea3.setColumns(1);
+        jTextArea3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea3.setLineWrap(true);
+        jTextArea3.setRows(5);
+        jTextArea3.setTabSize(0);
+        jTextArea3.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea3.setEnabled(false);
+        jScrollPane5.setViewportView(jTextArea3);
 
-        dia7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia7.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia7);
+        panelAsistencia.add(jScrollPane5);
 
-        dia8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia8.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia8);
+        jScrollPane6.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        dia9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia9.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia9);
+        jTextArea4.setEditable(false);
+        jTextArea4.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea4.setColumns(1);
+        jTextArea4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea4.setLineWrap(true);
+        jTextArea4.setRows(5);
+        jTextArea4.setTabSize(0);
+        jTextArea4.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea4.setEnabled(false);
+        jScrollPane6.setViewportView(jTextArea4);
 
-        dia10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia10.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia10);
+        panelAsistencia.add(jScrollPane6);
 
-        dia11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia11.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia11);
+        jScrollPane7.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        dia12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia12.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia12);
+        jTextArea5.setEditable(false);
+        jTextArea5.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea5.setColumns(1);
+        jTextArea5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea5.setLineWrap(true);
+        jTextArea5.setRows(5);
+        jTextArea5.setTabSize(0);
+        jTextArea5.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea5.setEnabled(false);
+        jScrollPane7.setViewportView(jTextArea5);
 
-        dia13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia13.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia13);
+        panelAsistencia.add(jScrollPane7);
 
-        dia14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia14.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia14);
+        jScrollPane8.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        dia15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia15.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia15);
+        jTextArea6.setEditable(false);
+        jTextArea6.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea6.setColumns(1);
+        jTextArea6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea6.setLineWrap(true);
+        jTextArea6.setRows(5);
+        jTextArea6.setTabSize(0);
+        jTextArea6.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea6.setEnabled(false);
+        jScrollPane8.setViewportView(jTextArea6);
 
-        dia16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia16.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia16);
+        panelAsistencia.add(jScrollPane8);
 
-        dia17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia17.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia17);
+        jScrollPane9.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        dia18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia18.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia18);
+        jTextArea7.setEditable(false);
+        jTextArea7.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea7.setColumns(1);
+        jTextArea7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea7.setLineWrap(true);
+        jTextArea7.setRows(5);
+        jTextArea7.setTabSize(0);
+        jTextArea7.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea7.setEnabled(false);
+        jScrollPane9.setViewportView(jTextArea7);
 
-        dia19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia19.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia19);
+        panelAsistencia.add(jScrollPane9);
 
-        dia20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia20.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia20);
+        jTextArea8.setEditable(false);
+        jTextArea8.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea8.setColumns(1);
+        jTextArea8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea8.setLineWrap(true);
+        jTextArea8.setRows(5);
+        jTextArea8.setTabSize(0);
+        jTextArea8.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea8.setEnabled(false);
+        jScrollPane10.setViewportView(jTextArea8);
 
-        dia21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia21.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia21);
+        panelAsistencia.add(jScrollPane10);
 
-        dia22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia22.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia22);
+        jTextArea9.setEditable(false);
+        jTextArea9.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea9.setColumns(1);
+        jTextArea9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea9.setLineWrap(true);
+        jTextArea9.setRows(5);
+        jTextArea9.setTabSize(0);
+        jTextArea9.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea9.setEnabled(false);
+        jScrollPane11.setViewportView(jTextArea9);
 
-        dia23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia23.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia23);
+        panelAsistencia.add(jScrollPane11);
 
-        dia24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia24.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia24);
+        jTextArea10.setEditable(false);
+        jTextArea10.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea10.setColumns(1);
+        jTextArea10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea10.setLineWrap(true);
+        jTextArea10.setRows(5);
+        jTextArea10.setTabSize(0);
+        jTextArea10.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea10.setEnabled(false);
+        jScrollPane12.setViewportView(jTextArea10);
 
-        dia25.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia25.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia25);
+        panelAsistencia.add(jScrollPane12);
 
-        dia26.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia26.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia26);
+        jTextArea11.setEditable(false);
+        jTextArea11.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea11.setColumns(1);
+        jTextArea11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea11.setLineWrap(true);
+        jTextArea11.setRows(5);
+        jTextArea11.setTabSize(0);
+        jTextArea11.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea11.setEnabled(false);
+        jScrollPane13.setViewportView(jTextArea11);
 
-        dia27.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia27.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia27);
+        panelAsistencia.add(jScrollPane13);
 
-        dia28.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia28.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia28);
+        jTextArea12.setEditable(false);
+        jTextArea12.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea12.setColumns(1);
+        jTextArea12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea12.setLineWrap(true);
+        jTextArea12.setRows(5);
+        jTextArea12.setTabSize(0);
+        jTextArea12.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea12.setEnabled(false);
+        jScrollPane14.setViewportView(jTextArea12);
 
-        dia29.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia29.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia29);
+        panelAsistencia.add(jScrollPane14);
 
-        dia30.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dia30.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelAsistencia.add(dia30);
+        jTextArea13.setEditable(false);
+        jTextArea13.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea13.setColumns(1);
+        jTextArea13.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea13.setLineWrap(true);
+        jTextArea13.setRows(5);
+        jTextArea13.setTabSize(0);
+        jTextArea13.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea13.setEnabled(false);
+        jScrollPane15.setViewportView(jTextArea13);
+
+        panelAsistencia.add(jScrollPane15);
+
+        jTextArea14.setEditable(false);
+        jTextArea14.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea14.setColumns(1);
+        jTextArea14.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea14.setLineWrap(true);
+        jTextArea14.setRows(5);
+        jTextArea14.setTabSize(0);
+        jTextArea14.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea14.setEnabled(false);
+        jScrollPane16.setViewportView(jTextArea14);
+
+        panelAsistencia.add(jScrollPane16);
+
+        jTextArea15.setEditable(false);
+        jTextArea15.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea15.setColumns(1);
+        jTextArea15.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea15.setLineWrap(true);
+        jTextArea15.setRows(5);
+        jTextArea15.setTabSize(0);
+        jTextArea15.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea15.setEnabled(false);
+        jScrollPane17.setViewportView(jTextArea15);
+
+        panelAsistencia.add(jScrollPane17);
+
+        jTextArea16.setEditable(false);
+        jTextArea16.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea16.setColumns(1);
+        jTextArea16.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea16.setLineWrap(true);
+        jTextArea16.setRows(5);
+        jTextArea16.setTabSize(0);
+        jTextArea16.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea16.setEnabled(false);
+        jScrollPane18.setViewportView(jTextArea16);
+
+        panelAsistencia.add(jScrollPane18);
+
+        jTextArea17.setEditable(false);
+        jTextArea17.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea17.setColumns(1);
+        jTextArea17.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea17.setLineWrap(true);
+        jTextArea17.setRows(5);
+        jTextArea17.setTabSize(0);
+        jTextArea17.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea17.setEnabled(false);
+        jScrollPane19.setViewportView(jTextArea17);
+
+        panelAsistencia.add(jScrollPane19);
+
+        jTextArea18.setEditable(false);
+        jTextArea18.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea18.setColumns(1);
+        jTextArea18.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea18.setLineWrap(true);
+        jTextArea18.setRows(5);
+        jTextArea18.setTabSize(0);
+        jTextArea18.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea18.setEnabled(false);
+        jScrollPane20.setViewportView(jTextArea18);
+
+        panelAsistencia.add(jScrollPane20);
+
+        jTextArea19.setEditable(false);
+        jTextArea19.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea19.setColumns(1);
+        jTextArea19.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea19.setLineWrap(true);
+        jTextArea19.setRows(5);
+        jTextArea19.setTabSize(0);
+        jTextArea19.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea19.setEnabled(false);
+        jScrollPane21.setViewportView(jTextArea19);
+
+        panelAsistencia.add(jScrollPane21);
+
+        jTextArea20.setEditable(false);
+        jTextArea20.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea20.setColumns(1);
+        jTextArea20.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea20.setLineWrap(true);
+        jTextArea20.setRows(5);
+        jTextArea20.setTabSize(0);
+        jTextArea20.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea20.setEnabled(false);
+        jScrollPane22.setViewportView(jTextArea20);
+
+        panelAsistencia.add(jScrollPane22);
+
+        jTextArea21.setEditable(false);
+        jTextArea21.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea21.setColumns(1);
+        jTextArea21.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea21.setLineWrap(true);
+        jTextArea21.setRows(5);
+        jTextArea21.setTabSize(0);
+        jTextArea21.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea21.setEnabled(false);
+        jScrollPane23.setViewportView(jTextArea21);
+
+        panelAsistencia.add(jScrollPane23);
+
+        jTextArea22.setEditable(false);
+        jTextArea22.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea22.setColumns(1);
+        jTextArea22.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea22.setLineWrap(true);
+        jTextArea22.setRows(5);
+        jTextArea22.setTabSize(0);
+        jTextArea22.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea22.setEnabled(false);
+        jScrollPane24.setViewportView(jTextArea22);
+
+        panelAsistencia.add(jScrollPane24);
+
+        jTextArea23.setEditable(false);
+        jTextArea23.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea23.setColumns(1);
+        jTextArea23.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea23.setLineWrap(true);
+        jTextArea23.setRows(5);
+        jTextArea23.setTabSize(0);
+        jTextArea23.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea23.setEnabled(false);
+        jScrollPane25.setViewportView(jTextArea23);
+
+        panelAsistencia.add(jScrollPane25);
+
+        jTextArea24.setEditable(false);
+        jTextArea24.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea24.setColumns(1);
+        jTextArea24.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea24.setLineWrap(true);
+        jTextArea24.setRows(5);
+        jTextArea24.setTabSize(0);
+        jTextArea24.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea24.setEnabled(false);
+        jScrollPane26.setViewportView(jTextArea24);
+
+        panelAsistencia.add(jScrollPane26);
+
+        jTextArea25.setEditable(false);
+        jTextArea25.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea25.setColumns(1);
+        jTextArea25.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea25.setLineWrap(true);
+        jTextArea25.setRows(5);
+        jTextArea25.setTabSize(0);
+        jTextArea25.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea25.setEnabled(false);
+        jScrollPane27.setViewportView(jTextArea25);
+
+        panelAsistencia.add(jScrollPane27);
+
+        jTextArea26.setEditable(false);
+        jTextArea26.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea26.setColumns(1);
+        jTextArea26.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea26.setLineWrap(true);
+        jTextArea26.setRows(5);
+        jTextArea26.setTabSize(0);
+        jTextArea26.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea26.setEnabled(false);
+        jScrollPane28.setViewportView(jTextArea26);
+
+        panelAsistencia.add(jScrollPane28);
+
+        jTextArea27.setEditable(false);
+        jTextArea27.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea27.setColumns(1);
+        jTextArea27.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea27.setLineWrap(true);
+        jTextArea27.setRows(5);
+        jTextArea27.setTabSize(0);
+        jTextArea27.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea27.setEnabled(false);
+        jScrollPane29.setViewportView(jTextArea27);
+
+        panelAsistencia.add(jScrollPane29);
+
+        jTextArea28.setEditable(false);
+        jTextArea28.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea28.setColumns(1);
+        jTextArea28.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea28.setLineWrap(true);
+        jTextArea28.setRows(5);
+        jTextArea28.setTabSize(0);
+        jTextArea28.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea28.setEnabled(false);
+        jScrollPane30.setViewportView(jTextArea28);
+
+        panelAsistencia.add(jScrollPane30);
+
+        jTextArea29.setEditable(false);
+        jTextArea29.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea29.setColumns(1);
+        jTextArea29.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea29.setLineWrap(true);
+        jTextArea29.setRows(5);
+        jTextArea29.setTabSize(0);
+        jTextArea29.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea29.setEnabled(false);
+        jScrollPane31.setViewportView(jTextArea29);
+
+        panelAsistencia.add(jScrollPane31);
+
+        jTextArea30.setEditable(false);
+        jTextArea30.setBackground(new java.awt.Color(236, 233, 216));
+        jTextArea30.setColumns(1);
+        jTextArea30.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextArea30.setLineWrap(true);
+        jTextArea30.setRows(5);
+        jTextArea30.setTabSize(0);
+        jTextArea30.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea30.setEnabled(false);
+        jScrollPane32.setViewportView(jTextArea30);
+
+        panelAsistencia.add(jScrollPane32);
+
+        jPanel4.add(panelAsistencia, java.awt.BorderLayout.CENTER);
 
         jMenu1.setText("Archivo");
 
@@ -527,14 +822,17 @@ public class IngresoGui extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(panelImage1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(0, 0, 0)
                 .addComponent(panelImage2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(panelAsistencia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(imHuella, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1))
+            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {panelImage1, panelImage2});
@@ -543,16 +841,17 @@ public class IngresoGui extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(panelImage1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 282, Short.MAX_VALUE)
-                    .addComponent(panelImage2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(panelImage2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panelImage1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, 0)
-                .addComponent(panelAsistencia, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
                 .addGap(0, 0, 0)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(imHuella, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         pack();
@@ -636,36 +935,6 @@ public class IngresoGui extends javax.swing.JFrame {
     private javax.swing.JMenuItem busquedaManual;
     private javax.swing.JLabel cantDias;
     private javax.swing.JMenuItem darDeAlta;
-    private javax.swing.JLabel dia1;
-    private javax.swing.JLabel dia10;
-    private javax.swing.JLabel dia11;
-    private javax.swing.JLabel dia12;
-    private javax.swing.JLabel dia13;
-    private javax.swing.JLabel dia14;
-    private javax.swing.JLabel dia15;
-    private javax.swing.JLabel dia16;
-    private javax.swing.JLabel dia17;
-    private javax.swing.JLabel dia18;
-    private javax.swing.JLabel dia19;
-    private javax.swing.JLabel dia2;
-    private javax.swing.JLabel dia20;
-    private javax.swing.JLabel dia21;
-    private javax.swing.JLabel dia22;
-    private javax.swing.JLabel dia23;
-    private javax.swing.JLabel dia24;
-    private javax.swing.JLabel dia25;
-    private javax.swing.JLabel dia26;
-    private javax.swing.JLabel dia27;
-    private javax.swing.JLabel dia28;
-    private javax.swing.JLabel dia29;
-    private javax.swing.JLabel dia3;
-    private javax.swing.JLabel dia30;
-    private javax.swing.JLabel dia4;
-    private javax.swing.JLabel dia5;
-    private javax.swing.JLabel dia6;
-    private javax.swing.JLabel dia7;
-    private javax.swing.JLabel dia8;
-    private javax.swing.JLabel dia9;
     private javax.swing.JLabel fechaUltPago;
     private javax.swing.JLabel fechaVence;
     private org.edisoncor.gui.panel.PanelImage imHuella;
@@ -678,8 +947,68 @@ public class IngresoGui extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane10;
+    private javax.swing.JScrollPane jScrollPane11;
+    private javax.swing.JScrollPane jScrollPane12;
+    private javax.swing.JScrollPane jScrollPane13;
+    private javax.swing.JScrollPane jScrollPane14;
+    private javax.swing.JScrollPane jScrollPane15;
+    private javax.swing.JScrollPane jScrollPane16;
+    private javax.swing.JScrollPane jScrollPane17;
+    private javax.swing.JScrollPane jScrollPane18;
+    private javax.swing.JScrollPane jScrollPane19;
+    private javax.swing.JScrollPane jScrollPane20;
+    private javax.swing.JScrollPane jScrollPane21;
+    private javax.swing.JScrollPane jScrollPane22;
+    private javax.swing.JScrollPane jScrollPane23;
+    private javax.swing.JScrollPane jScrollPane24;
+    private javax.swing.JScrollPane jScrollPane25;
+    private javax.swing.JScrollPane jScrollPane26;
+    private javax.swing.JScrollPane jScrollPane27;
+    private javax.swing.JScrollPane jScrollPane28;
+    private javax.swing.JScrollPane jScrollPane29;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane30;
+    private javax.swing.JScrollPane jScrollPane31;
+    private javax.swing.JScrollPane jScrollPane32;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextArea10;
+    private javax.swing.JTextArea jTextArea11;
+    private javax.swing.JTextArea jTextArea12;
+    private javax.swing.JTextArea jTextArea13;
+    private javax.swing.JTextArea jTextArea14;
+    private javax.swing.JTextArea jTextArea15;
+    private javax.swing.JTextArea jTextArea16;
+    private javax.swing.JTextArea jTextArea17;
+    private javax.swing.JTextArea jTextArea18;
+    private javax.swing.JTextArea jTextArea19;
+    private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JTextArea jTextArea20;
+    private javax.swing.JTextArea jTextArea21;
+    private javax.swing.JTextArea jTextArea22;
+    private javax.swing.JTextArea jTextArea23;
+    private javax.swing.JTextArea jTextArea24;
+    private javax.swing.JTextArea jTextArea25;
+    private javax.swing.JTextArea jTextArea26;
+    private javax.swing.JTextArea jTextArea27;
+    private javax.swing.JTextArea jTextArea28;
+    private javax.swing.JTextArea jTextArea29;
+    private javax.swing.JTextArea jTextArea3;
+    private javax.swing.JTextArea jTextArea30;
+    private javax.swing.JTextArea jTextArea4;
+    private javax.swing.JTextArea jTextArea5;
+    private javax.swing.JTextArea jTextArea6;
+    private javax.swing.JTextArea jTextArea7;
+    private javax.swing.JTextArea jTextArea8;
+    private javax.swing.JTextArea jTextArea9;
     private javax.swing.JMenuItem limpiarVentana;
     private javax.swing.JLabel nombre;
     private javax.swing.JPanel panelAsistencia;
