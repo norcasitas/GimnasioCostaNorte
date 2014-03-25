@@ -163,3 +163,22 @@ CREATE TABLE `GYM`.`huellas` (
   `dedo` VARCHAR(45) NULL,
   `client_id` INT NULL,
   PRIMARY KEY (`id`));
+
+
+CREATE TABLE `gym`.`combos` (
+  `id_combo` INT NOT NULL,
+  `id_activ` INT NULL,
+  `dias` INT NULL,
+  PRIMARY KEY (`id_combo`));
+ALTER TABLE `gym`.`combos` 
+CHANGE COLUMN `id_activ` `id_activ` INT(11) NOT NULL ,
+DROP PRIMARY KEY,
+ADD PRIMARY KEY (`id_combo`, `id_activ`);
+
+
+ALTER TABLE `gym`.`asistencias` 
+CHANGE COLUMN `ACTIV` `ID_ACTIV` INT(11) NULL DEFAULT NULL ,
+ADD COLUMN `ID_ACTIV_COMBO` INT(11) NULL AFTER `ID_ACTIV`;
+
+ALTER TABLE `gym`.`arancels` 
+ADD COLUMN `dias` INT(2) NULL DEFAULT 0 AFTER `categoria`;
