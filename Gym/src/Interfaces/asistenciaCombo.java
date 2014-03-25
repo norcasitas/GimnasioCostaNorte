@@ -38,8 +38,7 @@ public class asistenciaCombo extends javax.swing.JDialog {
         initComponents();
         Iterator<Socioarancel> it = socioArancel.iterator();
         Calendar calendario= Calendar.getInstance();
-        calendario.set(2014, 2, 21);
-        System.out.println(calendario.get(calendario.DAY_OF_WEEK));
+        System.out.println(calendario.get(Calendar.DAY_OF_WEEK));
         System.out.println(calendario.getTime());
         calendario.add(Calendar.DATE,-calendario.get(Calendar.DAY_OF_WEEK)+1   );
         System.out.println(calendario.getTime());

@@ -157,7 +157,6 @@ public class ControladorActividades implements ActionListener {
         
     }
     public void tablaMouseClicked(java.awt.event.MouseEvent evt) {
-        actividadesGui.bloquearCampos(true);
         actividadesGui.getBotGuardar().setEnabled(false);
         actividadesGui.getBotModif().setEnabled(true);
         actividadesGui.getBotEliminarCancelar().setEnabled(true);
@@ -176,6 +175,7 @@ public class ControladorActividades implements ActionListener {
         else{
             tablaActComboDefault.setRowCount(0);
         }
+        actividadesGui.bloquearCampos(true);
         /*Cargo la info de las actividades en los campos! */
     }
 
@@ -315,6 +315,11 @@ try{
             actividadesGui.getBotEliminarCancelar().setText("Cancelar");
             actividadesGui.getBotModif().setEnabled(false);
             actividadesGui.getBotGuardar().setEnabled(true);
+            if(actividadesGui.getCategoria().getSelectedItem().equals("COMBO")){
+                actividadesGui.getDias().setEnabled(false);
+            }
+            else
+               actividadesGui.getDias().setEnabled(true);
             isNuevo = false;
 
         }

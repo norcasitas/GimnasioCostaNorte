@@ -359,7 +359,7 @@ public class ControladorIngreso implements ActionListener {
         Component[] array = ingresoGui.getPanelAsistencia().getComponents();
         socio = Socio.findFirst("ID_DATOS_PERS = ?", idCliente);
         LazyList<Asistencia> asistencias = Asistencia.where("ID_DATOS_PERS = ? and FECHA >= ?", idCliente, socio.getDate("FECHA_ULT_PAGO"));
-        asistencias.orderBy("FECHA");
+        asistencias.orderBy("ID_ASISTENCIA");
         Iterator<Asistencia> it = asistencias.iterator();
         int i = 0;
         while (it.hasNext() && i < 30) {
@@ -422,6 +422,11 @@ public class ControladorIngreso implements ActionListener {
                          Arancel aran = Arancel.findFirst("id = ?", socioArancel.get(0).get("id_arancel"));
                         if(aran.getString("categoria").equals("COMBO"))
                             comboSolo=true;
+                        else{
+                                Base.openTransaction();
+                                Asistencia.createIt("ID_DATOS_PERS", idCliente, "FECHA", dateToMySQLDate(Calendar.getInstance().getTime(), false),"ID_ACTIV",aran.get("id"));
+                                Base.commitTransaction();
+                        }
                     }
                     if(socioArancel.size()>1 || comboSolo){
                         asistenciaCombo asisComboGui= new asistenciaCombo(ingresoGui, true, socioArancel,idCliente);
@@ -442,6 +447,7 @@ public class ControladorIngreso implements ActionListener {
                             }
                         }
                     }
+   
                     cargarAsistencia();
                 }
                 else{
