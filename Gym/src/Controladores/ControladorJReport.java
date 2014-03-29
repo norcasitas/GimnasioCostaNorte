@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package controladores;
+package Controladores;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -36,6 +36,8 @@ public class ControladorJReport {
         Map parametros = new HashMap();
         parametros.clear();
         parametros.put("logo", this.getClass().getResourceAsStream(logo));
+        parametros.put("logo_1", this.getClass().getResourceAsStream(logo));
+        parametros.put("logo_2", this.getClass().getResourceAsStream(logo));
         JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, connection);
         JasperViewer.viewReport(jasperPrint, false);
         connection.close();

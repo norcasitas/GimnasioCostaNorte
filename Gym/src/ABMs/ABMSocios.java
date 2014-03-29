@@ -68,12 +68,12 @@ public class ABMSocios {
         return false;
     }
 
-    public boolean modificar(Socio s, LinkedList act) {
-        Socio viejo = Socio.first("DNI = ?", s.getString("DNI"));
+    public boolean modificar(Socio s, LinkedList act, String dniViejo) {
+        Socio viejo = Socio.first("DNI = ?", dniViejo);
         if (viejo != null) {
             Base.openTransaction();
             viejo.set("NOMBRE", s.get("NOMBRE"), "APELLIDO", s.get("APELLIDO"), "DNI", s.get("DNI"), "FECHA_NAC", s.get("FECHA_NAC"), "TEL", s.get("TEL"), "SEXO", s.get("SEXO"));
-            Socio soc = getSocio(s);
+            Socio soc = Socio.first("DNI = ?", dniViejo);
             LazyList l = Socioarancel.where("id_socio = ?", soc.get("ID_DATOS_PERS"));
             Iterator<Socioarancel> i = l.iterator();
             while(i.hasNext()){
@@ -86,7 +86,7 @@ public class ABMSocios {
             while(it.hasNext()){
                 Arancel a = it.next();
                // System.out.println(a.get("nombre"));
-                Socio so = getSocio(s);
+                Socio so = Socio.first("DNI = ?", dniViejo);
                 Socioarancel sa = Socioarancel.create("id_socio", so.get("ID_DATOS_PERS"), "id_arancel", a.get("id"));
                 sa.saveIt();
             }

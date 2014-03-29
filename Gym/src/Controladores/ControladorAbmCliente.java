@@ -40,6 +40,7 @@ public class ControladorAbmCliente implements ActionListener {
     private Socio s;
     private boolean fichaNueva;
     private ActualizarDatos actualizarDatos;
+    private String dniViejo;
 
     public ControladorAbmCliente(AbmClienteGui clienteGui, ActualizarDatos actualizarDatos) {
         this.clienteGui = clienteGui;
@@ -252,7 +253,7 @@ public class ControladorAbmCliente implements ActionListener {
 
                     }
                     //Object o = clienteGui.getTablaActividades().getValueAt(1, 1).equals(true);
-                    if(abmsocio.modificar(s, listaran)){
+                    if(abmsocio.modificar(s, listaran,dniViejo)){
                         JOptionPane.showMessageDialog(clienteGui, "Socio modificado exitosamente!");
                         clienteGui.bloquearCampos(true);
                         //clienteGui.limpiarCampos();
@@ -335,7 +336,7 @@ public class ControladorAbmCliente implements ActionListener {
         if (ae.getSource() == clienteGui.getBotModif()) {
             System.out.println("Boton modif pulsado");
             clienteGui.bloquearCampos(false);
-            clienteGui.getDni().setEnabled(false);
+            //clienteGui.getDni().setEnabled(false);
             clienteGui.getBotEliminarCancelar().setText("Cancelar");
             clienteGui.getBotModif().setEnabled(false);
             clienteGui.getBotGuardar().setEnabled(true);
@@ -378,6 +379,7 @@ public class ControladorAbmCliente implements ActionListener {
                // row[1] = false;
                 clienteGui.getTablaActivDefault().addRow(row);
             }
+            dniViejo=clienteGui.getDni().getText();
          }
         
         if (ae.getSource() == clienteGui.getBotNuevo()) {

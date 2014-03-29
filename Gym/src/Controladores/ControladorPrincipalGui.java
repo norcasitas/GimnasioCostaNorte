@@ -28,7 +28,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.javalite.activejdbc.LazyList;
-import controladores.ControladorJReport;
+import Controladores.ControladorJReport;
 import java.sql.SQLException;
 import net.sf.jasperreports.engine.JRException;
 

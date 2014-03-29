@@ -498,7 +498,7 @@ public class RegistrarPagoGui extends javax.swing.JDialog {
         socio.setBoolean("ACTIVO", true);
         socio.saveIt();
         Base.commitTransaction();
-        if (abmsocio.modificar(socio, listaran)) {
+        if (abmsocio.modificar(socio, listaran, socio.getString("DNI"))) {
             JOptionPane.showMessageDialog(this, "Socio dado de alta correctamente!");
 
             System.out.println("pago realizado!");
