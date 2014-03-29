@@ -38,6 +38,11 @@
                 <Property name="text" type="java.lang.String" value="Declaraci&#xf3;n jurada"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="impresionAranceles">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Aranceles para imprimir"/>
+              </Properties>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu2">

@@ -28,6 +28,9 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.javalite.activejdbc.LazyList;
+import controladores.ControladorJReport;
+import java.sql.SQLException;
+import net.sf.jasperreports.engine.JRException;
 
 /**
  *
@@ -47,6 +50,7 @@ public class ControladorPrincipalGui implements ActionListener {
     private ControladorIngreso controladorIngreso;
     private IngresoGui ingresoGui;
     private ActualizarDatos actualizarDatos;
+    private ControladorJReport impresionArancel;
 
     public ControladorPrincipalGui() throws Exception {
         try {
@@ -76,6 +80,7 @@ public class ControladorPrincipalGui implements ActionListener {
         principalGui.getDesktop().add(actividadesGui);
         usuarioGui = new UsuarioGui();
         controladorUsuario = new ControladorUsuario(usuarioGui);
+        impresionArancel= new ControladorJReport("precio.jasper");
         principalGui.getDesktop().add(usuarioGui);
 
         principalGui.setCursor(Cursor.DEFAULT_CURSOR);
@@ -144,6 +149,18 @@ public class ControladorPrincipalGui implements ActionListener {
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(principalGui, "Corrobore si tiene instalado un lector PDF \n "+ex, "¡Error!", JOptionPane.ERROR_MESSAGE);
             }
+        }
+        if(ae.getSource()==principalGui.getImpresionAranceles()){
+            try {
+                impresionArancel.mostrarReporte();
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(ControladorPrincipalGui.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(ControladorPrincipalGui.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (JRException ex) {
+                Logger.getLogger(ControladorPrincipalGui.class.getName()).log(Level.SEVERE, null, ex);
+            }
+       
         }
 
 

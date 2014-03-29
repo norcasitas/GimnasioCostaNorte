@@ -38,10 +38,15 @@ public class PrincipalGui extends javax.swing.JFrame {
         this.botUsuario.addActionListener(lis);
         this.ingreso.addActionListener(lis);
         this.declaracion.addActionListener(lis);
+        this.impresionAranceles.addActionListener(lis);
     }
 
     public JMenuItem getBotDesconectar() {
         return botDesconectar;
+    }
+
+    public JMenuItem getImpresionAranceles() {
+        return impresionAranceles;
     }
 
     public JButton getBotUsuario() {
@@ -97,6 +102,7 @@ public class PrincipalGui extends javax.swing.JFrame {
         botSalir = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         declaracion = new javax.swing.JMenuItem();
+        impresionAranceles = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         tecPro = new javax.swing.JMenuItem();
 
@@ -163,6 +169,9 @@ public class PrincipalGui extends javax.swing.JFrame {
         declaracion.setText("Declaración jurada");
         jMenu3.add(declaracion);
 
+        impresionAranceles.setText("Aranceles para imprimir");
+        jMenu3.add(impresionAranceles);
+
         jMenuBar1.add(jMenu3);
 
         jMenu2.setText("Acerca de");
@@ -197,6 +206,7 @@ public class PrincipalGui extends javax.swing.JFrame {
     private javax.swing.JButton botSocios;
     private javax.swing.JButton botUsuario;
     private javax.swing.JMenuItem declaracion;
+    private javax.swing.JMenuItem impresionAranceles;
     private javax.swing.JButton ingreso;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;

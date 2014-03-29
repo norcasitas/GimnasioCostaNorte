@@ -165,6 +165,15 @@ public class ControladorActividades implements ActionListener {
         int row = actividadesGui.getTablaActividades().getSelectedRow();
         ar = Arancel.first("id = ?", actividadesGui.getTablaActividades().getValueAt(row, 0));
         actividadesGui.getActividad().setText(ar.getString("nombre"));
+        int diasSemana= ar.getInteger("dias");
+        if(diasSemana==99){
+            actividadesGui.getPaseLibre().setSelected(true);
+            actividadesGui.getDias().setValue(0);
+        }
+        else{
+           actividadesGui.getPaseLibre().setSelected(false);
+           actividadesGui.getDias().setValue(diasSemana);
+        }
         actividadesGui.getPrecio().setText(String.valueOf(ar.getFloat("precio")));
         actividadesGui.getDesde().setDate(ar.getDate("fecha"));
         actividadesGui.getCategoria().setSelectedItem(ar.get("categoria"));
@@ -225,6 +234,15 @@ public class ControladorActividades implements ActionListener {
                 System.out.println("Se modificó uno que existia");
                 Arancel a = new Arancel();
                 boolean error=false;
+                int vecesSemana;
+                if(actividadesGui.getPaseLibre().isSelected()){
+                    vecesSemana=99; //99 veces por semana, para simular muchas je je je
+                }
+                else{
+                    vecesSemana= (Integer)actividadesGui.getDias().getValue();
+                }
+                /*Aca tenés la variable de la cantidad de veces, si es 99 significa pase libre*/
+                System.out.println(vecesSemana);
                 a.set("fecha", actividadesGui.getDesde().getDate());
 try{
                     BigDecimal precio=BigDecimal.valueOf(Double.valueOf(actividadesGui.getPrecio().getText()));
@@ -321,6 +339,7 @@ try{
             else
                actividadesGui.getDias().setEnabled(true);
             isNuevo = false;
+            actividadesGui.getDias().setEnabled(!actividadesGui.getPaseLibre().isSelected());
 
         }
         if (ae.getSource() == actividadesGui.getBotNuevo()) {
@@ -330,7 +349,7 @@ try{
             actividadesGui.limpiarCampos();
             actividadesGui.bloquearCampos(false);
             actividadesGui.getCategoria().setSelectedIndex(0);
-
+            actividadesGui.getDias().setEnabled(!actividadesGui.getPaseLibre().isSelected());
         }
 
     }

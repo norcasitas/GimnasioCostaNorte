@@ -362,7 +362,8 @@ public class ControladorIngreso implements ActionListener {
         asistencias.orderBy("ID_ASISTENCIA");
         Iterator<Asistencia> it = asistencias.iterator();
         int i = 0;
-        while (it.hasNext() && i < 30) {
+        int j;
+        while (it.hasNext() &&i<30) {
             Asistencia asis= it.next();
             Arancel ar= Arancel.findFirst("id = ?", asis.get("ID_ACTIV"));
             String nombreActiv= ar.getString("nombre");
@@ -371,14 +372,26 @@ public class ControladorIngreso implements ActionListener {
                 ar= Arancel.findFirst("id = ?", asis.get("ID_ACTIV_COMBO"));
                 nombreActivCombo=ar.getString("nombre");
             }
+            j=0;
+            boolean mismaFecha=false;
+            while(j<30&&!mismaFecha){
+                if(((JTextArea)((JViewport)((JScrollPane) array[j]).getComponent(0)).getView()).getText().contains(dateToMySQLDate(asis.getDate("FECHA"), true))){
+                    mismaFecha=true;
+                    ((JTextArea)((JViewport)((JScrollPane) array[j]).getComponent(0)).getView()).append("\n-----------\n"+nombreActiv+" - "+nombreActivCombo);
+                }
+                j++;
+        }
+            if(!mismaFecha){
             ((JTextArea)((JViewport)((JScrollPane) array[i]).getComponent(0)).getView()).setText(dateToMySQLDate(asis.getDate("FECHA"), true)+" - \n"+nombreActiv +" - "+nombreActivCombo);
             i++;
+            }
 
         }
 
     }
 
     public void cargarDatos(Socio socio) {
+        ingresoGui.limpiar();
         idCliente = socio.getInteger("ID_DATOS_PERS");
 
         ingresoGui.getNombre().setText(socio.getString("NOMBRE"));
@@ -422,10 +435,20 @@ public class ControladorIngreso implements ActionListener {
                          Arancel aran = Arancel.findFirst("id = ?", socioArancel.get(0).get("id_arancel"));
                         if(aran.getString("categoria").equals("COMBO"))
                             comboSolo=true;
-                        else{
+                        else {
+                            Calendar calendario = Calendar.getInstance();
+                            calendario.add(Calendar.DATE, -calendario.get(Calendar.DAY_OF_WEEK) + 1);
+                            LazyList<Asistencia> asi = Asistencia.where("ID_DATOS_PERS = ? and FECHA> ? and ID_ACTIV =?", idCliente, dateToMySQLDate(calendario.getTime(), false), aran.get("id"));
+                            int contador = asi.size();
+                            if ((contador < aran.getInteger("dias"))&&contador>=0) {
                                 Base.openTransaction();
                                 Asistencia.createIt("ID_DATOS_PERS", idCliente, "FECHA", dateToMySQLDate(Calendar.getInstance().getTime(), false),"ID_ACTIV",aran.get("id"));
                                 Base.commitTransaction();
+                            }
+                            else{
+                                JOptionPane.showMessageDialog(ingresoGui, "Ya asistió el máximo permitido por semana ("+aran.getInteger("dias")+" veces por semana)", "¡Limite!", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                            
                         }
                     }
                     if(socioArancel.size()>1 || comboSolo){
