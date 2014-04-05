@@ -415,6 +415,7 @@ public class ControladorAbmCliente implements ActionListener {
         /*
             ESTO PERTENECE AL CONTROLADOR DE LA FICHA MEDICA
         */
+        if(fichaMedicaGui.isVisible()){
         if(ae.getSource() == fichaMedicaGui.getAceptar()){
             if(fichaNueva){
                if(altaFicha()){
@@ -455,7 +456,7 @@ public class ControladorAbmCliente implements ActionListener {
                  }
     }    
     }
-    
+    }
     private boolean eliminarFicha(Ficha f){
         f.delete();
         return true;

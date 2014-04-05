@@ -26,6 +26,7 @@ public class ControladorLogin extends Thread implements ActionListener {
     private PrincipalGui app;
     private LoginGUI log;
     private IngresoGui ingreso;
+    private String usuario;
 
     public ControladorLogin(PrincipalGui app, IngresoGui ingresoGui) {
         this.app = app;
@@ -50,7 +51,7 @@ public class ControladorLogin extends Thread implements ActionListener {
                     pass = log.getTextPass().getPassword();
                     //if (mu.login(user, pass)) {
                     log.dispose();
-                    app.getBotDesconectar().setText("Cerrar sesión ("+ "NICO"+")");
+                    app.getBotDesconectar().setText("Cerrar sesión ("+log.getTextUsuario().getText()+")");
                     ingreso.setVisible(true);
                     app.setVisible(true);
                     app.toFront();
@@ -71,12 +72,14 @@ public class ControladorLogin extends Thread implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         JButton b = (JButton) ae.getSource();
         if (b.equals(log.getBotConectar())) {
+                    usuario = log.getTextUsuario().getText();
                     log.dispose();
-                    app.getBotDesconectar().setText("Cerrar sesión  ("+ "NICO"+")");
-                     ingreso.setVisible(true);
+                    app.getBotDesconectar().setText("Cerrar sesión  ("+usuario+")");
+                    ingreso.setVisible(true);
                     app.setVisible(true);
                     app.toFront();
                     abrirBase();
+                    
         }
         if (b.equals(log.getBotSalir())) {
             System.exit(0);
@@ -86,7 +89,12 @@ public class ControladorLogin extends Thread implements ActionListener {
     }
     public void abrirBase(){
                         if (!Base.hasConnection()) {
-                         Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/GYM", "root", "root");
+                         Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/gym", "root", "root");
                      }
     }
+
+    public LoginGUI getLog() {
+        return log;
+    }
+    
 }

@@ -29,6 +29,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.javalite.activejdbc.LazyList;
 import Controladores.ControladorJReport;
+import Modelos.Usuario;
 import java.sql.SQLException;
 import net.sf.jasperreports.engine.JRException;
 
@@ -51,6 +52,7 @@ public class ControladorPrincipalGui implements ActionListener {
     private IngresoGui ingresoGui;
     private ActualizarDatos actualizarDatos;
     private ControladorJReport impresionArancel;
+    //private String usuario;
 
     public ControladorPrincipalGui() throws Exception {
         try {
@@ -91,6 +93,15 @@ public class ControladorPrincipalGui implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == principalGui.getBotDesconectar()) {
             System.out.println("cerrar sesión pulsado");
+            int r = JOptionPane.showConfirmDialog(principalGui, "¿Desea cerrar la sesion?", "Cerrar sesion", JOptionPane.YES_NO_OPTION);
+            if (r == JOptionPane.YES_OPTION) {
+                principalGui.dispose();
+                ingresoGui.dispose();
+                controladorLogin.getLog().setVisible(true);
+                controladorLogin.getLog().getTextUsuario().setText("");
+                controladorLogin.getLog().getTextPass().setText("");
+            }
+            
             //Aca debe ir para que se cierre la sesión
         }
         if (ae.getSource() == principalGui.getBotSalir()) {
@@ -127,6 +138,16 @@ public class ControladorPrincipalGui implements ActionListener {
             }
         }
         if (ae.getSource() == principalGui.getBotUsuario()) {
+            LazyList listUsuarios = Usuario.findAll();
+            usuarioGui.getTablaUsuarioDefault().setRowCount(0);
+            Iterator<Usuario> itusu = listUsuarios.iterator();
+            while(itusu.hasNext()){
+                Usuario u = itusu.next();
+                Object row[] = new Object[1];
+                row[0] = u.get("USUARIO");
+                usuarioGui.getTablaUsuarioDefault().addRow(row);
+            }
+            
             usuarioGui.setVisible(true);
             usuarioGui.toFront();
         }

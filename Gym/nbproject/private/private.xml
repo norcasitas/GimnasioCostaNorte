@@ -3,12 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/nico/Trabajo/GimnasioCostaNorte/Gym/src/Controladores/ControladorAbmCliente.java</file>
-            <file>file:/home/nico/Trabajo/GimnasioCostaNorte/Gym/src/Controladores/ControladorLogin.java</file>
-            <file>file:/home/nico/Trabajo/GimnasioCostaNorte/Gym/src/Controladores/ControladorPrincipalGui.java</file>
-            <file>file:/home/nico/Trabajo/GimnasioCostaNorte/Gym/src/Controladores/ControladorJReport.java</file>
-            <file>file:/home/nico/Trabajo/GimnasioCostaNorte/Gym/src/Interfaces/RegistrarPagoGui.java</file>
-            <file>file:/home/nico/Trabajo/GimnasioCostaNorte/Gym/src/ABMs/ABMSocios.java</file>
+            <file>file:/C:/Users/A/Documents/GitHub/GimnasioCostaNorte/Gym/src/Interfaces/BusquedaGui.java</file>
+            <file>file:/C:/Users/A/Documents/GitHub/GimnasioCostaNorte/Gym/src/Controladores/ControladorClientes.java</file>
         </group>
     </open-files>
 </project-private>

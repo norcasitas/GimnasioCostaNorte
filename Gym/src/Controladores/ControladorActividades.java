@@ -242,6 +242,7 @@ public class ControladorActividades implements ActionListener {
                     vecesSemana= (Integer)actividadesGui.getDias().getValue();
                 }
                 /*Aca tenés la variable de la cantidad de veces, si es 99 significa pase libre*/
+                
                 System.out.println(vecesSemana);
                 a.set("fecha", actividadesGui.getDesde().getDate());
 try{
@@ -253,6 +254,7 @@ try{
                 }                a.set("activo", 1);
                 a.set("categoria", actividadesGui.getCategoria().getSelectedItem().toString().toUpperCase());
                 a.set("nombre", actividadesGui.getActividad().getText().toUpperCase());
+                a.set("dias", vecesSemana);
                 a.set("id", actividadesGui.getTablaActividadesDefault().getValueAt(actividadesGui.getTablaActividades().getSelectedRow(), 0));
                 if(!error){
                 if(abmAranceles.modificar(a)){
@@ -291,9 +293,16 @@ try{
                 }catch(java.lang.NumberFormatException ex){
                     error=true;
                 }
-                
+                int vecesSemana;
+                if(actividadesGui.getPaseLibre().isSelected()){
+                    vecesSemana=99; //99 veces por semana, para simular muchas je je je
+                }
+                else{
+                    vecesSemana= (Integer)actividadesGui.getDias().getValue();
+                }
                 a.set("activo", 1);
                 a.set("nombre", actividadesGui.getActividad().getText().toUpperCase());
+                a.set("dias", vecesSemana);
                 a.set("categoria", actividadesGui.getCategoria().getSelectedItem().toString().toUpperCase());
                 System.out.println("Boton guardó uno nuevito");
                 if(!error){

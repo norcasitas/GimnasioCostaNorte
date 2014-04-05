@@ -28,7 +28,7 @@ public class ABMAranceles {
     public boolean alta(Arancel s) {
         if (!findArancel(s)) {
             Base.openTransaction();
-            Arancel nuevo = Arancel.create("nombre",s.get("nombre"), "precio", s.get("precio"), "fecha", s.get("fecha"), "activo", s.get("activo"),"categoria", s.get("categoria"));
+            Arancel nuevo = Arancel.create("nombre",s.get("nombre"), "precio", s.get("precio"), "fecha", s.get("fecha"), "activo", s.get("activo"),"categoria", s.get("categoria"), "dias", s.getInteger("dias"));
             nuevo.saveIt();
             idAlta= nuevo.get("id");
             Base.commitTransaction();
@@ -62,7 +62,7 @@ public class ABMAranceles {
         Arancel viejo = Arancel.first("id = ?", s.getString("id"));
         if (viejo != null) {
             Base.openTransaction();
-            viejo.set("nombre", s.get("nombre"),"fecha", s.get("fecha"), "precio", s.get("precio"), "categoria", s.get("categoria"));
+            viejo.set("nombre", s.get("nombre"),"fecha", s.get("fecha"), "precio", s.get("precio"), "categoria", s.get("categoria"), "dias", s.getInteger("dias"));
             viejo.saveIt();
             Base.commitTransaction();
             return true;
