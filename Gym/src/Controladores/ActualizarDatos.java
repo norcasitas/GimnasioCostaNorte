@@ -47,7 +47,8 @@ public class ActualizarDatos {
                  d[i] = a.getString("nombre");
                  i++;
              }
+             d[i+1] = "INACTIVOS";
              clientesGui.getActividades().setListData(d);
-             //ABMSocios abm = new ABMSocios();
+             
     }
 }

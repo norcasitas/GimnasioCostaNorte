@@ -70,7 +70,7 @@ public class busquedaManualGui extends javax.swing.JDialog {
                  d[i] = a.getString("nombre");
                  i++;
              }
-             ABMSocios abm = new ABMSocios();
+             
     }
     private void cargarDatos(){
                             int row = tablaClientes.getSelectedRow();

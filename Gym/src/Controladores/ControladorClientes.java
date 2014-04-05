@@ -42,6 +42,7 @@ public class ControladorClientes implements ActionListener {
     private DefaultTableModel tablaSocDefault;
     private ActualizarDatos actualizarDAtos;
     
+    
     public ControladorClientes(BusquedaGui clientes, DesktopPaneImage desktop, ActualizarDatos actualizarDatos) {
         
         this.clientesGui = clientes;
@@ -84,13 +85,41 @@ public class ControladorClientes implements ActionListener {
         });
 
     }
-
+    public void cargarSocios(String filtro){
+        LazyList<Socio> ListSocios= Socio.where("NOMBRE like ? or APELLIDO like ? or DNI like ? ", filtro + "%",filtro + "%",filtro + "%");;
+            tablaSocDefault.setRowCount(0);
+             Iterator<Socio> it = ListSocios.iterator();
+             while(it.hasNext()){
+                Socio a = it.next();
+                String row[] = new String[4];
+                row[0] = a.getString("NOMBRE");
+                row[1] = a.getString("APELLIDO");
+                row[2] = a.getString("DNI");
+                row[3] = a.getString("TEL");
+                tablaSocDefault.addRow(row);
+             }
+             clientesGui.getLabelResult3().setText(Integer.toString(ListSocios.size()));
+           /*  LazyList lista = Arancel.where("ACTIVO = ?", 1);
+             Iterator<Arancel> iter = lista.iterator();
+             String d[] = new String[100];
+             int i = 1;
+             while(iter.hasNext()){
+                 Arancel a = iter.next();
+                 d[i] = a.getString("nombre");
+                 i++;
+             }*/
+             
+    }
+    
     public void busquedaKeyReleased(java.awt.event.KeyEvent evt) {
         System.out.println("apreté el caracter" + evt.getKeyChar());
+        cargarSocios(clientesGui.getBusqueda().getText());
         /*Aca va la gilada para la busqueda mientras escribis se puede hacer 
          función y que se invoque a esa así tambien se llama cuando se 
          seleccionan actividades*/
     }
+    
+    
 
     public void tablaMouseClicked(java.awt.event.MouseEvent evt) {
         clientesGui.getBotEliminarSocio().setEnabled(true);
