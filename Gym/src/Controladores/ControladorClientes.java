@@ -78,6 +78,10 @@ public class ControladorClientes implements ActionListener {
                     System.out.println("opcion dejo de ser seleccionada ");
                     List actividadesSelecc = actividades.getSelectedValuesList();
                     System.out.println(actividadesSelecc.toString());
+                    if(!actividadesSelecc.isEmpty()){
+                         cargarSociosActiv(actividadesSelecc);
+                        // cargarSocios(clientesGui.getBusqueda().getText());
+                    }
                     /*aca iria la incovación de la función para cuando se está buscando que se terminaron de
                      elegir las actividades*/
                 }
@@ -85,6 +89,32 @@ public class ControladorClientes implements ActionListener {
         });
 
     }
+    public void cargarSociosActiv(List lista){
+        
+        tablaSocDefault.setRowCount(0);
+        int i = 0;
+        System.out.println("elementos en la lsita: "+ lista.size());
+        while(i < lista.size()){
+            Arancel a = Arancel.first("nombre = ?", lista.get(i));
+            int arancel_id = a.getInteger("id");
+            LazyList socioArancel = Socioarancel.where("id_arancel = ?", arancel_id);
+            clientesGui.getLabelResult3().setText(Integer.toString(socioArancel.size()));
+            Iterator<Socioarancel> it = socioArancel.iterator();
+            while(it.hasNext()){
+                Socioarancel sa = it.next();
+                Socio so = Socio.first("ID_DATOS_PERS = ?", sa.getInteger("id_socio"));
+                String row[] = new String[4];
+                row[0] = so.getString("NOMBRE");
+                row[1] = so.getString("APELLIDO");
+                row[2] = so.getString("DNI");
+                row[3] = so.getString("TEL");
+                tablaSocDefault.addRow(row);
+            }
+            i++;
+        } 
+        
+    }
+    
     public void cargarSocios(String filtro){
         LazyList<Socio> ListSocios= Socio.where("NOMBRE like ? or APELLIDO like ? or DNI like ? ", filtro + "%",filtro + "%",filtro + "%");;
             tablaSocDefault.setRowCount(0);
