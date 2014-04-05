@@ -258,7 +258,8 @@ try{
                 a.set("id", actividadesGui.getTablaActividadesDefault().getValueAt(actividadesGui.getTablaActividades().getSelectedRow(), 0));
                 if(!error){
                 if(abmAranceles.modificar(a)){
-                    guardarActivs(actividadesGui.getTablaActividadesDefault().getValueAt(actividadesGui.getTablaActividades().getSelectedRow(), 0));
+                    if(actividadesGui.getCategoria().getSelectedItem().equals("COMBO"))
+                        guardarActivs(actividadesGui.getTablaActividadesDefault().getValueAt(actividadesGui.getTablaActividades().getSelectedRow(), 0));
                     JOptionPane.showMessageDialog(actividadesGui, "Actividad modificado exitosamente!");
                     actividadesGui.bloquearCampos(true);
                     LazyList ListAranceles = Arancel.where("activo = ?", 1);
@@ -307,7 +308,6 @@ try{
                 System.out.println("Boton guardó uno nuevito");
                 if(!error){
                 if(abmAranceles.alta(a)){
-                    guardarActivs(abmAranceles.idAlta);
                     JOptionPane.showMessageDialog(actividadesGui, "Actividad guardada exitosamente!");
                     actividadesGui.bloquearCampos(true);
                     LazyList ListAranceles = Arancel.where("activo = ?", 1);
@@ -344,9 +344,11 @@ try{
             actividadesGui.getBotGuardar().setEnabled(true);
             if(actividadesGui.getCategoria().getSelectedItem().equals("COMBO")){
                 actividadesGui.getDias().setEnabled(false);
+                actividadesGui.getPaseLibre().setEnabled(false);
             }
-            else
+            else{
                actividadesGui.getDias().setEnabled(true);
+            }
             isNuevo = false;
             actividadesGui.getDias().setEnabled(!actividadesGui.getPaseLibre().isSelected());
 
