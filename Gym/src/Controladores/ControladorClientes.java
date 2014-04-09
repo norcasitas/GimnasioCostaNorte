@@ -79,8 +79,15 @@ public class ControladorClientes implements ActionListener {
                     List actividadesSelecc = actividades.getSelectedValuesList();
                     System.out.println(actividadesSelecc.toString());
                     if(!actividadesSelecc.isEmpty()){
-                         cargarSociosActiv(actividadesSelecc);
-                        // cargarSocios(clientesGui.getBusqueda().getText());
+                         boolean inactivo = false;
+                         int i = 0;
+                         while(i < actividadesSelecc.size()){
+                             if(actividadesSelecc.get(i) == "INACTIVOS"){
+                                 inactivo = true;
+                             }
+                             i++;
+                         }
+                         cargarSociosActiv(actividadesSelecc, inactivo);
                     }
                     /*aca iria la incovación de la función para cuando se está buscando que se terminaron de
                      elegir las actividades*/
@@ -89,30 +96,73 @@ public class ControladorClientes implements ActionListener {
         });
 
     }
-    public void cargarSociosActiv(List lista){
-        
+    public void cargarSociosActiv(List lista, boolean inactivo){
         tablaSocDefault.setRowCount(0);
-        int i = 0;
-        System.out.println("elementos en la lsita: "+ lista.size());
-        while(i < lista.size()){
-            Arancel a = Arancel.first("nombre = ?", lista.get(i));
-            int arancel_id = a.getInteger("id");
-            LazyList socioArancel = Socioarancel.where("id_arancel = ?", arancel_id);
-            clientesGui.getLabelResult3().setText(Integer.toString(socioArancel.size()));
-            Iterator<Socioarancel> it = socioArancel.iterator();
-            while(it.hasNext()){
-                Socioarancel sa = it.next();
-                Socio so = Socio.first("ID_DATOS_PERS = ?", sa.getInteger("id_socio"));
+        if((lista.size() == 1) && inactivo){
+            LazyList socioslist = Socio.where("ACTIVO = ?", 0);
+            Iterator<Socio> itera = socioslist.iterator();
+            while(itera.hasNext()){
+                Socio soc = itera.next();
                 String row[] = new String[4];
-                row[0] = so.getString("NOMBRE");
-                row[1] = so.getString("APELLIDO");
-                row[2] = so.getString("DNI");
-                row[3] = so.getString("TEL");
+                row[0] = soc.getString("NOMBRE");
+                row[1] = soc.getString("APELLIDO");
+                row[2] = soc.getString("DNI");
+                row[3] = soc.getString("TEL");
                 tablaSocDefault.addRow(row);
             }
-            i++;
-        } 
-        
+        }
+        if(!inactivo){
+            int i = 0;
+            System.out.println("elementos en la lsita: "+ lista.size());
+            while(i < lista.size()){
+                Arancel a = Arancel.first("nombre = ?", lista.get(i));
+                int arancel_id = a.getInteger("id");
+                LazyList socioArancel = Socioarancel.where("id_arancel = ?", arancel_id);
+                clientesGui.getLabelResult3().setText(Integer.toString(socioArancel.size()));
+                Iterator<Socioarancel> it = socioArancel.iterator();
+                while(it.hasNext()){
+                  Socioarancel sa = it.next();
+                    Socio so = Socio.first("ID_DATOS_PERS = ?", sa.getInteger("id_socio"));
+                    // codigo agregado el 09-4-2014
+                    if(so.getInteger("ACTIVO") == 1){
+                        String row[] = new String[4];
+                        row[0] = so.getString("NOMBRE");
+                        row[1] = so.getString("APELLIDO");
+                        row[2] = so.getString("DNI");
+                        row[3] = so.getString("TEL");
+                        tablaSocDefault.addRow(row);
+                    }
+                
+                }
+                i++;
+            } 
+        }
+        if(inactivo && lista.size() > 1){
+            int i = 0;
+            System.out.println("elementos en la lsita: "+ lista.size());
+            while(i < lista.size()){
+                Arancel a = Arancel.first("nombre = ?", lista.get(i));
+                int arancel_id = a.getInteger("id");
+                LazyList socioArancel = Socioarancel.where("id_arancel = ?", arancel_id);
+                clientesGui.getLabelResult3().setText(Integer.toString(socioArancel.size()));
+                Iterator<Socioarancel> it = socioArancel.iterator();
+                while(it.hasNext()){
+                  Socioarancel sa = it.next();
+                    Socio so = Socio.first("ID_DATOS_PERS = ?", sa.getInteger("id_socio"));
+                    // codigo agregado el 09-4-2014
+                    if(so.getInteger("ACTIVO") == 0){
+                        String row[] = new String[4];
+                        row[0] = so.getString("NOMBRE");
+                        row[1] = so.getString("APELLIDO");
+                        row[2] = so.getString("DNI");
+                        row[3] = so.getString("TEL");
+                        tablaSocDefault.addRow(row);
+                    }
+                
+                }
+                i++;
+            } 
+        }
     }
     
     public void cargarSocios(String filtro){
