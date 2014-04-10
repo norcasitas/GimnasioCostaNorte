@@ -39,6 +39,11 @@ public class PrincipalGui extends javax.swing.JFrame {
         this.ingreso.addActionListener(lis);
         this.declaracion.addActionListener(lis);
         this.impresionAranceles.addActionListener(lis);
+        this.depurar.addActionListener(lis);
+    }
+
+    public JMenuItem getDepurar() {
+        return depurar;
     }
 
     public JMenuItem getBotDesconectar() {
@@ -100,6 +105,7 @@ public class PrincipalGui extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         botDesconectar = new javax.swing.JMenuItem();
         botSalir = new javax.swing.JMenuItem();
+        depurar = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         declaracion = new javax.swing.JMenuItem();
         impresionAranceles = new javax.swing.JMenuItem();
@@ -162,6 +168,9 @@ public class PrincipalGui extends javax.swing.JFrame {
         botSalir.setText("Salir");
         jMenu1.add(botSalir);
 
+        depurar.setText("Depurar datos");
+        jMenu1.add(depurar);
+
         jMenuBar1.add(jMenu1);
 
         jMenu3.setText("Documentos");
@@ -206,6 +215,7 @@ public class PrincipalGui extends javax.swing.JFrame {
     private javax.swing.JButton botSocios;
     private javax.swing.JButton botUsuario;
     private javax.swing.JMenuItem declaracion;
+    private javax.swing.JMenuItem depurar;
     private javax.swing.JMenuItem impresionAranceles;
     private javax.swing.JButton ingreso;
     private javax.swing.JMenu jMenu1;

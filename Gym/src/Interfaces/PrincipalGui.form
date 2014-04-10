@@ -26,6 +26,11 @@
                 <Property name="text" type="java.lang.String" value="Salir"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="depurar">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Depurar datos"/>
+              </Properties>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu3">

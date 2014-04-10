@@ -182,3 +182,50 @@ ADD COLUMN `ID_ACTIV_COMBO` INT(11) NULL AFTER `ID_ACTIV`;
 
 ALTER TABLE `gym`.`arancels` 
 ADD COLUMN `dias` INT(2) NULL DEFAULT 0 AFTER `categoria`;
+
+
+
+
+ALTER TABLE `gym`.`asistencias` 
+DROP FOREIGN KEY `FK_ASISTENCIA`;
+ALTER TABLE `gym`.`asistencias` 
+ADD CONSTRAINT `FK_ASISTENCIA`
+  FOREIGN KEY (`ID_DATOS_PERS`)
+  REFERENCES `gym`.`socios` (`ID_DATOS_PERS`)
+  ON DELETE CASCADE
+  ON UPDATE RESTRICT;
+
+
+ALTER TABLE `gym`.`huellas` 
+ADD CONSTRAINT `fk_cliente`
+  FOREIGN KEY (`client_id`)
+  REFERENCES `gym`.`socios` (`ID_DATOS_PERS`)
+  ON DELETE CASCADE
+  ON UPDATE NO ACTION;
+
+
+
+ALTER TABLE `gym`.`socioarancels` 
+ADD CONSTRAINT `fk_cliente_arancel`
+  FOREIGN KEY (`id_socio`)
+  REFERENCES `gym`.`socios` (`ID_DATOS_PERS`)
+  ON DELETE CASCADE
+  ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_arancel`
+  FOREIGN KEY (`id_arancel`)
+  REFERENCES `gym`.`arancels` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE NO ACTION;
+
+
+ALTER TABLE `gym`.`combos` 
+ADD CONSTRAINT `fk_combo`
+  FOREIGN KEY (`id_combo`)
+  REFERENCES `gym`.`arancels` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_activ_combo`
+  FOREIGN KEY (`id_activ`)
+  REFERENCES `gym`.`arancels` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE NO ACTION;

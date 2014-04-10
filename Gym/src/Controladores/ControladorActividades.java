@@ -145,14 +145,16 @@ public class ControladorActividades implements ActionListener {
     private void guardarActivs(Object idCombo){
         int rows= tablaActCombo.getRowCount();
         Base.openTransaction();
-        Combo.delete("id_combo = ? ",  actividadesGui.getTablaActividadesDefault().getValueAt(actividadesGui.getTablaActividades().getSelectedRow(), 0) );
+        Combo.delete("id_combo = ? ",  idCombo );
         Base.commitTransaction();
+        if(actividadesGui.getCategoria().getSelectedItem().equals("COMBO")){
         for (int i=0;i<rows;i++){
             if(tablaActCombo.getValueAt(i, 2).equals(true)){
                 Base.openTransaction();
                 Combo.createIt("id_combo",idCombo,"id_activ",tablaActCombo.getValueAt(i, 0),"dias",tablaActCombo.getValueAt(i, 3));
                 Base.commitTransaction();
             }
+        }
         }
         
     }
@@ -258,7 +260,7 @@ try{
                 a.set("id", actividadesGui.getTablaActividadesDefault().getValueAt(actividadesGui.getTablaActividades().getSelectedRow(), 0));
                 if(!error){
                 if(abmAranceles.modificar(a)){
-                    if(actividadesGui.getCategoria().getSelectedItem().equals("COMBO"))
+                    
                         guardarActivs(actividadesGui.getTablaActividadesDefault().getValueAt(actividadesGui.getTablaActividades().getSelectedRow(), 0));
                     JOptionPane.showMessageDialog(actividadesGui, "Actividad modificado exitosamente!");
                     actividadesGui.bloquearCampos(true);
@@ -308,6 +310,7 @@ try{
                 System.out.println("Boton guardó uno nuevito");
                 if(!error){
                 if(abmAranceles.alta(a)){
+                     guardarActivs(abmAranceles.idAlta);
                     JOptionPane.showMessageDialog(actividadesGui, "Actividad guardada exitosamente!");
                     actividadesGui.bloquearCampos(true);
                     LazyList ListAranceles = Arancel.where("activo = ?", 1);
