@@ -48,6 +48,7 @@ public class ActualizarDatos {
                  i++;
              }
              d[i+1] = "INACTIVOS";
+             d[i+2] = "MOROSOS";
              clientesGui.getActividades().setListData(d);
              
     }
