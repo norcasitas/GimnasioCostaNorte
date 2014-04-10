@@ -26,6 +26,7 @@ public class FichaMedicaGui extends javax.swing.JDialog {
         initComponents();
     }
 
+    
     public JButton getAceptar() {
         return aceptar;
     }

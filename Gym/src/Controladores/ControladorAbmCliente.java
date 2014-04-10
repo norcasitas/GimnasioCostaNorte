@@ -209,6 +209,8 @@ public class ControladorAbmCliente implements ActionListener {
         if (ae.getSource() == clienteGui.getBotFicha()) {
             System.out.println("Boton ficha pulsado");
             fichaMedicaGui= new FichaMedicaGui(null, true);
+            fichaMedicaGui.getTextoAlergias().setEnabled(true);
+            fichaMedicaGui.getTextoMedicamentos().setEnabled(true);
             fichaMedicaGui.setActionListener(this);
             fichaMedicaGui.setLocationRelativeTo(null);
             Socio socio = Socio.first("DNI = ?", clienteGui.getDni().getText());
@@ -220,11 +222,15 @@ public class ControladorAbmCliente implements ActionListener {
                 fichaNueva = true;
                 fichaMedicaGui.getjButton1().setEnabled(false);
                 JOptionPane.showMessageDialog(fichaMedicaGui, "Socio sin ficha, debe cargar ficha");
+                fichaMedicaGui.getTextoAlergias().setEnabled(true);
+                fichaMedicaGui.getTextoMedicamentos().setEditable(true);
                 fichaMedicaGui.setVisible(true);
                 System.out.println("el valor es "+fichaNueva);
             }else{
                     CargarFicha(f); 
                     fichaMedicaGui.setVisible(true);
+                    fichaMedicaGui.getTextoAlergias().setEnabled(true);
+                    fichaMedicaGui.getTextoMedicamentos().setEditable(true);
                     fichaNueva = false;
                     fichaMedicaGui.setEnabled(true);
                     System.out.println("el valor es "+fichaNueva);

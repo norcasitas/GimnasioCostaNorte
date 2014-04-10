@@ -12,7 +12,7 @@ import org.javalite.activejdbc.annotations.IdName;
  *
  * @author alan
  */
-@IdName("USUARIO")
-public class Usuario extends Model{
+
+public class User extends Model{
     
 }

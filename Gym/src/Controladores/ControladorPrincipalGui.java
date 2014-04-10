@@ -29,6 +29,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.javalite.activejdbc.LazyList;
 import Controladores.ControladorJReport;
+import Modelos.User;
 import Modelos.Usuario;
 import java.sql.SQLException;
 import net.sf.jasperreports.engine.JRException;
@@ -138,11 +139,11 @@ public class ControladorPrincipalGui implements ActionListener {
             }
         }
         if (ae.getSource() == principalGui.getBotUsuario()) {
-            LazyList listUsuarios = Usuario.findAll();
+            LazyList listUsuarios = User.findAll();
             usuarioGui.getTablaUsuarioDefault().setRowCount(0);
-            Iterator<Usuario> itusu = listUsuarios.iterator();
+            Iterator<User> itusu = listUsuarios.iterator();
             while(itusu.hasNext()){
-                Usuario u = itusu.next();
+                User u = itusu.next();
                 Object row[] = new Object[1];
                 row[0] = u.get("USUARIO");
                 usuarioGui.getTablaUsuarioDefault().addRow(row);

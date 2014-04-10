@@ -6,13 +6,16 @@ package Controladores;
 
 import ABMs.ABMUsuarios;
 import Interfaces.UsuarioGui;
+import Modelos.User;
 import Modelos.Usuario;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import org.javalite.activejdbc.Base;
+import org.javalite.activejdbc.LazyList;
 
 /**
  *
@@ -47,7 +50,7 @@ public class ControladorUsuario implements ActionListener{
         usuarioGui.getBotEliminar().setText("Eliminar");
         System.out.println("hice click en un usuario");
         int row = usuarioGui.getTablaUsuario().getSelectedRow();
-        Usuario u = Usuario.first("USUARIO = ?", usuarioGui.getTablaUsuarioDefault().getValueAt(row, 0));
+        User u = User.first("USUARIO = ?", usuarioGui.getTablaUsuarioDefault().getValueAt(row, 0));
         usuarioGui.getUser().setText(u.getString("USUARIO"));
         usuarioGui.getPass().setText(u.getString("PASSWD"));
         if(u.getInteger("ADMINIS") == 1){
@@ -68,10 +71,19 @@ public class ControladorUsuario implements ActionListener{
                 int ret = JOptionPane.showConfirmDialog(usuarioGui, "¿Desea borrar el usuario?", null, JOptionPane.YES_NO_OPTION);
                 if (ret == JOptionPane.YES_OPTION) {
                     /*Aqui va todo para borrar! */
-                    Usuario u = new Usuario();
+                    User u = new User();
                     u.set("USUARIO", usuarioGui.getUser().getText());
                     if(abmUsuarios.baja(u)){
                         JOptionPane.showMessageDialog(usuarioGui, "Usuario eliminado exitosamente!");
+                        LazyList listUsuarios = User.findAll();
+                        usuarioGui.getTablaUsuarioDefault().setRowCount(0);
+                        Iterator<User> itusu = listUsuarios.iterator();
+                        while(itusu.hasNext()){
+                            User k = itusu.next();
+                            Object row[] = new Object[1];
+                            row[0] = k.get("USUARIO");
+                            usuarioGui.getTablaUsuarioDefault().addRow(row);
+                        }
                     }else{
                         JOptionPane.showMessageDialog(usuarioGui, "Ocurrio un error inesperado", "Error!", JOptionPane.ERROR_MESSAGE);
                     }
@@ -80,6 +92,7 @@ public class ControladorUsuario implements ActionListener{
                     usuarioGui.getBotGuardar().setEnabled(false);
                     usuarioGui.getBotModif().setEnabled(false);
                     usuarioGui.getBotEliminar().setEnabled(false);
+                    usuarioGui.getAdmin().setEnabled(false);
                 }
             } else {
                 System.out.println("cancelé !");
@@ -94,25 +107,39 @@ public class ControladorUsuario implements ActionListener{
             }
         }
         if (ae.getSource() == usuarioGui.getBotGuardar()) {
+            if((usuarioGui.getUser().getText().length()< 4) || (usuarioGui.getPass().getText().length()< 4)){
+                JOptionPane.showMessageDialog(usuarioGui, "El numero minimo de caracteres de usuario y contraseña es de 4 caracteres", "Error!", JOptionPane.ERROR_MESSAGE);
+            }else{
             if (!isNuevo) {
                 /*Aca va todo para guardar uno modificado*/
-                Usuario u = new Usuario();
+                User u = new User();
+                u.set("USUARIO", usuarioGui.getUser().getText());
                 if(usuarioGui.getAdmin().isSelected()){
                     u.set("ADMINIS",1);
                 }else{
                     u.set("ADMINIS",0);
                 }
                 u.set("PASSWD", usuarioGui.getPass().getText());
+               
                 if(abmUsuarios.modificar(u)){
                     JOptionPane.showMessageDialog(usuarioGui, "Usuario modificado exitosamente!");
+                    LazyList listUsuarios = User.findAll();
+                        usuarioGui.getTablaUsuarioDefault().setRowCount(0);
+                        Iterator<User> itusu = listUsuarios.iterator();
+                        while(itusu.hasNext()){
+                            User k = itusu.next();
+                            Object row[] = new Object[1];
+                            row[0] = k.get("USUARIO");
+                            usuarioGui.getTablaUsuarioDefault().addRow(row);
+                        }
                 }else{
-                    JOptionPane.showMessageDialog(usuarioGui, "Ocurrio un error inesperado", "Error!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(usuarioGui, "Ocurrio un error inesperadooooo", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
                 System.out.println("Se modificó uno que existia");
                 
             } else {
                 /*Aca va todo para guardar uno nuevo*/
-                 Usuario user = new Usuario();
+                 User user = new User();
                 if(usuarioGui.getAdmin().isSelected()){
                     user.set("ADMINIS",1);
                 }
@@ -124,8 +151,17 @@ public class ControladorUsuario implements ActionListener{
                 System.out.println("datos :"+ user.getString("USUARIO")+ " "+ user.getString("PASSWD")+" "+user.getInteger("ADMINIS"));
                 if(abmUsuarios.alta(user)){
                     JOptionPane.showMessageDialog(usuarioGui, "Usuario creado exitosamente!");
+                    LazyList listUsuarios = User.findAll();
+                        usuarioGui.getTablaUsuarioDefault().setRowCount(0);
+                        Iterator<User> itusu = listUsuarios.iterator();
+                        while(itusu.hasNext()){
+                            User k = itusu.next();
+                            Object row[] = new Object[1];
+                            row[0] = k.get("USUARIO");
+                            usuarioGui.getTablaUsuarioDefault().addRow(row);
+                        }
                 }else{
-                    JOptionPane.showMessageDialog(usuarioGui, "Ocurrio un error inesperado", "Error!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(usuarioGui, "Nombre de usuario ya utilizado, cambie el nombre", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
                 System.out.println("Boton guardó uno nuevito");
             }
@@ -134,6 +170,8 @@ public class ControladorUsuario implements ActionListener{
             usuarioGui.getBotGuardar().setEnabled(false);
             usuarioGui.getBotModif().setEnabled(false);
             usuarioGui.getBotEliminar().setEnabled(false);
+            usuarioGui.getAdmin().setEnabled(false);
+            }
 
         }
         if (ae.getSource() == usuarioGui.getBotModif()) {
@@ -142,8 +180,11 @@ public class ControladorUsuario implements ActionListener{
             usuarioGui.getBotEliminar().setText("Cancelar");
             usuarioGui.getBotModif().setEnabled(false);
             usuarioGui.getBotGuardar().setEnabled(true);
+            usuarioGui.getAdmin().setEnabled(true);
             isNuevo = false;
-
+            usuarioGui.getUser().setEnabled(false);
+            
+            
         }
         if (ae.getSource() == usuarioGui.getBotNuevo()) {
             System.out.println("Boton nuevo pulsado");

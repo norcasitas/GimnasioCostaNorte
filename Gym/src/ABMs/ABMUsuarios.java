@@ -6,7 +6,7 @@
 
 package ABMs;
 
-import Modelos.Usuario;
+import Modelos.User;
 import org.javalite.activejdbc.Base;
 
 /**
@@ -15,18 +15,18 @@ import org.javalite.activejdbc.Base;
  */
 public class ABMUsuarios {
     
-     public Usuario getUsuario(Usuario u) {
-        return Usuario.first("USUARIO = ?", u.get("USUARIO"));
+     public User getUsuario(User u) {
+        return User.first("USUARIO = ?", u.get("USUARIO"));
     }
 
-    public boolean findUsuario(Usuario u) {
-        return (Usuario.first("USUARIO = ?", u.get("USUARIO")) != null);
+    public boolean findUsuario(User u) {
+        return (User.first("USUARIO = ?", u.get("USUARIO")) != null);
     }
 
-    public boolean alta(Usuario u) {
+    public boolean alta(User u) {
         if (!findUsuario(u)) {
             Base.openTransaction();
-            Usuario nuevo = Usuario.create("USUARIO", u.get("USUARIO"), "PASSWD", u.get("PASSWD"), "ADMINIS", u.get("ADMINIS"));
+            User nuevo = User.create("USUARIO", u.get("USUARIO"), "PASSWD", u.get("PASSWD"), "ADMINIS", u.get("ADMINIS"));
             nuevo.saveIt();
             Base.commitTransaction();
             return true;
@@ -35,8 +35,8 @@ public class ABMUsuarios {
         }
     }
 
-    public boolean baja(Usuario u) {
-        Usuario viejo = Usuario.first("USUARIO = ?", u.getString("USUARIO"));
+    public boolean baja(User u) {
+        User viejo = User.first("USUARIO = ?", u.getString("USUARIO"));
         if (viejo != null) {
             Base.openTransaction();
             viejo.delete();
@@ -46,10 +46,11 @@ public class ABMUsuarios {
         return false;
     }
 
-    public boolean modificar(Usuario u) {
-        Usuario viejo = Usuario.first("USUARIO = ?", u.get("USUARIO"));
+    public boolean modificar(User u) {
+        User viejo = User.first("USUARIO = ?", u.get("USUARIO"));
         if (viejo != null) {
             Base.openTransaction();
+            System.out.println("entre si esta");
             viejo.set("PASSWD", u.get("PASSWD"), "ADMINIS", u.get("ADMINIS"));
             viejo.saveIt();
             Base.commitTransaction();
