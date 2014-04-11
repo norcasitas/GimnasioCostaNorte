@@ -7,13 +7,16 @@ package Controladores;
 import Interfaces.IngresoGui;
 import Interfaces.LoginGUI;
 import Interfaces.PrincipalGui;
+import Modelos.User;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import org.javalite.activejdbc.Base;
+import org.javalite.activejdbc.Model;
 
 /**
  *
@@ -26,7 +29,7 @@ public class ControladorLogin extends Thread implements ActionListener {
     private PrincipalGui app;
     private LoginGUI log;
     private IngresoGui ingreso;
-    private String usuario;
+    //private String usuario;
 
     public ControladorLogin(PrincipalGui app, IngresoGui ingresoGui) {
         this.app = app;
@@ -47,15 +50,23 @@ public class ControladorLogin extends Thread implements ActionListener {
                     log.getTextPass().requestFocus();
                 }
                 if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                    abrirBase();
                     user = log.getTextUsuario().getText();
                     pass = log.getTextPass().getPassword();
-                    //if (mu.login(user, pass)) {
-                    log.dispose();
-                    app.getBotDesconectar().setText("Cerrar sesión ("+log.getTextUsuario().getText()+")");
-                    ingreso.setVisible(true);
-                    app.setVisible(true);
-                    app.toFront();
-                    abrirBase();
+                    //User u = User.first("USUARIO = ? and PASSWD = ?", usuario, log.getTextPass().getText());
+                    if(login(user,pass) == false){
+                        JOptionPane.showMessageDialog(app, "Usuario inexistente o contraseña incorrecta.","¡DATOS INCORRECTOS!", JOptionPane.ERROR_MESSAGE);
+                        log.getTextUsuario().setText("");
+                        log.getTextPass().setText("");
+                    }else{
+                        log.dispose();
+                        app.getBotDesconectar().setText("Cerrar sesión  ("+user+")");
+                        ingreso.setVisible(true);
+                        app.setVisible(true);
+                        app.toFront();
+                        
+                    }
+                    
                     
         
                     //} else {
@@ -72,13 +83,22 @@ public class ControladorLogin extends Thread implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         JButton b = (JButton) ae.getSource();
         if (b.equals(log.getBotConectar())) {
-                    usuario = log.getTextUsuario().getText();
-                    log.dispose();
-                    app.getBotDesconectar().setText("Cerrar sesión  ("+usuario+")");
-                    ingreso.setVisible(true);
-                    app.setVisible(true);
-                    app.toFront();
                     abrirBase();
+                    user = log.getTextUsuario().getText();
+                    pass = log.getTextPass().getPassword();
+                    //User u = User.first("USUARIO = ? and PASSWD = ?", usuario, pass.toString());
+                    if(login(user,pass) == false){
+                        JOptionPane.showMessageDialog(app, "Usuario inexistente o contraseña incorrecta.","¡DATOS INCORRECTOS!", JOptionPane.ERROR_MESSAGE);
+                        log.getTextUsuario().setText("");
+                        log.getTextPass().setText("");
+                    }else{
+                        log.dispose();
+                        app.getBotDesconectar().setText("Cerrar sesión  ("+user+")");
+                        ingreso.setVisible(true);
+                        app.setVisible(true);
+                        app.toFront();
+                        
+                    }
                     
         }
         if (b.equals(log.getBotSalir())) {
@@ -95,6 +115,17 @@ public class ControladorLogin extends Thread implements ActionListener {
 
     public LoginGUI getLog() {
         return log;
+    }
+    
+     public boolean login(String user, char[] pass) {
+        User u = User.first("USUARIO = ?", user);
+        if (u != null) {
+            char[] correct = u.getString("PASSWD").toCharArray();
+            if (user.equals(u.getString("USUARIO")) && Arrays.equals(pass, correct)) {
+                return true;
+            }
+        }
+        return false;
     }
     
 }
