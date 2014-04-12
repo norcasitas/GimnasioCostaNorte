@@ -7,7 +7,6 @@ package Controladores;
 import ABMs.ABMUsuarios;
 import Interfaces.UsuarioGui;
 import Modelos.User;
-import Modelos.Usuario;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;

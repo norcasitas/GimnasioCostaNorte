@@ -3,11 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/A/Documents/GitHub/GimnasioCostaNorte/Gym/src/Interfaces/UsuarioGui.java</file>
-            <file>file:/C:/Users/A/Documents/GitHub/GimnasioCostaNorte/Gym/src/Interfaces/BusquedaGui.java</file>
-            <file>file:/C:/Users/A/Documents/GitHub/GimnasioCostaNorte/Gym/src/Interfaces/FichaMedicaGui.java</file>
-            <file>file:/C:/Users/A/Documents/GitHub/GimnasioCostaNorte/Gym/src/Controladores/ControladorAbmCliente.java</file>
-            <file>file:/C:/Users/A/Documents/GitHub/GimnasioCostaNorte/Gym/src/Controladores/ControladorClientes.java</file>
+            <file>file:/C:/Users/Nico/Documents/GitHub/GimnasioCostaNorte/Gym/src/Controladores/ControladorClientes.java</file>
+            <file>file:/C:/Users/Nico/Documents/GitHub/GimnasioCostaNorte/Gym/src/Interfaces/PrincipalGui.java</file>
+            <file>file:/C:/Users/Nico/Documents/GitHub/GimnasioCostaNorte/Gym/src/Controladores/ControladorPrincipalGui.java</file>
+            <file>file:/C:/Users/Nico/Documents/GitHub/GimnasioCostaNorte/Gym/src/Controladores/ControladorLogin.java</file>
+            <file>file:/C:/Users/Nico/Documents/GitHub/GimnasioCostaNorte/Gym/src/Interfaces/BusquedaGui.java</file>
+            <file>file:/C:/Users/Nico/Documents/GitHub/GimnasioCostaNorte/Gym/src/Controladores/ControladorActividades.java</file>
         </group>
     </open-files>
 </project-private>

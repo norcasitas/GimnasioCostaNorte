@@ -30,10 +30,10 @@ public class ControladorLogin extends Thread implements ActionListener {
     private LoginGUI log;
     private IngresoGui ingreso;
     //private String usuario;
-
+    static boolean esAdmin;
     public ControladorLogin(PrincipalGui app, IngresoGui ingresoGui) {
         this.app = app;
-        this.ingreso= ingresoGui;
+        this.ingreso = ingresoGui;
     }
 
     public void run() {
@@ -54,26 +54,33 @@ public class ControladorLogin extends Thread implements ActionListener {
                     user = log.getTextUsuario().getText();
                     pass = log.getTextPass().getPassword();
                     //User u = User.first("USUARIO = ? and PASSWD = ?", usuario, log.getTextPass().getText());
-                    if(login(user,pass) == false){
-                        JOptionPane.showMessageDialog(app, "Usuario inexistente o contraseña incorrecta.","¡DATOS INCORRECTOS!", JOptionPane.ERROR_MESSAGE);
+                    if (login(user, pass) == false) {
+                        JOptionPane.showMessageDialog(app, "Usuario inexistente o contraseña incorrecta.", "¡DATOS INCORRECTOS!", JOptionPane.ERROR_MESSAGE);
                         log.getTextUsuario().setText("");
                         log.getTextPass().setText("");
-                    }else{
+                    } else {
+                        User u = User.first("USUARIO = ?", user);
+                        if (!u.getBoolean("ADMINIS")) {
+                            app.getBotUsuario().setEnabled(false);
+                            app.getDepurar().setEnabled(false);
+                            esAdmin=false;
+                        } else {
+                            app.getBotUsuario().setEnabled(true);
+                            app.getDepurar().setEnabled(true);
+                            esAdmin=true;
+                        }
                         log.dispose();
-                        app.getBotDesconectar().setText("Cerrar sesión  ("+user+")");
+                        app.getBotDesconectar().setText("Cerrar sesión  (" + user + ")");
                         ingreso.setVisible(true);
                         app.setVisible(true);
                         app.toFront();
-                        
+
                     }
-                    
-                    
-        
+
                     //} else {
                     //log.getTextPass().setText("");
                     //JOptionPane.showMessageDialog(app, "INTENTE NUEVAMENTE", "¡DATOS INCORRECTOS!", JOptionPane.ERROR_MESSAGE);
                     //}
-
                 }
             }
         });
@@ -83,41 +90,51 @@ public class ControladorLogin extends Thread implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         JButton b = (JButton) ae.getSource();
         if (b.equals(log.getBotConectar())) {
-                    abrirBase();
-                    user = log.getTextUsuario().getText();
-                    pass = log.getTextPass().getPassword();
-                    //User u = User.first("USUARIO = ? and PASSWD = ?", usuario, pass.toString());
-                    if(login(user,pass) == false){
-                        JOptionPane.showMessageDialog(app, "Usuario inexistente o contraseña incorrecta.","¡DATOS INCORRECTOS!", JOptionPane.ERROR_MESSAGE);
-                        log.getTextUsuario().setText("");
-                        log.getTextPass().setText("");
-                    }else{
-                        log.dispose();
-                        app.getBotDesconectar().setText("Cerrar sesión  ("+user+")");
-                        ingreso.setVisible(true);
-                        app.setVisible(true);
-                        app.toFront();
-                        
-                    }
-                    
+            abrirBase();
+            user = log.getTextUsuario().getText();
+            pass = log.getTextPass().getPassword();
+            //User u = User.first("USUARIO = ? and PASSWD = ?", usuario, pass.toString());
+            if (login(user, pass) == false) {
+                JOptionPane.showMessageDialog(app, "Usuario inexistente o contraseña incorrecta.", "¡DATOS INCORRECTOS!", JOptionPane.ERROR_MESSAGE);
+                log.getTextUsuario().setText("");
+                log.getTextPass().setText("");
+            } else {
+                                        User u = User.first("USUARIO = ?", user);
+                        if (!u.getBoolean("ADMINIS")) {
+                            app.getBotUsuario().setEnabled(false);
+                            app.getDepurar().setEnabled(false);
+                            esAdmin=false;
+                        } else {
+                            app.getBotUsuario().setEnabled(true);
+                            app.getDepurar().setEnabled(true);
+                            esAdmin=true;
+                        }
+                log.dispose();
+                app.getBotDesconectar().setText("Cerrar sesión  (" + user + ")");
+                ingreso.setVisible(true);
+                app.setVisible(true);
+                app.toFront();
+
+            }
+
         }
         if (b.equals(log.getBotSalir())) {
             System.exit(0);
         }
 
-
     }
-    public void abrirBase(){
-                        if (!Base.hasConnection()) {
-                         Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/gym", "root", "root");
-                     }
+
+    public void abrirBase() {
+        if (!Base.hasConnection()) {
+            Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/gym", "root", "root");
+        }
     }
 
     public LoginGUI getLog() {
         return log;
     }
-    
-     public boolean login(String user, char[] pass) {
+
+    public boolean login(String user, char[] pass) {
         User u = User.first("USUARIO = ?", user);
         if (u != null) {
             char[] correct = u.getString("PASSWD").toCharArray();
@@ -127,5 +144,5 @@ public class ControladorLogin extends Thread implements ActionListener {
         }
         return false;
     }
-    
+
 }

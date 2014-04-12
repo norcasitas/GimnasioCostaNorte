@@ -81,6 +81,8 @@ public class PrincipalGui extends javax.swing.JFrame {
     public JButton getIngreso() {
         return ingreso;
     }
+
+
     
 
     

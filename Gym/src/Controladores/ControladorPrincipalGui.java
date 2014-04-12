@@ -30,7 +30,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 import org.javalite.activejdbc.LazyList;
 import Controladores.ControladorJReport;
 import Modelos.User;
-import Modelos.Usuario;
 import java.sql.SQLException;
 import net.sf.jasperreports.engine.JRException;
 import org.javalite.activejdbc.Base;
@@ -98,6 +97,9 @@ public class ControladorPrincipalGui implements ActionListener {
             if (r == JOptionPane.YES_OPTION) {
                 principalGui.dispose();
                 ingresoGui.dispose();
+                actividadesGui.setVisible(false);
+                socios.setVisible(false);
+                usuarioGui.setVisible(false);
                 controladorLogin.getLog().setVisible(true);
                 controladorLogin.getLog().getTextUsuario().setText("");
                 controladorLogin.getLog().getTextPass().setText("");
@@ -124,6 +126,7 @@ public class ControladorPrincipalGui implements ActionListener {
         }
         if (ae.getSource() == principalGui.getBotActividades()) {
             System.out.println("actividades pulsado");
+            controladorActividades.bloquearNoAdmin();
             actividadesGui.setVisible(true);
             actividadesGui.toFront();
             actividadesGui.getTablaActividadesDefault().setRowCount(0);
@@ -188,7 +191,7 @@ public class ControladorPrincipalGui implements ActionListener {
             int ret= JOptionPane.showConfirmDialog(principalGui, "¿Desea continuar con la depuración de la base de datos?, se borraran los usuarios inactivos, y todos sus datos relacionados", "Depuración de datos", JOptionPane.YES_NO_OPTION);
             if(ret==JOptionPane.YES_OPTION){
                 Base.openTransaction();
-                Base.exec("DELETE FROM `gym`.`socios`\n" + "WHERE activo=1;");
+                Base.exec("DELETE FROM `gym`.`socios`\n" + "WHERE activo=0;");
                 Base.commitTransaction();
                 JOptionPane.showMessageDialog(principalGui, "Se ha depurado correctamente");
             }

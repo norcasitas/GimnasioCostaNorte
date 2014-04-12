@@ -10,8 +10,6 @@ import Modelos.Arancel;
 import Modelos.Combo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Iterator;
@@ -21,7 +19,6 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.LazyList;
-import org.javalite.activejdbc.Model;
 
 /**
  *
@@ -59,11 +56,14 @@ public class ControladorActividades implements ActionListener {
                 habilitarTablaCombo();
             }
         });
+        //bloquearNoAdmin();
     }
 
     public void habilitarTablaCombo(){
+        System.out.println("habilitar combo");
         if(actividadesGui.getCategoria().getSelectedItem().equals("COMBO")){
             actividadesGui.getDias().setEnabled(false);
+            actividadesGui.getPaseLibre().setEnabled(false);
             tablaActCombo.setEnabled(!actividadesGui.getBotModif().isEnabled());
                 
             
@@ -79,7 +79,10 @@ public class ControladorActividades implements ActionListener {
         else{
             tablaActComboDefault.setRowCount(0);
             tablaActCombo.setEnabled(false);
-            actividadesGui.getDias().setEnabled(true);
+            actividadesGui.getDias().setEnabled(false);
+            actividadesGui.getPaseLibre().setEnabled(true);
+            actividadesGui.getPaseLibre().setSelected(true);
+
         }
     }
     
@@ -159,6 +162,7 @@ public class ControladorActividades implements ActionListener {
         
     }
     public void tablaMouseClicked(java.awt.event.MouseEvent evt) {
+        bloquearNoAdmin();
         actividadesGui.getBotGuardar().setEnabled(false);
         actividadesGui.getBotModif().setEnabled(true);
         actividadesGui.getBotEliminarCancelar().setEnabled(true);
@@ -168,14 +172,6 @@ public class ControladorActividades implements ActionListener {
         ar = Arancel.first("id = ?", actividadesGui.getTablaActividades().getValueAt(row, 0));
         actividadesGui.getActividad().setText(ar.getString("nombre"));
         int diasSemana= ar.getInteger("dias");
-        if(diasSemana==99){
-            actividadesGui.getPaseLibre().setSelected(true);
-            actividadesGui.getDias().setValue(0);
-        }
-        else{
-           actividadesGui.getPaseLibre().setSelected(false);
-           actividadesGui.getDias().setValue(diasSemana);
-        }
         actividadesGui.getPrecio().setText(String.valueOf(ar.getFloat("precio")));
         actividadesGui.getDesde().setDate(ar.getDate("fecha"));
         actividadesGui.getCategoria().setSelectedItem(ar.get("categoria"));
@@ -186,7 +182,18 @@ public class ControladorActividades implements ActionListener {
         else{
             tablaActComboDefault.setRowCount(0);
         }
+                if(diasSemana==99){
+            System.out.println("pase libre");
+            actividadesGui.getPaseLibre().setSelected(true);
+            actividadesGui.getDias().setValue(0);
+        }
+        else{
+            System.out.println("limitado: "+diasSemana);
+           actividadesGui.getPaseLibre().setSelected(false);
+           actividadesGui.getDias().setValue(diasSemana);
+        }
         actividadesGui.bloquearCampos(true);
+        bloquearNoAdmin();
         /*Cargo la info de las actividades en los campos! */
     }
 
@@ -351,9 +358,10 @@ try{
             }
             else{
                actividadesGui.getDias().setEnabled(true);
+               actividadesGui.getDias().setEnabled(!actividadesGui.getPaseLibre().isSelected());
+
             }
             isNuevo = false;
-            actividadesGui.getDias().setEnabled(!actividadesGui.getPaseLibre().isSelected());
 
         }
         if (ae.getSource() == actividadesGui.getBotNuevo()) {
@@ -378,6 +386,21 @@ try{
         else{
             java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(fecha);
+        }
+    }
+
+
+    
+    public void bloquearNoAdmin(){
+        if(!ControladorLogin.esAdmin){
+            System.out.print("es Admin:" + ControladorLogin.esAdmin);
+            actividadesGui.getBotEliminarCancelar().setEnabled(false);
+            actividadesGui.getBotGuardar().setEnabled(false);
+            actividadesGui.getBotModif().setEnabled(false);
+            actividadesGui.getBotNuevo().setEnabled(false);
+        }
+        else{
+            actividadesGui.getBotNuevo().setEnabled(true);
         }
     }
 }
