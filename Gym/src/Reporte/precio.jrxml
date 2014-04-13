@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="precio" language="groovy" printOrder="Horizontal" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="550ded38-8d81-4395-93cc-1472a44d907e">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="131"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
@@ -10,7 +10,7 @@
 	<parameter name="logo" class="java.io.InputStream"/>
 	<parameter name="logo_1" class="java.io.InputStream"/>
 	<parameter name="logo_2" class="java.io.InputStream"/>
-	<queryString language="SQL">
+	<queryString>
 		<![CDATA[SELECT nombre, precio, categoria FROM gym.arancels
 where activo=1;]]>
 	</queryString>
@@ -69,21 +69,21 @@ where activo=1;]]>
 			<staticText>
 				<reportElement x="0" y="50" width="254" height="20" uuid="28f69df7-aab7-45fc-b549-d9819f491c07"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="17" isBold="true" isItalic="false"/>
+					<font size="15" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[ARANCELES]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="273" y="50" width="254" height="20" uuid="d31ff8a2-f7b5-494e-bcaf-e8c3a7da4afa"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="17" isBold="true" isItalic="false"/>
+					<font size="15" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[ARANCELES]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="548" y="50" width="254" height="20" uuid="a5953154-1576-4835-96d3-f4d9c7b0e6fa"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="17" isBold="true" isItalic="false"/>
+					<font size="15" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[ARANCELES]]></text>
 			</staticText>
@@ -105,42 +105,42 @@ where activo=1;]]>
 			<staticText>
 				<reportElement style="Column header" x="0" y="19" width="123" height="15" uuid="6cc7b5b7-dd27-486b-b7f0-6b8e55b6b530"/>
 				<textElement>
-					<font fontName="SansSerif" size="12"/>
+					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<text><![CDATA[nombre]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="Column header" x="199" y="19" width="55" height="15" uuid="a89b6c0e-fb6e-46a7-b50d-d3f975e4b580"/>
 				<textElement>
-					<font fontName="SansSerif" size="12"/>
+					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<text><![CDATA[precio]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="Column header" x="273" y="19" width="123" height="15" uuid="01d5f99d-4472-4bef-a2d4-ee5a4e94a74d"/>
 				<textElement>
-					<font fontName="SansSerif" size="12"/>
+					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<text><![CDATA[nombre]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="Column header" x="472" y="19" width="55" height="15" uuid="ec925760-046c-4a5b-8789-fb4aa61d3102"/>
 				<textElement>
-					<font fontName="SansSerif" size="12"/>
+					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<text><![CDATA[precio]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="Column header" x="548" y="19" width="123" height="15" uuid="fba65bdb-cb94-40fb-a6d9-ccfe6294fe1d"/>
 				<textElement>
-					<font fontName="SansSerif" size="12"/>
+					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<text><![CDATA[nombre]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="Column header" x="747" y="19" width="55" height="15" uuid="a42af97a-50cc-4c73-ae4d-7b6a520d344a"/>
 				<textElement>
-					<font fontName="SansSerif" size="12"/>
+					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<text><![CDATA[precio]]></text>
 			</staticText>
@@ -164,14 +164,14 @@ where activo=1;]]>
 			<textField>
 				<reportElement style="Detail" x="199" y="1" width="55" height="15" uuid="7c8903f6-7f39-49f0-bc81-7851994af8cc"/>
 				<textElement>
-					<font fontName="SansSerif"/>
+					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{precio}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement style="Detail" x="747" y="0" width="55" height="15" uuid="a9b3531f-9e88-4fc0-8d9a-a9f61678bd67"/>
 				<textElement>
-					<font fontName="SansSerif"/>
+					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{precio}]]></textFieldExpression>
 			</textField>
@@ -185,7 +185,7 @@ where activo=1;]]>
 			<textField>
 				<reportElement style="Detail" x="472" y="0" width="55" height="15" uuid="a892a35f-2a69-47a9-8b25-65710b3896bc"/>
 				<textElement>
-					<font fontName="SansSerif"/>
+					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{precio}]]></textFieldExpression>
 			</textField>
