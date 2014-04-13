@@ -11,7 +11,7 @@
 	<parameter name="logo_1" class="java.io.InputStream"/>
 	<parameter name="logo_2" class="java.io.InputStream"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT nombre, precio, categoria FROM GYM.arancels
+		<![CDATA[SELECT nombre, precio, categoria FROM gym.arancels
 where activo=1;]]>
 	</queryString>
 	<field name="nombre" class="java.lang.String">
