@@ -28,6 +28,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="depurar">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Iconos/1397349580_virus_definitions.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Depurar datos"/>
               </Properties>
             </MenuItem>

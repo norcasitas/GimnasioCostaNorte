@@ -7,6 +7,7 @@ package Controladores;
 import Interfaces.IngresoGui;
 import Interfaces.LoginGUI;
 import Interfaces.PrincipalGui;
+import Modelos.Socio;
 import Modelos.User;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,7 +43,7 @@ public class ControladorLogin extends Thread implements ActionListener {
         log.setActionListener(this);
         log.setLocationRelativeTo(null);
         log.setVisible(true);
-        log.getTextPass().requestFocus();
+        log.getTextUsuario().requestFocus();
         log.getTextPass().addKeyListener(new KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 if (evt.getKeyCode() == KeyEvent.VK_ESCAPE) {
@@ -51,6 +52,7 @@ public class ControladorLogin extends Thread implements ActionListener {
                 }
                 if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
                     abrirBase();
+                    Socio.update("ACTIVO=0", "curdate()-FECHA_PROX_PAGO > ?", 7);
                     user = log.getTextUsuario().getText();
                     pass = log.getTextPass().getPassword();
                     //User u = User.first("USUARIO = ? and PASSWD = ?", usuario, log.getTextPass().getText());

@@ -276,9 +276,6 @@ public class ControladorAbmCliente implements ActionListener {
             }
             else{
                 System.out.println("Boton guardó uno nuevito");
-                for(int i = 0; i< 12; i++){
-                    System.out.println(clienteGui.getTablaActividades().getValueAt(i, 1));
-                }
                 //System.out.println(clienteGui.getTablaActividades().getValueAt(0, 0));
                 //debe mantener abierta la ventana y que se habilite el botón de la huella, la huella
                 //solo puede ser creada si el usuario existe
@@ -421,7 +418,7 @@ public class ControladorAbmCliente implements ActionListener {
         /*
             ESTO PERTENECE AL CONTROLADOR DE LA FICHA MEDICA
         */
-        if(fichaMedicaGui.isVisible()){
+        if(fichaMedicaGui!=null){
         if(ae.getSource() == fichaMedicaGui.getAceptar()){
             if(fichaNueva){
                if(altaFicha()){

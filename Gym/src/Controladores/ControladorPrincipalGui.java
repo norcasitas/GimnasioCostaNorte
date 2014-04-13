@@ -77,7 +77,6 @@ public class ControladorPrincipalGui implements ActionListener {
         controladorClientes = new ControladorClientes(socios, principalGui.getDesktop(),actualizarDatos);
         principalGui.setActionListener(this);
         principalGui.getDesktop().add(socios);
-
         actividadesGui = new ActividadesGui();
         controladorActividades = new ControladorActividades(actividadesGui);
         principalGui.getDesktop().add(actividadesGui);

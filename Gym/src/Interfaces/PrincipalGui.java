@@ -170,6 +170,7 @@ public class PrincipalGui extends javax.swing.JFrame {
         botSalir.setText("Salir");
         jMenu1.add(botSalir);
 
+        depurar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/1397349580_virus_definitions.png"))); // NOI18N
         depurar.setText("Depurar datos");
         jMenu1.add(depurar);
 

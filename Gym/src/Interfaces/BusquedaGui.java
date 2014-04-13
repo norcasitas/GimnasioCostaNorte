@@ -105,7 +105,6 @@ public class BusquedaGui extends javax.swing.JInternalFrame {
         setTitle("Socios");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/1393023303_clients.png"))); // NOI18N
         setPreferredSize(new java.awt.Dimension(734, 410));
-        getContentPane().setLayout(new java.awt.BorderLayout());
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Busqueda"));
 
@@ -150,19 +149,19 @@ public class BusquedaGui extends javax.swing.JInternalFrame {
         tablaClientes.setAutoCreateRowSorter(true);
         tablaClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Nombre", "Apellido", "DNI", "Telefono"
+                "Nombre", "Apellido", "DNI", "Telefono", "Activo"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
