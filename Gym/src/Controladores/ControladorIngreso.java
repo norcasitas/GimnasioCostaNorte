@@ -7,6 +7,7 @@ package Controladores;
 
 import ABMs.ABMSocios;
 import BD.ConexionBD;
+import Interfaces.AsistenciasGui;
 import Interfaces.IngresoGui;
 import Interfaces.RegistrarPagoGui;
 import Interfaces.asistenciaCombo;
@@ -345,6 +346,7 @@ public class ControladorIngreso implements ActionListener {
         if (e.getSource() == ingresoGui.getBusquedaManual()) {
             System.out.println("busqueda manual");
             busquedaManualGui bus = new busquedaManualGui(ingresoGui, true, this);
+            bus.setLocationRelativeTo(null);
             bus.setVisible(true);
         }
         if (e.getSource() == ingresoGui.getDarDeAlta()) {
@@ -353,6 +355,13 @@ public class ControladorIngreso implements ActionListener {
             RegistrarPagoGui pagoGui = new RegistrarPagoGui(ingresoGui, true, socio);
             pagoGui.setLocationRelativeTo(null);
             pagoGui.setVisible(true);
+        }
+        if(e.getSource()==ingresoGui.getGestAsis() ){
+            AsistenciasGui asistenciasGui= new AsistenciasGui(ingresoGui, true, socio.getInteger("ID_DATOS_PERS"));
+            asistenciasGui.setLocationRelativeTo(null);
+            asistenciasGui.setVisible(true);
+            ingresoGui.limpiarAsistencias();
+            cargarAsistencia();
         }
     }
 
@@ -392,12 +401,11 @@ public class ControladorIngreso implements ActionListener {
     }
 
     public void cargarDatos(Socio socio) {
+        this.socio= socio;
         ingresoGui.limpiar();
         idCliente = socio.getInteger("ID_DATOS_PERS");
 
-        ingresoGui.getNombre().setText(socio.getString("NOMBRE"));
-        ingresoGui.getApellido().setText(socio.getString("APELLIDO"));
-        ingresoGui.getNombre().setText(socio.getString("NOMBRE"));
+        ingresoGui.getNombre().setText(socio.getString("APELLIDO")+" "+socio.getString("NOMBRE"));
         if (socio.getDate("FECHA_ULT_PAGO") != null) {
             ingresoGui.getFechaUltPago().setText(dateToMySQLDate(socio.getDate("FECHA_ULT_PAGO"), true));
         } else {
@@ -454,6 +462,7 @@ public class ControladorIngreso implements ActionListener {
                     }
                     if(socioArancel.size()>1 || comboSolo){
                         asistenciaCombo asisComboGui= new asistenciaCombo(ingresoGui, true, socioArancel,idCliente);
+                        asisComboGui.setLocationRelativeTo(null);
                         asisComboGui.setVisible(true);
                         int idActiv=asisComboGui.idActiv;
                         int idActivCombo= asisComboGui.idActivCombo;
@@ -486,6 +495,7 @@ public class ControladorIngreso implements ActionListener {
         }
 
         ingresoGui.getDarDeAlta().setEnabled(!socio.getBoolean("ACTIVO"));
+        ingresoGui.getGestAsis().setEnabled(socio.getBoolean("ACTIVO"));
 
     }
 

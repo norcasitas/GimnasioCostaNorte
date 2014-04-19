@@ -72,7 +72,7 @@ public class ABMSocios {
         Socio viejo = Socio.first("DNI = ?", dniViejo);
         if (viejo != null) {
             Base.openTransaction();
-            viejo.set("NOMBRE", s.get("NOMBRE"), "APELLIDO", s.get("APELLIDO"), "DNI", s.get("DNI"), "FECHA_NAC", s.get("FECHA_NAC"), "TEL", s.get("TEL"), "SEXO", s.get("SEXO"));
+            viejo.set("DIR",s.get("DIR"), "NOMBRE", s.get("NOMBRE"), "APELLIDO", s.get("APELLIDO"), "DNI", s.get("DNI"), "FECHA_NAC", s.get("FECHA_NAC"), "TEL", s.get("TEL"), "SEXO", s.get("SEXO"));
             Socio soc = Socio.first("DNI = ?", dniViejo);
             LazyList l = Socioarancel.where("id_socio = ?", soc.get("ID_DATOS_PERS"));
             Iterator<Socioarancel> i = l.iterator();

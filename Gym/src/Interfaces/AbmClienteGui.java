@@ -130,6 +130,7 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
         direccion.setEnabled(!si);
         telefono.setEnabled(!si);
         fechaNacim.setEnabled(!si);
+        fechaNacim.getDateEditor().setEnabled(false);
         tablaActividades.setEnabled(!si);
         sexo.setEnabled(!si);
     }

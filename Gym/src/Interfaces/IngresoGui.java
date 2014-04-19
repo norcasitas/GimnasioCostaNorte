@@ -54,7 +54,6 @@ public class IngresoGui extends javax.swing.JFrame {
         
     public void limpiar(){
         nombre.setText("");
-        apellido.setText("");
         fechaUltPago.setText("");
         fechaVence.setText("");
         cantDias.setText("");
@@ -62,6 +61,13 @@ public class IngresoGui extends javax.swing.JFrame {
         for (Component array1 : array) {
             ((JTextArea)((JViewport)((JScrollPane) array1).getComponent(0)).getView()).setText("") ;
         }
+    }
+    
+    public void limpiarAsistencias(){
+        Component[] array=panelAsistencia.getComponents();
+        for (Component array1 : array) {
+            ((JTextArea)((JViewport)((JScrollPane) array1).getComponent(0)).getView()).setText("") ;
+        } 
     }
     
  public void cargarSonido(String nombre) throws Exception {
@@ -85,7 +91,6 @@ public class IngresoGui extends javax.swing.JFrame {
 
     public void noIdentifado(){
         nombre.setText("?????");
-        apellido.setText("?????");
         fechaUltPago.setText("?????");
         fechaVence.setText("?????");
         cantDias.setText("??");
@@ -111,6 +116,11 @@ public class IngresoGui extends javax.swing.JFrame {
         limpiarVentana.addActionListener(lis);
         busquedaManual.addActionListener(lis);
         darDeAlta.addActionListener(lis);
+        gestAsis.addActionListener(lis);
+    }
+
+    public JMenuItem getGestAsis() {
+        return gestAsis;
     }
     
     /**
@@ -121,11 +131,9 @@ public class IngresoGui extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
         nombre = new javax.swing.JLabel();
-        apellido = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         fechaUltPago = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -207,6 +215,7 @@ public class IngresoGui extends javax.swing.JFrame {
         busquedaManual = new javax.swing.JMenuItem();
         limpiarVentana = new javax.swing.JMenuItem();
         darDeAlta = new javax.swing.JMenuItem();
+        gestAsis = new javax.swing.JMenuItem();
 
         setTitle("Ingreso de socios");
         setBackground(new java.awt.Color(236, 233, 216));
@@ -214,115 +223,87 @@ public class IngresoGui extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(236, 233, 216));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos del socio", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century", 1, 14), java.awt.Color.black)); // NOI18N
-        jPanel1.setLayout(new java.awt.GridBagLayout());
 
-        nombre.setFont(new java.awt.Font("Tahoma", 1, 60)); // NOI18N
+        nombre.setFont(new java.awt.Font("Tahoma", 1, 40)); // NOI18N
         nombre.setForeground(new java.awt.Color(12, 134, 52));
         nombre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         nombre.setText("julito");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 9;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 18;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.ipadx = 160;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(19, 10, 0, 6);
-        jPanel1.add(nombre, gridBagConstraints);
-
-        apellido.setFont(new java.awt.Font("Tahoma", 1, 60)); // NOI18N
-        apellido.setForeground(new java.awt.Color(12, 134, 52));
-        apellido.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        apellido.setText("Perez");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 6;
-        gridBagConstraints.ipadx = 165;
-        gridBagConstraints.ipady = -2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(20, 12, 0, 0);
-        jPanel1.add(apellido, gridBagConstraints);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel4.setText("Fecha último pago:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(11, 40, 0, 0);
-        jPanel1.add(jLabel4, gridBagConstraints);
 
         fechaUltPago.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        fechaUltPago.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        fechaUltPago.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         fechaUltPago.setText("12/11/12");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 13;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.ipadx = 111;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 6, 0, 0);
-        jPanel1.add(fechaUltPago, gridBagConstraints);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel6.setText("Fecha de vencimiento:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(27, 40, 0, 0);
-        jPanel1.add(jLabel6, gridBagConstraints);
 
         fechaVence.setFont(new java.awt.Font("Tahoma", 1, 40)); // NOI18N
         fechaVence.setForeground(new java.awt.Color(204, 0, 0));
-        fechaVence.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        fechaVence.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         fechaVence.setText("12/12/12");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 5;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 17;
-        gridBagConstraints.ipadx = 177;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 6, 0, 0);
-        jPanel1.add(fechaVence, gridBagConstraints);
 
         jLabel36.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel36.setText("Faltan");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(23, 40, 7, 0);
-        jPanel1.add(jLabel36, gridBagConstraints);
 
         cantDias.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         cantDias.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         cantDias.setText("20");
         cantDias.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.ipadx = 41;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 6, 0, 0);
-        jPanel1.add(cantDias, gridBagConstraints);
 
         jLabel38.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel38.setText("Días para el vencimiento");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.gridwidth = 8;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(23, 6, 7, 0);
-        jPanel1.add(jLabel38, gridBagConstraints);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(42, 42, 42)
+                .addComponent(jLabel36)
+                .addGap(6, 6, 6)
+                .addComponent(cantDias, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(jLabel38))
+            .addComponent(nombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(39, 39, 39)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(fechaUltPago, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
+                        .addGap(147, 147, 147))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(fechaVence, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fechaUltPago)
+                    .addComponent(jLabel4))
+                .addGap(4, 4, 4)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(jLabel6))
+                    .addComponent(fechaVence))
+                .addGap(5, 5, 5)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cantDias)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel36)
+                            .addComponent(jLabel38)))))
+        );
 
         jPanel2.setBackground(new java.awt.Color(236, 233, 216));
 
@@ -356,7 +337,7 @@ public class IngresoGui extends javax.swing.JFrame {
         );
         panelImage1Layout.setVerticalGroup(
             panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 257, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         panelImage2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Costa Norte logo-centro.jpg"))); // NOI18N
@@ -813,6 +794,10 @@ public class IngresoGui extends javax.swing.JFrame {
         darDeAlta.setEnabled(false);
         jMenu1.add(darDeAlta);
 
+        gestAsis.setText("Gestión asistencias");
+        gestAsis.setEnabled(false);
+        jMenu1.add(gestAsis);
+
         jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
@@ -841,11 +826,11 @@ public class IngresoGui extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(panelImage2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(panelImage1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, 0)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(panelImage2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelImage1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, 0)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
                 .addGap(0, 0, 0)
@@ -896,9 +881,7 @@ public class IngresoGui extends javax.swing.JFrame {
         });
     }
 
-    public JLabel getApellido() {
-        return apellido;
-    }
+
 
     public JLabel getCantDias() {
         return cantDias;
@@ -931,12 +914,12 @@ public class IngresoGui extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel apellido;
     private javax.swing.JMenuItem busquedaManual;
     private javax.swing.JLabel cantDias;
     private javax.swing.JMenuItem darDeAlta;
     private javax.swing.JLabel fechaUltPago;
     private javax.swing.JLabel fechaVence;
+    private javax.swing.JMenuItem gestAsis;
     private org.edisoncor.gui.panel.PanelImage imHuella;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel36;

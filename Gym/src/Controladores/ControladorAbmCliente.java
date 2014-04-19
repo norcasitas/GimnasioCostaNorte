@@ -326,9 +326,11 @@ public class ControladorAbmCliente implements ActionListener {
         }
         if (ae.getSource() == clienteGui.getBotHuella()) {
             System.out.println("Boton huella pulsado");
+            s= Socio.findFirst("DNI = ? ", clienteGui.getDni().getText());
             try {
-                System.out.println(s==null);
+                System.out.println((s==null) + " "+ s.getInteger("ID_DATOS_PERS") );
                 cargarHuellaGui= new CargarHuellaGui(null, s.getInteger("ID_DATOS_PERS"));//Aca va el ID del cliente !
+                cargarHuellaGui.setTitle("Huella de "+ s.getString("NOMBRE")+ " "+s.getString("APELLIDO"));
             } catch (SQLException ex) {
                 Logger.getLogger(ControladorAbmCliente.class.getName()).log(Level.SEVERE, null, ex);
             }
