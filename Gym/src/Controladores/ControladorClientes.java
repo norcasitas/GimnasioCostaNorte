@@ -325,6 +325,8 @@ public class ControladorClientes implements ActionListener {
                 }
             }
         }
+                clientesGui.getLabelResult3().setText(Integer.toString(clientesGui.getTablaClientes().getRowCount()));
+
     }
 
     public void cargarSocios(String filtro) {

@@ -18,6 +18,9 @@
 --
 -- Table structure for table `arancels`
 --
+drop database if exists gym;
+create database gym;
+use gym;
 
 DROP TABLE IF EXISTS `arancels`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

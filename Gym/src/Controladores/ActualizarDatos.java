@@ -51,6 +51,7 @@ public class ActualizarDatos {
              d[i] = "INACTIVOS";
              d[i+1] = "MOROSOS";
              clientesGui.getActividades().setListData(d);
-             
+             clientesGui.getLabelResult3().setText(Integer.toString(clientesGui.getTablaClientes().getRowCount()));
     }
+    
 }

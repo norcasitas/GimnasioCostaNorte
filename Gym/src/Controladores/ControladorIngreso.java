@@ -41,6 +41,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -489,8 +490,8 @@ public class ControladorIngreso implements ActionListener {
     }
 
     public void cargarSonido(String nombre) throws Exception {
-        File soundFile = new File(getClass().getResource("/Sonidos/" + nombre).toURI());
-        AudioInputStream soundIn = AudioSystem.getAudioInputStream(soundFile);
+        URL defaultSound=getClass().getResource("/Sonidos/" + nombre);
+        AudioInputStream soundIn = AudioSystem.getAudioInputStream(defaultSound);
         AudioFormat format = soundIn.getFormat();
         DataLine.Info info = new DataLine.Info(Clip.class, format);
 

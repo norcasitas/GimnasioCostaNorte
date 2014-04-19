@@ -335,7 +335,7 @@ public class RegistrarPagoGui extends javax.swing.JDialog {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Información adicional"));
 
-        jLabel5.setText("Fecha que venció");
+        jLabel5.setText("Próximo vencimiento:");
 
         labelVencio.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         labelVencio.setText("ocurrió un error");

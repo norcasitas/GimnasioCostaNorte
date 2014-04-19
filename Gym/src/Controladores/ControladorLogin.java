@@ -7,16 +7,20 @@ package Controladores;
 import Interfaces.IngresoGui;
 import Interfaces.LoginGUI;
 import Interfaces.PrincipalGui;
+import Modelos.Arancel;
 import Modelos.Socio;
+import Modelos.Socioarancel;
 import Modelos.User;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
+import java.util.Iterator;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import org.javalite.activejdbc.Base;
+import org.javalite.activejdbc.LazyList;
 import org.javalite.activejdbc.Model;
 
 /**
