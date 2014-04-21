@@ -9,6 +9,7 @@ import Interfaces.AbmClienteGui;
 import Interfaces.CargarHuellaGui;
 import Interfaces.FichaMedicaGui;
 import Interfaces.RegistrarPagoGui;
+import Interfaces.TodasAsisGui;
 import Modelos.Arancel;
 import Modelos.Ficha;
 import Modelos.Socio;

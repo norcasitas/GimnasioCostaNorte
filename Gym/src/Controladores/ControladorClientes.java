@@ -9,6 +9,7 @@ import Interfaces.AbmClienteGui;
 import Interfaces.BusquedaGui;
 import Interfaces.DesktopPaneImage;
 import Interfaces.PagosGui;
+import Interfaces.TodasAsisGui;
 import Modelos.Arancel;
 import Modelos.Asistencia;
 import Modelos.Pago;
@@ -44,6 +45,7 @@ public class ControladorClientes implements ActionListener {
     private AbmClienteGui altaClienteGui;
     private ControladorAbmCliente controladorAbmCliente;
     private PagosGui pagosGui;
+    private TodasAsisGui asisGui;
     private ABMSocios abmSocios;
     private DefaultTableModel tablaSocDefault;
     private ActualizarDatos actualizarDAtos;
@@ -52,6 +54,7 @@ public class ControladorClientes implements ActionListener {
     private String dateDesde;
     private String dateHasta;
     private boolean verTodos = false;
+    private boolean verTodas = false;
 
     public ControladorClientes(BusquedaGui clientes, DesktopPaneImage desktop, ActualizarDatos actualizarDatos) {
 
@@ -63,6 +66,9 @@ public class ControladorClientes implements ActionListener {
         controladorAbmCliente = new ControladorAbmCliente(altaClienteGui, actualizarDatos);
         desktop.add(altaClienteGui);
         pagosGui = new PagosGui();
+        asisGui = new TodasAsisGui();
+        asisGui.setActionListener(this);
+        desktop.add(asisGui);
         desktop.add(pagosGui);
         pagosGui.setActionListener(this);
         tablaClientes = this.clientesGui.getTablaClientes();
@@ -513,6 +519,60 @@ public class ControladorClientes implements ActionListener {
             }
 
         }
+        if (ae.getSource() == clientesGui.getAsistencias()) {
+            System.out.println("ver registros de pago pulsado");
+            verTodas = false;
+            if (tablaClientes.getSelectedRow() >= 0) {
+                Socio s = Socio.first("DNI = ?", tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 2));
+                LazyList ListAsis = Asistencia.where("ID_DATOS_PERS = ?", s.getString("ID_DATOS_PERS"));
+                ListAsis.orderBy("ID_ASISTENCIA");
+                asisGui.getTablaAsisDefault().setRowCount(0);
+                Iterator<Asistencia> it = ListAsis.iterator();
+
+                while (it.hasNext()) {
+                    Asistencia p = it.next();
+                    Object row[] = new Object[7];
+                    row[0] = tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0);
+                    row[1] = tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 1);
+                    row[2] = tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 2);
+                    row[3] = dateToMySQLDate(p.getDate("FECHA"), true);
+                    //row[4] = p.getFloat("MONTO");
+                    Arancel ar= Arancel.findFirst("id = ?", p.get("ID_ACTIV"));
+                     String nombreActiv= ar.getString("nombre");
+                      String nombreActivCombo="";
+                      if(p.get("ID_ACTIV_COMBO")!=null){
+                            ar= Arancel.findFirst("id = ?", p.get("ID_ACTIV_COMBO"));
+                            nombreActivCombo=ar.getString("nombre");
+                         }
+                      row[4] = nombreActiv;
+                      row[5] = nombreActivCombo;
+                    row[6] = p.getInteger("ID_ASISTENCIA");
+                    asisGui.getTablaAsisDefault().addRow(row);
+                }
+                asisGui.setVisible(true);
+                asisGui.toFront();
+                System.out.println("asis del gil de la fila" + tablaClientes.getSelectedRow());
+            }
+
+        }
+        if (ae.getSource() == asisGui.getBotBorrarAsis()) {
+            int ret = JOptionPane.showConfirmDialog(asisGui, "¿Desea eliminar la asistencia seleccionada?", null, JOptionPane.YES_NO_OPTION);
+            if (ret == JOptionPane.YES_OPTION) {
+                System.out.println("elimino el de la fila " + tablaClientes.getSelectedRow());
+                
+                Asistencia.delete("ID_ASISTENCIA = ?", asisGui.getTablaAsis().getValueAt(asisGui.getTablaAsis().getSelectedRow(), 6));
+                dateHasta= dateToMySQLDate(asisGui.getHasta().getCalendar().getTime(), false);
+                dateDesde = dateToMySQLDate(asisGui.getDesde().getCalendar().getTime(), false);
+                actualizarAsis(dateDesde, dateDesde, dateHasta, verTodas);
+            }
+        }
+        if (ae.getSource() == asisGui.getBotVerTodos()) {
+            verTodas = true;
+                            dateHasta= dateToMySQLDate(asisGui.getHasta().getCalendar().getTime(), false);
+                dateDesde = dateToMySQLDate(asisGui.getDesde().getCalendar().getTime(), false);
+            actualizarAsis("no me importa", dateDesde, dateHasta, verTodas);
+
+        }
         if (ae.getSource() == pagosGui.getBotBorrarPago()) {
             int ret = JOptionPane.showConfirmDialog(pagosGui, "¿Desea eliminar el pago seleccionado?", null, JOptionPane.YES_NO_OPTION);
             if (ret == JOptionPane.YES_OPTION) {
@@ -599,6 +659,41 @@ public class ControladorClientes implements ActionListener {
                 row[4] = p.getFloat("MONTO");
                 row[5] = p.getInteger("ID_PAGOS");
                 pagosGui.getTablaPagosDefault().addRow(row);
+            }
+        }
+    }
+    
+    private void actualizarAsis(String idcliente, String desde, String hasta, boolean todos) {
+        LazyList<Asistencia> ListAsis;
+        if (!todos) {
+            ListAsis = Asistencia.where("ID_DATOS_PERS = ? and FECHA between ? and ?", idcliente, desde, hasta);
+        } else {
+            ListAsis = Asistencia.where("FECHA between ? and ?", desde, hasta);
+        }
+        asisGui.getTablaAsisDefault().setRowCount(0);
+        if (ListAsis != null) {
+            Iterator<Asistencia> it = ListAsis.iterator();
+            Socio s;
+            while (it.hasNext()) {
+                Asistencia p = it.next();
+                s = Socio.findFirst("ID_DATOS_PERS =?", p.getString("ID_DATOS_PERS"));
+                Object row[] = new Object[7];
+                row[0] = s.getString("NOMBRE");
+                row[1] = s.getString("APELLIDO");
+                row[2] = s.getString("DNI");
+                row[3] = dateToMySQLDate(p.getDate("FECHA"), true);
+               // row[4] = p.getFloat("MONTO");
+                Arancel ar= Arancel.findFirst("id = ?", p.get("ID_ACTIV"));
+                     String nombreActiv= ar.getString("nombre");
+                      String nombreActivCombo="";
+                      if(p.get("ID_ACTIV_COMBO")!=null){
+                            ar= Arancel.findFirst("id = ?", p.get("ID_ACTIV_COMBO"));
+                            nombreActivCombo=ar.getString("nombre");
+                         }
+                      row[4] = nombreActiv;
+                      row[5] = nombreActivCombo;
+                row[6] = p.getInteger("ID_ASISTENCIA");
+                asisGui.getTablaAsisDefault().addRow(row);
             }
         }
     }
