@@ -64,6 +64,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.LazyList;
 import org.javalite.activejdbc.Model;
@@ -97,6 +98,7 @@ public class ControladorIngreso implements ActionListener {
     private ABMSocios abmSocio;
     private Socio socio;
     private Asistencia asistencia;
+    private Timer timer;
 
     public ControladorIngreso(IngresoGui ingresoGui) throws Exception {
         this.ingresoGui = ingresoGui;
@@ -106,9 +108,20 @@ public class ControladorIngreso implements ActionListener {
         start();
         abmSocio = new ABMSocios();
         asistencia = new Asistencia();
+        timer= new Timer(7000, new ActionListener() {
 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                limpiaPantalla();
+                timer.stop();
+            }
+        });
+        timer.start();
     }
 
+    private void limpiaPantalla(){
+        ingresoGui.limpiar();
+    }
     public void abrirBase() {
         if (!Base.hasConnection()) {
             Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/GYM", "root", "root");
@@ -496,6 +509,7 @@ public class ControladorIngreso implements ActionListener {
 
         ingresoGui.getDarDeAlta().setEnabled(!socio.getBoolean("ACTIVO"));
         ingresoGui.getGestAsis().setEnabled(socio.getBoolean("ACTIVO"));
+        timer.start();
 
     }
 
