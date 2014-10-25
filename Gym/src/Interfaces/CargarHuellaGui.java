@@ -65,6 +65,10 @@ public class CargarHuellaGui extends javax.swing.JDialog {
         PreparedStatement stmt = c.prepareStatement(query);
          //stmt.setInt(1,id);
         ResultSet rs = stmt.executeQuery(query);
+        
+
+        
+        
         //Ejecuta la sentencia
         if(rs.next()){
         fingerIndividual = DPFPFingerIndex.valueOf(rs.getString(3));

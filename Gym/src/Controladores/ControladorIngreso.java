@@ -290,12 +290,13 @@ public class ControladorIngreso implements ActionListener {
     public void identificarHuella() throws IOException {
         try {
             Connection c = con.conectar();
-            String query = "SELECT * FROM huellas ";
+            String query = "SELECT id,huella,dedo, client_id FROM huellas h inner join socios s on h.client_id= s.ID_DATOS_PERS  where  s.ACTIVO = 1";
             PreparedStatement stmt = c.prepareStatement(query);
             //stmt.setInt(1,id);
             ResultSet rs = stmt.executeQuery(query);
             //Ejecuta la sentencia
-            while (rs.next()) {
+            boolean encontro=false;
+            while (rs.next() && !encontro) {
                 fingerIndividual = DPFPFingerIndex.valueOf(rs.getString(3));
                 byte templateBuffer[] = rs.getBytes(2);
                 idCliente = rs.getInt(4);
@@ -317,7 +318,7 @@ public class ControladorIngreso implements ActionListener {
                     socio = Socio.findFirst("ID_DATOS_PERS = ?", idCliente);
                     EnviarTexto("Verificación correcta,la huella capturada es de " + socio.getString("NOMBRE") + " " + socio.getString("APELLIDO"));
                     cargarDatos(socio);
-
+                    encontro=true;
                     return;
                 }
 
@@ -326,12 +327,15 @@ public class ControladorIngreso implements ActionListener {
             try {
                 cargarSonido("error.wav");
                 System.out.println("no te conozco wacho");
+                
+                
             } catch (Exception ex) {
                 Logger.getLogger(ControladorIngreso.class.getName()).log(Level.SEVERE, null, ex);
             }
             EnviarTexto("No existe ningún registro que coincida con la huella");
             setTemplate(null);
             ingresoGui.noIdentifado();
+            timer.start();
         } catch (SQLException e) {
             //Si ocurre un error lo indica en la consola
             System.err.println("Error al identificar huella dactilar." + e.getMessage());
@@ -416,6 +420,7 @@ public class ControladorIngreso implements ActionListener {
     public void cargarDatos(Socio socio) {
         this.socio= socio;
         ingresoGui.limpiar();
+        timer.stop();
         idCliente = socio.getInteger("ID_DATOS_PERS");
 
         ingresoGui.getNombre().setText(socio.getString("APELLIDO")+" "+socio.getString("NOMBRE"));
