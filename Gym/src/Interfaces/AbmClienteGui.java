@@ -5,15 +5,20 @@
 package Interfaces;
 
 import com.toedter.calendar.JDateChooser;
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.util.Calendar;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import org.edisoncor.gui.panel.PanelImage;
 
 /**
  *
@@ -24,11 +29,14 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
     /**
      * Creates new form AbmClienteGui
      */
+    private String namePicture="sin_imagen_disponible.jpg";
+    private BufferedImage image;
     
     private DefaultTableModel tablaActivDefault ;
     public AbmClienteGui() {
         initComponents();
         tablaActivDefault= (DefaultTableModel) tablaActividades.getModel();
+        setPicture(namePicture);
     }
 
     public void setActionListener(ActionListener lis){
@@ -39,10 +47,22 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
         this.botModif.addActionListener(lis);
         this.botNuevo.addActionListener(lis);
         this.botPago.addActionListener(lis);
+        this.btnAddPhoto.addActionListener(lis);
+        this.btnDeletePhoto.addActionListener(lis);
     }
     public JButton getBotHuella() {
         return BotHuella;
     }
+
+    public JButton getBtnAddPhoto() {
+        return btnAddPhoto;
+    }
+
+    public JButton getBtnDeletePhoto() {
+        return btnDeletePhoto;
+    }
+
+
 
     public JTextField getApellido() {
         return apellido;
@@ -117,6 +137,8 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
         this.BotHuella.setEnabled(!si);
         this.botNuevo.setEnabled(si);
         this.botGuardar.setEnabled(si);
+        this.btnAddPhoto.setEnabled(si);
+        this.btnDeletePhoto.setEnabled(si);
         if(si)
         this.botEliminarCancelar.setText("Cancelar");
         else
@@ -133,6 +155,8 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
         fechaNacim.getDateEditor().setEnabled(false);
         tablaActividades.setEnabled(!si);
         sexo.setEnabled(!si);
+        btnAddPhoto.setEnabled(!si);
+        btnDeletePhoto.setEnabled(!si);
     }
     
         public void limpiarCampos(){
@@ -145,8 +169,29 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
         labelFechaVenci.setText("");
         fechaNacim.setDate(Calendar.getInstance().getTime());
         tablaActividades.clearSelection();
+            setPicture("sin_imagen_disponible.jpg");
+        
+
     }
 
+    public void setPicture(String nombre){
+        namePicture=nombre;
+        String rutaImagen= System.getProperty("user.dir");
+        rutaImagen+="/user_images/"+nombre;
+        pnlImageSocio.setIcon(new javax.swing.ImageIcon(rutaImagen));
+        pnlImageSocio.repaint();
+        if("sin_imagen_disponible.jpg".equals(nombre)){
+            image=null;
+        }
+    }
+    
+       public void setPicture(BufferedImage image){
+        this.image= image;
+        this.namePicture= "hay_imagen";
+        pnlImageSocio.setIcon(new javax.swing.ImageIcon(image));
+        pnlImageSocio.repaint();
+    } 
+    
     public DefaultTableModel getTablaActivDefault() {
         return tablaActivDefault;
     }
@@ -154,8 +199,15 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
     public JTable getTablaActividades() {
         return tablaActividades;
     }
-        
-        
+
+    public String getNamePicture() {
+        return namePicture;
+    }
+
+    public BufferedImage getImage() {
+        return image;
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -199,6 +251,10 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
         jLabel8 = new javax.swing.JLabel();
         labelFechaVenci = new javax.swing.JLabel();
         botPago = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        btnAddPhoto = new javax.swing.JButton();
+        btnDeletePhoto = new javax.swing.JButton();
+        pnlImageSocio = new org.edisoncor.gui.panel.PanelImage();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -278,19 +334,19 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel11)
                                 .addGap(27, 27, 27)))
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(telefono, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                            .addComponent(telefono, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
                             .addComponent(sexo, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGap(0, 51, Short.MAX_VALUE)
+                        .addGap(0, 176, Short.MAX_VALUE)
                         .addComponent(botFicha)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(BotHuella))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addGap(4, 4, 4)
-                        .addComponent(fechaNacim, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE))
+                        .addComponent(fechaNacim, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(65, 65, 65)
                         .addComponent(direccion))
@@ -411,6 +467,51 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
         botPago.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/pagar.png"))); // NOI18N
         botPago.setText("Registrar Pago");
 
+        jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel2.setPreferredSize(new java.awt.Dimension(200, 200));
+
+        btnAddPhoto.setText("Agregar");
+
+        btnDeletePhoto.setText("Eliminar");
+
+        pnlImageSocio.setIcon(new javax.swing.ImageIcon("C:\\Users\\NicoOrcasitas\\Downloads\\sin_imagen_disponible.jpg")); // NOI18N
+        pnlImageSocio.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pnlImageSocioMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlImageSocioLayout = new javax.swing.GroupLayout(pnlImageSocio);
+        pnlImageSocio.setLayout(pnlImageSocioLayout);
+        pnlImageSocioLayout.setHorizontalGroup(
+            pnlImageSocioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        pnlImageSocioLayout.setVerticalGroup(
+            pnlImageSocioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 194, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(btnAddPhoto, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                .addGap(0, 0, 0)
+                .addComponent(btnDeletePhoto, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE))
+            .addComponent(pnlImageSocio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addComponent(pnlImageSocio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnDeletePhoto, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAddPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -426,13 +527,17 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
                             .addComponent(labelFechaIngreso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(labelFechaVenci, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(botPago)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(botPago)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 566, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
@@ -441,7 +546,9 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(labelFechaVenci, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(botPago))
         );
 
@@ -474,6 +581,23 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_dniActionPerformed
 
+    private void pnlImageSocioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlImageSocioMouseClicked
+        if(evt.getClickCount()==2){
+            JFrame k= new JFrame("VER  IMAGEN DE SOCIO");
+            k.setResizable(true);
+            k.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            k.setLayout(new BorderLayout());
+            PanelImage p= new PanelImage();
+            p.setIcon(this.pnlImageSocio.getIcon());
+            k.add(p);
+            k.setSize(p.getIcon().getIconWidth(),p.getIcon().getIconHeight());
+            k.setLocationRelativeTo(null);
+            k.setVisible(true);
+            k.toFront();
+        }
+        
+    }//GEN-LAST:event_pnlImageSocioMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BotHuella;
     private javax.swing.JTextField apellido;
@@ -483,6 +607,8 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
     private javax.swing.JButton botModif;
     private javax.swing.JButton botNuevo;
     private javax.swing.JButton botPago;
+    private javax.swing.JButton btnAddPhoto;
+    private javax.swing.JButton btnDeletePhoto;
     private javax.swing.JTextField direccion;
     private javax.swing.JTextField dni;
     private com.toedter.calendar.JDateChooser fechaNacim;
@@ -496,6 +622,7 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
@@ -505,6 +632,7 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
     private javax.swing.JLabel labelFechaIngreso;
     private javax.swing.JLabel labelFechaVenci;
     private javax.swing.JTextField nombre;
+    private org.edisoncor.gui.panel.PanelImage pnlImageSocio;
     private javax.swing.JComboBox sexo;
     private javax.swing.JTable tablaActividades;
     private javax.swing.JTextField telefono;

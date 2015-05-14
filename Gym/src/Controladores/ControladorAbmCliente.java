@@ -16,12 +16,21 @@ import Modelos.Socio;
 import Modelos.Socioarancel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.LinkedList;
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.LazyList;
@@ -42,6 +51,7 @@ public class ControladorAbmCliente implements ActionListener {
     private boolean fichaNueva;
     private ActualizarDatos actualizarDatos;
     private String dniViejo;
+    InputStream imagen;
 
     public ControladorAbmCliente(AbmClienteGui clienteGui, ActualizarDatos actualizarDatos) {
         this.clienteGui = clienteGui;
@@ -63,8 +73,11 @@ public class ControladorAbmCliente implements ActionListener {
             s.set("SEXO", "M");
         }else{
             s.set("SEXO", "F");
-        }
-        
+        } 
+        if(!clienteGui.getNamePicture().equals("sin_imagen_disponible.jpg"))
+            s.setString("foto",s.get("dni")+".jpg");
+        else
+            s.setString("foto","sin_imagen_disponible.jpg");
     }
     
     public void CargarFicha(Ficha ficha){
@@ -270,6 +283,10 @@ public class ControladorAbmCliente implements ActionListener {
                         clienteGui.getBotHuella().setEnabled(true);
                         clienteGui.getBotFicha().setEnabled(true);
                         clienteGui.getBotEliminarCancelar().setText("Eliminar");
+                        guardar_imagen(clienteGui.getNamePicture(), clienteGui.getImage(), dniViejo, s.getString("dni"));//alta es el mismo dni viejo y nuevo
+
+
+                           
                         actualizarDatos.cargarSocios();
                     } else {
                         JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -312,6 +329,7 @@ public class ControladorAbmCliente implements ActionListener {
                         clienteGui.getBotModif().setEnabled(true);
                         clienteGui.getBotPago().setEnabled(true);
                         clienteGui.getBotEliminarCancelar().setText("Eliminar");
+                        guardar_imagen(clienteGui.getNamePicture(), clienteGui.getImage(), dniViejo, dniViejo);//alta es el mismo dni viejo y nuevo
                         actualizarDatos.cargarSocios();
                         s= Socio.findFirst("DNI = ? ", clienteGui.getDni().getText());
                         clienteGui.setTitle(s.getString("APELLIDO")+" "+ s.getString("NOMBRE"));
@@ -417,6 +435,21 @@ public class ControladorAbmCliente implements ActionListener {
             pagoGui.setVisible(true);
             cargarSocioPantalla(s);
 
+        }
+        
+        if(ae.getSource()== clienteGui.getBtnAddPhoto()){
+            WebCam webCam= new WebCam(null, true);
+            webCam.setLocationRelativeTo(clienteGui);
+            webCam.setVisible(true);
+            if(webCam.isGuardado()){
+                clienteGui.setPicture(webCam.getImagenGrande());
+            }
+            webCam.webcam.close();
+                
+        }
+        
+        if(ae.getSource()== clienteGui.getBtnDeletePhoto()){
+            clienteGui.setPicture("sin_imagen_disponible.jpg");
         }
         /*
             ESTO PERTENECE AL CONTROLADOR DE LA FICHA MEDICA
@@ -649,6 +682,8 @@ public class ControladorAbmCliente implements ActionListener {
             clienteGui.getLabelFechaVenci().setText(dateToMySQLDate(s.getDate("FECHA_PROX_PAGO"), true)); 
              clienteGui.getTablaActivDefault().setRowCount(0);
             LazyList<Socioarancel> ListSocAran = Socioarancel.where("id_socio = ?", s.get("ID_DATOS_PERS"));
+                        clienteGui.setPicture(socio.getString("foto"));            
+
             Iterator<Socioarancel> ite = ListSocAran.iterator();
                 while(ite.hasNext()){
                     Socioarancel sa = ite.next();
@@ -659,6 +694,40 @@ public class ControladorAbmCliente implements ActionListener {
                     clienteGui.getTablaActivDefault().addRow(row1);
             /*Se debe abrir la ventana de clientes para permitir el alta de giles*/
                 }
+    }
+    
+    //metodo que guarda la imagen en disco en formato JPG
+    public void guardar_imagen(String f,BufferedImage imagen, String dniViejo, String dniNuevo){
+        try {
+            if("sin_imagen_disponible.jpg".equals(f)){
+                File imVieja=new File(System.getProperty("user.dir")+"/user_images/"+dniViejo+".jpg");
+                imVieja.delete();
+            }else{
+                if(!dniViejo.equals(dniNuevo)){
+                    File imgVieja= new File(System.getProperty("user.dir")+"/user_images/"+dniViejo+".jpg");
+                    File imgNueva= new File(System.getProperty("user.dir")+"/user_images/"+dniNuevo+".jpg");
+                    try {
+                    Files.copy(imgVieja.toPath(), imgNueva.toPath());
+                    } catch (IOException ex) {
+                        System.err.println(ex);
+                    }
+                    imgVieja.delete();
+
+                }
+                if(imagen!=null){
+                                //se escribe en disco
+            ImageIO.write(imagen, "jpg", new File(System.getProperty("user.dir")+"/user_images/"+dniNuevo+".jpg"));
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            ImageIO.write((RenderedImage) imagen, "jpg", out);
+            
+            InputStream in = new ByteArrayInputStream(out.toByteArray());
+                }
+            }
+
+        } catch (IOException ex) {
+            Logger.getLogger(ControladorAbmCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
                 
 }

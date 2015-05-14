@@ -30,6 +30,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import org.javalite.activejdbc.LazyList;
 import Controladores.ControladorJReport;
 import Modelos.User;
+import java.beans.PropertyVetoException;
 import java.sql.SQLException;
 import net.sf.jasperreports.engine.JRException;
 import org.javalite.activejdbc.Base;
@@ -115,6 +116,11 @@ public class ControladorPrincipalGui implements ActionListener {
         if (ae.getSource() == principalGui.getBotSocios()) {
             System.out.println("boton socios pulsado");
             socios.setVisible(true);
+            try {
+                socios.setMaximum(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(ControladorPrincipalGui.class.getName()).log(Level.SEVERE, null, ex);
+            }
             socios.toFront();
             //controladorClientes.cargarSocios();
             actualizarDatos.cargarSocios();
@@ -127,6 +133,11 @@ public class ControladorPrincipalGui implements ActionListener {
             System.out.println("actividades pulsado");
             controladorActividades.bloquearNoAdmin();
             actividadesGui.setVisible(true);
+            try {
+                socios.setMaximum(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(ControladorPrincipalGui.class.getName()).log(Level.SEVERE, null, ex);
+            }
             actividadesGui.toFront();
             actividadesGui.getTablaActividadesDefault().setRowCount(0);
             LazyList ListAranceles = Arancel.where("activo = ?", 1);

@@ -3,15 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Interfaces;
 
 import ABMs.ABMSocios;
 import Controladores.ControladorIngreso;
 import Modelos.Arancel;
 import Modelos.Socio;
+import java.awt.BorderLayout;
+import java.awt.Point;
+import java.io.File;
 import java.util.Iterator;
+import javax.swing.JFrame;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import org.edisoncor.gui.panel.PanelImage;
 import org.javalite.activejdbc.LazyList;
 
 /**
@@ -19,6 +27,7 @@ import org.javalite.activejdbc.LazyList;
  * @author Nico
  */
 public class busquedaManualGui extends javax.swing.JDialog {
+
     private DefaultTableModel tablaClientesDefault;
     private ControladorIngreso contr;
 
@@ -28,12 +37,40 @@ public class busquedaManualGui extends javax.swing.JDialog {
     public busquedaManualGui(java.awt.Frame parent, boolean modal, ControladorIngreso contr) {
         super(parent, modal);
         initComponents();
-        this.contr= contr;
+        this.contr = contr;
         tablaClientesDefault = (DefaultTableModel) tablaClientes.getModel();//conveirto la tabla
+        tablaClientes.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                int row = tablaClientes.getSelectedRow();
+                String rutaImagen = System.getProperty("user.dir");
+
+                if (row == -1) {
+                    rutaImagen = System.getProperty("user.dir");
+                    rutaImagen += "/user_images/sin_imagen_disponible.jpg";
+                    pnlImageSocio.setIcon(new javax.swing.ImageIcon(rutaImagen));
+                } else {
+                    rutaImagen = System.getProperty("user.dir");
+                    rutaImagen += "/user_images/" + (String) tablaClientes.getValueAt(row, 2) + ".jpg";
+                    File file = new File(rutaImagen);
+                    if (file.exists()) {
+                        pnlImageSocio.setIcon(new javax.swing.ImageIcon(rutaImagen));
+                    } else {
+                        rutaImagen = System.getProperty("user.dir");
+                        rutaImagen += "/user_images/sin_imagen_disponible.jpg";
+                        pnlImageSocio.setIcon(new javax.swing.ImageIcon(rutaImagen));
+                    }
+                }
+                pnlImageSocio.repaint();
+
+            }
+        });
+
         tablaClientes.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                if(evt.getClickCount()==2){
+                if (evt.getClickCount() == 2) {
                     cargarDatos();
                     dispose();
                 }
@@ -47,45 +84,48 @@ public class busquedaManualGui extends javax.swing.JDialog {
         });
         cargarSocios("");
     }
-    public void cargarSocios(String filtro){
-        LazyList<Socio> ListSocios= Socio.where("NOMBRE like ? or APELLIDO like ? or DNI like ? ", filtro + "%",filtro + "%",filtro + "%");;
-            tablaClientesDefault.setRowCount(0);
-             Iterator<Socio> it = ListSocios.iterator();
-             while(it.hasNext()){
-                Socio a = it.next();
-                String row[] = new String[4];
-                row[0] = a.getString("NOMBRE");
-                row[1] = a.getString("APELLIDO");
-                row[2] = a.getString("DNI");
-                row[3] = a.getString("TEL");
-                tablaClientesDefault.addRow(row);
-             }
-             LabelResult3.setText(Integer.toString(ListSocios.size()));
-             LazyList lista = Arancel.where("ACTIVO = ?", 1);
-             Iterator<Arancel> iter = lista.iterator();
-             String d[] = new String[100];
-             int i = 1;
-             while(iter.hasNext()){
-                 Arancel a = iter.next();
-                 d[i] = a.getString("nombre");
-                 i++;
-             }
-             
+
+    public void cargarSocios(String filtro) {
+        LazyList<Socio> ListSocios = Socio.where("NOMBRE like ? or APELLIDO like ? or DNI like ? ", filtro + "%", filtro + "%", filtro + "%");;
+        tablaClientesDefault.setRowCount(0);
+        Iterator<Socio> it = ListSocios.iterator();
+        while (it.hasNext()) {
+            Socio a = it.next();
+            String row[] = new String[4];
+            row[0] = a.getString("NOMBRE");
+            row[1] = a.getString("APELLIDO");
+            row[2] = a.getString("DNI");
+            row[3] = a.getString("TEL");
+            tablaClientesDefault.addRow(row);
+        }
+        LabelResult3.setText(Integer.toString(ListSocios.size()));
+        LazyList lista = Arancel.where("ACTIVO = ?", 1);
+        Iterator<Arancel> iter = lista.iterator();
+        String d[] = new String[100];
+        int i = 1;
+        while (iter.hasNext()) {
+            Arancel a = iter.next();
+            d[i] = a.getString("nombre");
+            i++;
+        }
+
     }
-    private void cargarDatos(){
-                            int row = tablaClientes.getSelectedRow();
-                Socio s = Socio.first("DNI = ?", tablaClientes.getValueAt(row, 2));
-                System.out.println(s.getString("ID_DATOS_PERS"));
-                this.contr.cargarDatos(s);
+
+    private void cargarDatos() {
+        int row = tablaClientes.getSelectedRow();
+        Socio s = Socio.first("DNI = ?", tablaClientes.getValueAt(row, 2));
+        System.out.println(s.getString("ID_DATOS_PERS"));
+        this.contr.cargarDatos(s);
     }
-        public void busquedaKeyReleased(java.awt.event.KeyEvent evt) {
+
+    public void busquedaKeyReleased(java.awt.event.KeyEvent evt) {
         System.out.println("apreté el caracter" + evt.getKeyChar());
-            cargarSocios(this.busqueda.getText());
+        cargarSocios(this.busqueda.getText());
         /*Aca va la gilada para la busqueda mientras escribis se puede hacer 
          función y que se invoque a esa así tambien se llama cuando se 
          seleccionan actividades*/
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -100,6 +140,7 @@ public class busquedaManualGui extends javax.swing.JDialog {
         LabelResult3 = new javax.swing.JLabel();
         jScrollPane7 = new javax.swing.JScrollPane();
         tablaClientes = new javax.swing.JTable();
+        pnlImageSocio = new org.edisoncor.gui.panel.PanelImage();
         busqueda = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -139,6 +180,24 @@ public class busquedaManualGui extends javax.swing.JDialog {
         tablaClientes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane7.setViewportView(tablaClientes);
 
+        pnlImageSocio.setIcon(new javax.swing.ImageIcon("C:\\Users\\NicoOrcasitas\\Downloads\\sin_imagen_disponible.jpg")); // NOI18N
+        pnlImageSocio.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pnlImageSocioMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlImageSocioLayout = new javax.swing.GroupLayout(pnlImageSocio);
+        pnlImageSocio.setLayout(pnlImageSocioLayout);
+        pnlImageSocioLayout.setHorizontalGroup(
+            pnlImageSocioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        pnlImageSocioLayout.setVerticalGroup(
+            pnlImageSocioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 238, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -147,16 +206,19 @@ public class busquedaManualGui extends javax.swing.JDialog {
                 .addComponent(jLabel14)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(LabelResult3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(230, Short.MAX_VALUE))
+                .addContainerGap(609, Short.MAX_VALUE))
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlImageSocio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+                    .addComponent(pnlImageSocio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
@@ -168,11 +230,11 @@ public class busquedaManualGui extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(busqueda)
-                .addContainerGap())
+                .addComponent(busqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,10 +248,26 @@ public class busquedaManualGui extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void pnlImageSocioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlImageSocioMouseClicked
+        if (evt.getClickCount() == 2) {
+            JFrame k = new JFrame("VER  IMAGEN DE SOCIO");
+            k.setResizable(true);
+            k.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            k.setLayout(new BorderLayout());
+            PanelImage p = new PanelImage();
+            p.setIcon(this.pnlImageSocio.getIcon());
+            k.add(p);
+            k.setSize(p.getIcon().getIconWidth(), p.getIcon().getIconHeight());
+            k.setLocationRelativeTo(null);
+            k.setVisible(true);
+            k.toFront();
+        }
+
+    }//GEN-LAST:event_pnlImageSocioMouseClicked
+
     /**
      * @param args the command line arguments
      */
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel LabelResult3;
@@ -197,6 +275,7 @@ public class busquedaManualGui extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane7;
+    private org.edisoncor.gui.panel.PanelImage pnlImageSocio;
     private javax.swing.JTable tablaClientes;
     // End of variables declaration//GEN-END:variables
 }

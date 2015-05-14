@@ -16,21 +16,38 @@ import Modelos.Pago;
 import Modelos.Socio;
 import Modelos.Socioarancel;
 import com.toedter.calendar.JDateChooser;
+import java.awt.BorderLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyVetoException;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import org.edisoncor.gui.panel.PanelImage;
 import org.javalite.activejdbc.LazyList;
 
 /**
@@ -59,6 +76,7 @@ public class ControladorClientes implements ActionListener {
     private String dateHastaA;
     private boolean verTodos = false;
     private boolean verTodas = false;
+    private static JFrame foto;
 
     public ControladorClientes(BusquedaGui clientes, DesktopPaneImage desktop, ActualizarDatos actualizarDatos) {
 
@@ -70,13 +88,11 @@ public class ControladorClientes implements ActionListener {
         controladorAbmCliente = new ControladorAbmCliente(altaClienteGui, actualizarDatos);
         desktop.add(altaClienteGui);
         pagosGui = new PagosGui();
-        
-       // pagosGui.getCActiv().addItem("TODOS");
-      //  pagosGui.getCActiv().addActionListener(new ActionListener() { 
+
+        // pagosGui.getCActiv().addItem("TODOS");
+        //  pagosGui.getCActiv().addActionListener(new ActionListener() { 
         //public void actionPerformed(ActionEvent e){
-           
-            
-       // }}); 
+        // }}); 
         asisGui = new TodasAsisGui();
         asisGui.setActionListener(this);
         desktop.add(asisGui);
@@ -143,16 +159,16 @@ public class ControladorClientes implements ActionListener {
         calenDesdeA.setDate(new Date(110, 1, 1));
         //////2
         calenDesde.getJCalendar().addPropertyChangeListener("calendar", new PropertyChangeListener() {
-        
+
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 calenDesdePropertyChange(evt);
             }
         });
-        
+
         //////////////////1
         calenDesdeA.getJCalendar().addPropertyChangeListener("calendar", new PropertyChangeListener() {
-        
+
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 calenDesdeAPropertyChange(evt);
@@ -171,7 +187,7 @@ public class ControladorClientes implements ActionListener {
                 calenHastaPropertyChange(e);
             }
         });
-        
+
         /////////1
         calenHastaA.getJCalendar().addPropertyChangeListener("calendar", new PropertyChangeListener() {
             @Override
@@ -184,8 +200,8 @@ public class ControladorClientes implements ActionListener {
     }
 
     public void calenDesdePropertyChange(PropertyChangeEvent e) {
-                dateHasta= dateToMySQLDate(pagosGui.getHasta().getCalendar().getTime(), false);
-                dateDesde = dateToMySQLDate(pagosGui.getDesde().getCalendar().getTime(), false);
+        dateHasta = dateToMySQLDate(pagosGui.getHasta().getCalendar().getTime(), false);
+        dateDesde = dateToMySQLDate(pagosGui.getDesde().getCalendar().getTime(), false);
         Socio s = Socio.first("DNI = ?", tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 2));
         String idCli = "nuul";
         if (s != null) {
@@ -193,11 +209,11 @@ public class ControladorClientes implements ActionListener {
         }
         actualizarPagos(idCli, dateDesde, dateHasta, verTodos);
     }
-    
+
     ////////////1
-     public void calenDesdeAPropertyChange(PropertyChangeEvent e) {
-                dateHastaA= dateToMySQLDate(asisGui.getHasta().getCalendar().getTime(), false);
-                dateDesdeA = dateToMySQLDate(asisGui.getDesde().getCalendar().getTime(), false);
+    public void calenDesdeAPropertyChange(PropertyChangeEvent e) {
+        dateHastaA = dateToMySQLDate(asisGui.getHasta().getCalendar().getTime(), false);
+        dateDesdeA = dateToMySQLDate(asisGui.getDesde().getCalendar().getTime(), false);
         Socio s = Socio.first("DNI = ?", tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 2));
         String idCli = "nuul";
         if (s != null) {
@@ -209,8 +225,8 @@ public class ControladorClientes implements ActionListener {
 
     public void calenHastaPropertyChange(PropertyChangeEvent e) {
         final Calendar c = (Calendar) e.getNewValue();
-                dateHasta= dateToMySQLDate(pagosGui.getHasta().getCalendar().getTime(), false);
-                dateDesde = dateToMySQLDate(pagosGui.getDesde().getCalendar().getTime(), false);
+        dateHasta = dateToMySQLDate(pagosGui.getHasta().getCalendar().getTime(), false);
+        dateDesde = dateToMySQLDate(pagosGui.getDesde().getCalendar().getTime(), false);
         Socio s = Socio.first("DNI = ?", tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 2));
         String idCli = "nuul";
         if (s != null) {
@@ -218,12 +234,12 @@ public class ControladorClientes implements ActionListener {
         }
         actualizarPagos(idCli, dateDesde, dateHasta, verTodos);
     }
-    
+
     ///////////1
     public void calenHastaAPropertyChange(PropertyChangeEvent e) {
         final Calendar c = (Calendar) e.getNewValue();
-                dateHastaA= dateToMySQLDate(asisGui.getHasta().getCalendar().getTime(), false);
-                dateDesdeA = dateToMySQLDate(asisGui.getDesde().getCalendar().getTime(), false);
+        dateHastaA = dateToMySQLDate(asisGui.getHasta().getCalendar().getTime(), false);
+        dateDesdeA = dateToMySQLDate(asisGui.getDesde().getCalendar().getTime(), false);
         Socio s = Socio.first("DNI = ?", tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 2));
         String idCli = "nuul";
         if (s != null) {
@@ -232,8 +248,6 @@ public class ControladorClientes implements ActionListener {
         actualizarAsis(idCli, dateDesdeA, dateHastaA, verTodas);
     }
     ////////////2
-    
-    
 
     public void cargarSociosActiv(List lista, boolean inactivo, boolean morosos, boolean soloNombre) {
         tablaSocDefault.setRowCount(0);
@@ -254,14 +268,14 @@ public class ControladorClientes implements ActionListener {
             }
             clientesGui.getLabelResult3().setText(Integer.toString(ListSocios.size()));
             /*LazyList lista3 = Arancel.where("ACTIVO = ?", 1);
-            Iterator<Arancel> iter = lista3.iterator();
-            String d[] = new String[100];
-            int i = 1;
-            while (iter.hasNext()) {
-                Arancel a = iter.next();
-                d[i] = a.getString("nombre");
-                i++;
-            }*/
+             Iterator<Arancel> iter = lista3.iterator();
+             String d[] = new String[100];
+             int i = 1;
+             while (iter.hasNext()) {
+             Arancel a = iter.next();
+             d[i] = a.getString("nombre");
+             i++;
+             }*/
             //clientesGui.getActividades().setListData(d);
             //ABMSocios abm = new ABMSocios();
         } else {
@@ -404,7 +418,7 @@ public class ControladorClientes implements ActionListener {
                 }
             }
         }
-                clientesGui.getLabelResult3().setText(Integer.toString(clientesGui.getTablaClientes().getRowCount()));
+        clientesGui.getLabelResult3().setText(Integer.toString(clientesGui.getTablaClientes().getRowCount()));
 
     }
 
@@ -465,7 +479,7 @@ public class ControladorClientes implements ActionListener {
         } else {
             cargarSociosActiv(actividadesSelecc, false, false, true);
         }
-        
+
         clientesGui.getLabelResult3().setText(Integer.toString(clientesGui.getTablaClientes().getRowCount()));
 
     }
@@ -482,6 +496,11 @@ public class ControladorClientes implements ActionListener {
             Socio s = Socio.first("DNI = ?", tablaClientes.getValueAt(row, 2));
             altaClienteGui.setTitle(s.getString("APELLIDO") + " " + s.getString("NOMBRE"));
             altaClienteGui.setVisible(true);
+            try {
+                altaClienteGui.setMaximum(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(ControladorClientes.class.getName()).log(Level.SEVERE, null, ex);
+            }
             altaClienteGui.toFront();
             controladorAbmCliente.setSocio(s);
             altaClienteGui.getNombre().setText(s.getString("NOMBRE"));
@@ -494,6 +513,7 @@ public class ControladorClientes implements ActionListener {
             } else {
                 altaClienteGui.getSexo().setSelectedIndex(0);
             }
+            altaClienteGui.setPicture(s.getString("foto"));
             altaClienteGui.getFechaNacimJDate().setDate(s.getDate("FECHA_NAC"));;
             altaClienteGui.getLabelFechaIngreso().setText(dateToMySQLDate(s.getDate("FECHA_ING"), true));
             altaClienteGui.getLabelFechaVenci().setText(dateToMySQLDate(s.getDate("FECHA_PROX_PAGO"), true));
@@ -511,9 +531,39 @@ public class ControladorClientes implements ActionListener {
             }
 
         }
-
+        if (SwingUtilities.isRightMouseButton(evt)) {
+            Point p = evt.getPoint();
+            int rowNumber = tablaClientes.rowAtPoint(p);
+            ListSelectionModel modelo = tablaClientes.getSelectionModel();
+            modelo.setSelectionInterval(rowNumber, rowNumber);
+            if(foto!=null){
+                foto.dispose();
+            }
+            foto = new JFrame("VER  IMAGEN DE SOCIO "+(String)tablaClientes.getValueAt(rowNumber, 0)+" "+(String)tablaClientes.getValueAt(rowNumber, 1));
+            foto.setResizable(true);
+            foto.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            foto.setLayout(new BorderLayout());
+            PanelImage panel = new PanelImage();
+            String rutaImagen = System.getProperty("user.dir");
+            rutaImagen += "/user_images/" + (String)tablaClientes.getValueAt(rowNumber, 2) + ".jpg";
+            File file= new File(rutaImagen);
+            if(file.exists()){
+                panel.setIcon(new javax.swing.ImageIcon(rutaImagen));
+            }
+            else{
+                rutaImagen = System.getProperty("user.dir");
+            rutaImagen += "/user_images/sin_imagen_disponible.jpg";
+                panel.setIcon(new javax.swing.ImageIcon(rutaImagen));
+            }
+            panel.repaint();
+            
+            foto.add(panel);
+            foto.setSize(panel.getIcon().getIconWidth(), panel.getIcon().getIconHeight());
+            foto.setLocationRelativeTo(null);
+            foto.setVisible(true);
+            foto.toFront();
+        }
     }
-
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == clientesGui.getBotAltaSocio()) {
@@ -524,6 +574,11 @@ public class ControladorClientes implements ActionListener {
             controladorAbmCliente.setIsNuevo(true);
             altaClienteGui.setTitle("Alta de socio");
             altaClienteGui.setVisible(true);
+            try {
+                altaClienteGui.setMaximum(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(ControladorClientes.class.getName()).log(Level.SEVERE, null, ex);
+            }
             altaClienteGui.toFront();
             altaClienteGui.getTablaActivDefault().setRowCount(0);
             LazyList<Arancel> ListAran = Arancel.findAll();
@@ -587,7 +642,7 @@ public class ControladorClientes implements ActionListener {
                     pagosGui.getTablaPagosDefault().addRow(row);
                 }
                 pagosGui.setVisible(true);
-                
+
                 pagosGui.toFront();
                 System.out.println("pagos del gil de la fila" + tablaClientes.getSelectedRow());
             }
@@ -611,15 +666,15 @@ public class ControladorClientes implements ActionListener {
                     row[2] = tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 2);
                     row[3] = dateToMySQLDate(p.getDate("FECHA"), true);
                     //row[4] = p.getFloat("MONTO");
-                    Arancel ar= Arancel.findFirst("id = ?", p.get("ID_ACTIV"));
-                     String nombreActiv= ar.getString("nombre");
-                      String nombreActivCombo="";
-                      if(p.get("ID_ACTIV_COMBO")!=null){
-                            ar= Arancel.findFirst("id = ?", p.get("ID_ACTIV_COMBO"));
-                            nombreActivCombo=ar.getString("nombre");
-                         }
-                      row[4] = nombreActiv;
-                      row[5] = nombreActivCombo;
+                    Arancel ar = Arancel.findFirst("id = ?", p.get("ID_ACTIV"));
+                    String nombreActiv = ar.getString("nombre");
+                    String nombreActivCombo = "";
+                    if (p.get("ID_ACTIV_COMBO") != null) {
+                        ar = Arancel.findFirst("id = ?", p.get("ID_ACTIV_COMBO"));
+                        nombreActivCombo = ar.getString("nombre");
+                    }
+                    row[4] = nombreActiv;
+                    row[5] = nombreActivCombo;
                     row[6] = p.getInteger("ID_ASISTENCIA");
                     asisGui.getTablaAsisDefault().addRow(row);
                 }
@@ -633,17 +688,17 @@ public class ControladorClientes implements ActionListener {
             int ret = JOptionPane.showConfirmDialog(asisGui, "¿Desea eliminar la asistencia seleccionada?", null, JOptionPane.YES_NO_OPTION);
             if (ret == JOptionPane.YES_OPTION) {
                 System.out.println("elimino el de la fila " + tablaClientes.getSelectedRow());
-                
+
                 Asistencia.delete("ID_ASISTENCIA = ?", asisGui.getTablaAsis().getValueAt(asisGui.getTablaAsis().getSelectedRow(), 6));
-                dateHasta= dateToMySQLDate(asisGui.getHasta().getCalendar().getTime(), false);
+                dateHasta = dateToMySQLDate(asisGui.getHasta().getCalendar().getTime(), false);
                 dateDesde = dateToMySQLDate(asisGui.getDesde().getCalendar().getTime(), false);
                 actualizarAsis(dateDesde, dateDesde, dateHasta, verTodas);
             }
         }
         if (ae.getSource() == asisGui.getBotVerTodos()) {
             verTodas = true;
-             dateHastaA= dateToMySQLDate(asisGui.getHasta().getCalendar().getTime(), false);
-             dateDesdeA = dateToMySQLDate(asisGui.getDesde().getCalendar().getTime(), false);
+            dateHastaA = dateToMySQLDate(asisGui.getHasta().getCalendar().getTime(), false);
+            dateDesdeA = dateToMySQLDate(asisGui.getDesde().getCalendar().getTime(), false);
             actualizarAsis("no me importa", dateDesdeA, dateHastaA, verTodas);
 
         }
@@ -651,18 +706,18 @@ public class ControladorClientes implements ActionListener {
             int ret = JOptionPane.showConfirmDialog(pagosGui, "¿Desea eliminar el pago seleccionado?", null, JOptionPane.YES_NO_OPTION);
             if (ret == JOptionPane.YES_OPTION) {
                 System.out.println("elimino el de la fila " + tablaClientes.getSelectedRow());
-                
+
                 Pago.delete("ID_PAGOS = ?", pagosGui.getTablaPagos().getValueAt(pagosGui.getTablaPagos().getSelectedRow(), 5));
-                dateHasta= dateToMySQLDate(pagosGui.getHasta().getCalendar().getTime(), false);
+                dateHasta = dateToMySQLDate(pagosGui.getHasta().getCalendar().getTime(), false);
                 dateDesde = dateToMySQLDate(pagosGui.getDesde().getCalendar().getTime(), false);
                 actualizarPagos(dateDesde, dateDesde, dateHasta, verTodos);
             }
         }
         if (ae.getSource() == pagosGui.getBotVerTodos()) {
             verTodos = true;
-            dateHasta= dateToMySQLDate(pagosGui.getHasta().getCalendar().getTime(), false);
+            dateHasta = dateToMySQLDate(pagosGui.getHasta().getCalendar().getTime(), false);
             dateDesde = dateToMySQLDate(pagosGui.getDesde().getCalendar().getTime(), false);
-            
+
             actualizarPagos("no me importa", dateDesde, dateHasta, verTodos);
 
         }
@@ -737,7 +792,7 @@ public class ControladorClientes implements ActionListener {
             }
         }
     }
-    
+
     private void actualizarAsis(String idcliente, String desde, String hasta, boolean todos) {
         LazyList<Asistencia> ListAsis;
         if (!todos) {
@@ -757,18 +812,18 @@ public class ControladorClientes implements ActionListener {
                 row[1] = s.getString("APELLIDO");
                 row[2] = s.getString("DNI");
                 row[3] = dateToMySQLDate(p.getDate("FECHA"), true);
-               // row[4] = p.getFloat("MONTO");
-                Arancel ar= Arancel.findFirst("id = ?", p.get("ID_ACTIV"));
-                if(ar != null){
-                     String nombreActiv= ar.getString("nombre");
-                      String nombreActivCombo="";
-                      if(p.get("ID_ACTIV_COMBO")!=null){
-                            ar= Arancel.findFirst("id = ?", p.get("ID_ACTIV_COMBO"));
-                            nombreActivCombo=ar.getString("nombre");
-                         }
-                      row[4] = nombreActiv;
-                      row[5] = nombreActivCombo;
-                }     
+                // row[4] = p.getFloat("MONTO");
+                Arancel ar = Arancel.findFirst("id = ?", p.get("ID_ACTIV"));
+                if (ar != null) {
+                    String nombreActiv = ar.getString("nombre");
+                    String nombreActivCombo = "";
+                    if (p.get("ID_ACTIV_COMBO") != null) {
+                        ar = Arancel.findFirst("id = ?", p.get("ID_ACTIV_COMBO"));
+                        nombreActivCombo = ar.getString("nombre");
+                    }
+                    row[4] = nombreActiv;
+                    row[5] = nombreActivCombo;
+                }
                 row[6] = p.getInteger("ID_ASISTENCIA");
                 asisGui.getTablaAsisDefault().addRow(row);
             }

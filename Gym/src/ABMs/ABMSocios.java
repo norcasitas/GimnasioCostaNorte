@@ -7,10 +7,15 @@ package ABMs;
 import Modelos.Arancel;
 import Modelos.Socio;
 import Modelos.Socioarancel;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.LazyList;
 import org.javalite.activejdbc.Model;
@@ -38,7 +43,7 @@ public class ABMSocios {
     public boolean alta(Socio s, LinkedList act) {
         if (!findSocio(s)) {
             Base.openTransaction();
-            Socio nuevo = Socio.create("NOMBRE", s.get("NOMBRE"), "APELLIDO", s.get("APELLIDO"), "DNI", s.get("DNI"), "FECHA_NAC", s.get("FECHA_NAC"), "TEL", s.get("TEL"), "SEXO", s.get("SEXO"), "ACTIVO", 1, "DIR", s.get("DIR"));
+            Socio nuevo = Socio.create("NOMBRE", s.get("NOMBRE"), "APELLIDO", s.get("APELLIDO"), "DNI", s.get("DNI"), "FECHA_NAC", s.get("FECHA_NAC"), "TEL", s.get("TEL"), "SEXO", s.get("SEXO"), "ACTIVO", 1, "DIR", s.get("DIR"),"foto",s.get("foto"));
             nuevo.set("FECHA_ING", getFechaActual());
             nuevo.saveIt();
             Iterator<Arancel> it = act.iterator();
@@ -72,7 +77,7 @@ public class ABMSocios {
         Socio viejo = Socio.first("DNI = ?", dniViejo);
         if (viejo != null) {
             Base.openTransaction();
-            viejo.set("DIR",s.get("DIR"), "NOMBRE", s.get("NOMBRE"), "APELLIDO", s.get("APELLIDO"), "DNI", s.get("DNI"), "FECHA_NAC", s.get("FECHA_NAC"), "TEL", s.get("TEL"), "SEXO", s.get("SEXO"));
+            viejo.set("DIR",s.get("DIR"), "NOMBRE", s.get("NOMBRE"), "APELLIDO", s.get("APELLIDO"), "DNI", s.get("DNI"), "FECHA_NAC", s.get("FECHA_NAC"), "TEL", s.get("TEL"), "SEXO", s.get("SEXO"),"foto",s.get("foto"));
             Socio soc = Socio.first("DNI = ?", dniViejo);
             LazyList l = Socioarancel.where("id_socio = ?", soc.get("ID_DATOS_PERS"));
             Iterator<Socioarancel> i = l.iterator();
