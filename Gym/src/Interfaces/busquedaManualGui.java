@@ -52,7 +52,7 @@ public class busquedaManualGui extends javax.swing.JDialog {
                     pnlImageSocio.setIcon(new javax.swing.ImageIcon(rutaImagen));
                 } else {
                     rutaImagen = System.getProperty("user.dir");
-                    rutaImagen += "/user_images/" + (String) tablaClientes.getValueAt(row, 2) + ".jpg";
+                    rutaImagen += "/user_images/" + (String) tablaClientes.getValueAt(row, 4) + ".jpg";
                     File file = new File(rutaImagen);
                     if (file.exists()) {
                         pnlImageSocio.setIcon(new javax.swing.ImageIcon(rutaImagen));
@@ -91,11 +91,12 @@ public class busquedaManualGui extends javax.swing.JDialog {
         Iterator<Socio> it = ListSocios.iterator();
         while (it.hasNext()) {
             Socio a = it.next();
-            String row[] = new String[4];
+            String row[] = new String[5];
             row[0] = a.getString("NOMBRE");
             row[1] = a.getString("APELLIDO");
             row[2] = a.getString("DNI");
             row[3] = a.getString("TEL");
+            row[4] = a.getString("ID_DATOS_PERS");
             tablaClientesDefault.addRow(row);
         }
         LabelResult3.setText(Integer.toString(ListSocios.size()));
@@ -114,12 +115,10 @@ public class busquedaManualGui extends javax.swing.JDialog {
     private void cargarDatos() {
         int row = tablaClientes.getSelectedRow();
         Socio s = Socio.first("DNI = ?", tablaClientes.getValueAt(row, 2));
-        System.out.println(s.getString("ID_DATOS_PERS"));
         this.contr.cargarDatos(s);
     }
 
     public void busquedaKeyReleased(java.awt.event.KeyEvent evt) {
-        System.out.println("apreté el caracter" + evt.getKeyChar());
         cargarSocios(this.busqueda.getText());
         /*Aca va la gilada para la busqueda mientras escribis se puede hacer 
          función y que se invoque a esa así tambien se llama cuando se 
@@ -154,19 +153,19 @@ public class busquedaManualGui extends javax.swing.JDialog {
         tablaClientes.setAutoCreateRowSorter(true);
         tablaClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Nombre", "Apellido", "DNI", "Telefono"
+                "Nombre", "Apellido", "DNI", "Telefono", "ID"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -180,7 +179,6 @@ public class busquedaManualGui extends javax.swing.JDialog {
         tablaClientes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane7.setViewportView(tablaClientes);
 
-        pnlImageSocio.setIcon(new javax.swing.ImageIcon("C:\\Users\\NicoOrcasitas\\Downloads\\sin_imagen_disponible.jpg")); // NOI18N
         pnlImageSocio.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 pnlImageSocioMouseClicked(evt);

@@ -9,7 +9,6 @@ import Interfaces.AbmClienteGui;
 import Interfaces.CargarHuellaGui;
 import Interfaces.FichaMedicaGui;
 import Interfaces.RegistrarPagoGui;
-import Interfaces.TodasAsisGui;
 import Modelos.Arancel;
 import Modelos.Ficha;
 import Modelos.Socio;
@@ -65,7 +64,6 @@ public class ControladorAbmCliente implements ActionListener {
         s.set("APELLIDO", clienteGui.getApellido().getText().toUpperCase());
         s.set("TEL", clienteGui.getTelefono().getText().toUpperCase());
         s.set("DNI", clienteGui.getDni().getText().toUpperCase());
-        System.out.println(clienteGui.getDireccion().getText().toUpperCase());
         s.set("DIR", clienteGui.getDireccion().getText().toUpperCase());
         if(clienteGui.getFechaNacimJDate().getCalendar()!=null)
              s.set("FECHA_NAC", dateToMySQLDate(clienteGui.getFechaNacimJDate().getCalendar().getTime(),false));
@@ -74,10 +72,6 @@ public class ControladorAbmCliente implements ActionListener {
         }else{
             s.set("SEXO", "F");
         } 
-        if(!clienteGui.getNamePicture().equals("sin_imagen_disponible.jpg"))
-            s.setString("foto",s.get("dni")+".jpg");
-        else
-            s.setString("foto","sin_imagen_disponible.jpg");
     }
     
     public void CargarFicha(Ficha ficha){
@@ -193,7 +187,6 @@ public class ControladorAbmCliente implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == clienteGui.getBotEliminarCancelar()) {
-            System.out.println("Boton eliminar pulsado");
             if(clienteGui.getBotEliminarCancelar().getText().equals("Eliminar")){
                 clienteGui.bloquearCampos(true);
                 int ret =JOptionPane.showConfirmDialog(clienteGui, "¿Desea borrar a "+ clienteGui.getNombre().getText()+" "+clienteGui.getApellido().getText()+" ? ",null,JOptionPane.YES_NO_OPTION);
@@ -211,7 +204,6 @@ public class ControladorAbmCliente implements ActionListener {
                 }
             }
             else{
-                System.out.println("cancelé !");
                 int ret=JOptionPane.showConfirmDialog(clienteGui, "¿Desea cancelar los cambios?",null,JOptionPane.YES_NO_OPTION);
                 if(ret== JOptionPane.YES_OPTION){
                     clienteGui.limpiarCampos();
@@ -221,7 +213,6 @@ public class ControladorAbmCliente implements ActionListener {
 
         }
         if (ae.getSource() == clienteGui.getBotFicha()) {
-            System.out.println("Boton ficha pulsado");
             fichaMedicaGui= new FichaMedicaGui(null, true);
             fichaMedicaGui.getTextoAlergias().setEnabled(true);
             fichaMedicaGui.getTextoMedicamentos().setEnabled(true);
@@ -229,7 +220,6 @@ public class ControladorAbmCliente implements ActionListener {
             fichaMedicaGui.setLocationRelativeTo(null);
             Socio socio = Socio.first("DNI = ?", clienteGui.getDni().getText());
             Ficha f = Ficha.first("ID_DATOS_PERS = ?", socio.get("ID_DATOS_PERS"));
-            //System.out.println(f.get("ID_DATOS_PERS"));
             if(f == null){
                 //int ret=JOptionPane.showConfirmDialog(clienteGui, "Socio sin ficha, ¿Desea crear ficha?",null,JOptionPane.YES_NO_OPTION);
                 //if(ret == JOptionPane.YES_OPTION){
@@ -239,7 +229,6 @@ public class ControladorAbmCliente implements ActionListener {
                 fichaMedicaGui.getTextoAlergias().setEnabled(true);
                 fichaMedicaGui.getTextoMedicamentos().setEditable(true);
                 fichaMedicaGui.setVisible(true);
-                System.out.println("el valor es "+fichaNueva);
             }else{
                     CargarFicha(f); 
                     fichaMedicaGui.setVisible(true);
@@ -247,27 +236,21 @@ public class ControladorAbmCliente implements ActionListener {
                     fichaMedicaGui.getTextoMedicamentos().setEditable(true);
                     fichaNueva = false;
                     fichaMedicaGui.setEnabled(true);
-                    System.out.println("el valor es "+fichaNueva);
                 }
     
         }
         if (ae.getSource() == clienteGui.getBotGuardar()) {
             if(!isNuevo){
-                    System.out.println("Se modificó uno que existia");
                     s = new Socio();
                     CargarDatosSocio(s);
                     int rows = clienteGui.getTablaActivDefault().getRowCount();
                     LinkedList listaran = new LinkedList();
                     for(int i = 0; i< rows; i++){ //ahora si :P abajo en el alta estaba bien, aca en el modificar no lo habia cambiado :P
-                      // boolean val =  clienteGui.getTablaActividades().getValueAt(i, 1).equals(false);
-                        System.out.println(clienteGui.getTablaActividades().getValueAt(i, 1) != null );
-                       // System.out.println( clienteGui.getTablaActividades().getValueAt(i, 1).equals(false));
                         if(clienteGui.getTablaActividades().getValueAt(i, 1) != null ){//|| clienteGui.getTablaActividades().getValueAt(i, 1).equals(false)){
                                                     if(clienteGui.getTablaActividades().getValueAt(i, 1).equals(true)){
 
                             Arancel a = Arancel.first("nombre = ?", clienteGui.getTablaActividades().getValueAt(i, 0));
                             listaran.add(a);
-                            System.out.println(a.get("nombre"));
                                                     }
                         }
 
@@ -283,7 +266,8 @@ public class ControladorAbmCliente implements ActionListener {
                         clienteGui.getBotHuella().setEnabled(true);
                         clienteGui.getBotFicha().setEnabled(true);
                         clienteGui.getBotEliminarCancelar().setText("Eliminar");
-                        guardar_imagen(clienteGui.getNamePicture(), clienteGui.getImage(), dniViejo, s.getString("dni"));//alta es el mismo dni viejo y nuevo
+                        s= Socio.findFirst("DNI = ? ", s.getString("DNI"));
+                        guardar_imagen(s.getString("ID_DATOS_PERS"), clienteGui.getImage());//alta es el mismo dni viejo y nuevo
 
 
                            
@@ -293,8 +277,6 @@ public class ControladorAbmCliente implements ActionListener {
                     }
             }
             else{
-                System.out.println("Boton guardó uno nuevito");
-                //System.out.println(clienteGui.getTablaActividades().getValueAt(0, 0));
                 //debe mantener abierta la ventana y que se habilite el botón de la huella, la huella
                 //solo puede ser creada si el usuario existe
                 s = new Socio();
@@ -304,18 +286,11 @@ public class ControladorAbmCliente implements ActionListener {
                     JOptionPane.showMessageDialog(clienteGui, "Faltan datos obligatorios", "Error!", JOptionPane.ERROR_MESSAGE);
                 }else{
                      int rows = clienteGui.getTablaActivDefault().getRowCount();
-                     System.out.println("La cant de rows es "+rows);
                      LinkedList listaran = new LinkedList();
                      for(int i = 0; i< rows; i++){
-                        // System.out.println(clienteGui.getTablaActividades().getValueAt(i, 0));
-                     //    val = (boolean) clienteGui.getTablaActividades().getValueAt(i, 1); 
-                       //  System.out.println("se te pudrio");
                          if( clienteGui.getTablaActividades().getValueAt(i, 1) != null){
                              Arancel a = Arancel.first("nombre = ?", clienteGui.getTablaActividades().getValueAt(i, 0));
                              listaran.add(a);
-                             System.out.println("esta GIL");
-                         }else{
-                             System.out.println("no esta GIL");
                          }
                     }
                     if(abmsocio.alta(s, listaran)){
@@ -329,9 +304,9 @@ public class ControladorAbmCliente implements ActionListener {
                         clienteGui.getBotModif().setEnabled(true);
                         clienteGui.getBotPago().setEnabled(true);
                         clienteGui.getBotEliminarCancelar().setText("Eliminar");
-                        guardar_imagen(clienteGui.getNamePicture(), clienteGui.getImage(), dniViejo, dniViejo);//alta es el mismo dni viejo y nuevo
+                        s= Socio.findFirst("DNI = ? ", s.getString("DNI"));
+                        guardar_imagen(s.getString("ID_DATOS_PERS"), clienteGui.getImage());//alta es el mismo dni viejo y nuevo
                         actualizarDatos.cargarSocios();
-                        s= Socio.findFirst("DNI = ? ", clienteGui.getDni().getText());
                         clienteGui.setTitle(s.getString("APELLIDO")+" "+ s.getString("NOMBRE"));
                         
                     } else {
@@ -344,10 +319,8 @@ public class ControladorAbmCliente implements ActionListener {
 
         }
         if (ae.getSource() == clienteGui.getBotHuella()) {
-            System.out.println("Boton huella pulsado");
             s= Socio.findFirst("DNI = ? ", clienteGui.getDni().getText());
             try {
-                System.out.println((s==null) + " "+ s.getInteger("ID_DATOS_PERS") );
                 cargarHuellaGui= new CargarHuellaGui(null, s.getInteger("ID_DATOS_PERS"));//Aca va el ID del cliente !
                 cargarHuellaGui.setTitle("Huella de "+ s.getString("NOMBRE")+ " "+s.getString("APELLIDO"));
             } catch (SQLException ex) {
@@ -358,7 +331,6 @@ public class ControladorAbmCliente implements ActionListener {
 
         }
         if (ae.getSource() == clienteGui.getBotModif()) {
-            System.out.println("Boton modif pulsado");
             clienteGui.bloquearCampos(false);
             //clienteGui.getDni().setEnabled(false);
             clienteGui.getBotEliminarCancelar().setText("Cancelar");
@@ -377,7 +349,6 @@ public class ControladorAbmCliente implements ActionListener {
                 Socioarancel arsoc = iter.next();
                 Arancel ar = Arancel.first("id = ?", arsoc.get("id_arancel"));
                 tieneAran.add(ar.getString("nombre"));
-                System.out.println(ar.get("nombre")+ " gil");
             }
             Iterator<String> itiene = tieneAran.iterator();
             while(itiene.hasNext()){
@@ -407,7 +378,6 @@ public class ControladorAbmCliente implements ActionListener {
          }
         
         if (ae.getSource() == clienteGui.getBotNuevo()) {
-            System.out.println("Boton nuevo pulsado");
             isNuevo=true;
             clienteGui.limpiarCampos();
             clienteGui.bloquearCampos(false);            
@@ -426,7 +396,6 @@ public class ControladorAbmCliente implements ActionListener {
             
         }
         if (ae.getSource() == clienteGui.getBotPago()) {
-            System.out.println("Boton pago pulsado");
             /*SE DEBERÁ MODIFICAR EL CONSTRUCTOR DE REGISTRARPAGOGUI PARA QUE TOME
              UN CLIENTE ASÍ SE HACE EL PAGO TODO DESDE ESA CLASE*/
             s= abmsocio.getSocio(s);
@@ -449,7 +418,7 @@ public class ControladorAbmCliente implements ActionListener {
         }
         
         if(ae.getSource()== clienteGui.getBtnDeletePhoto()){
-            clienteGui.setPicture("sin_imagen_disponible.jpg");
+            clienteGui.setPicture(-1);
         }
         /*
             ESTO PERTENECE AL CONTROLADOR DE LA FICHA MEDICA
@@ -682,7 +651,7 @@ public class ControladorAbmCliente implements ActionListener {
             clienteGui.getLabelFechaVenci().setText(dateToMySQLDate(s.getDate("FECHA_PROX_PAGO"), true)); 
              clienteGui.getTablaActivDefault().setRowCount(0);
             LazyList<Socioarancel> ListSocAran = Socioarancel.where("id_socio = ?", s.get("ID_DATOS_PERS"));
-                        clienteGui.setPicture(socio.getString("foto"));            
+            clienteGui.setPicture(socio.getInteger("ID_DATOS_PERS"));            
 
             Iterator<Socioarancel> ite = ListSocAran.iterator();
                 while(ite.hasNext()){
@@ -697,37 +666,20 @@ public class ControladorAbmCliente implements ActionListener {
     }
     
     //metodo que guarda la imagen en disco en formato JPG
-    public void guardar_imagen(String f,BufferedImage imagen, String dniViejo, String dniNuevo){
-        try {
-            if("sin_imagen_disponible.jpg".equals(f)){
-                File imVieja=new File(System.getProperty("user.dir")+"/user_images/"+dniViejo+".jpg");
+    public void guardar_imagen(String f,BufferedImage imagen){
+            if("sin_imagen_disponible.jpg".equals(f) || imagen==null){
+                File imVieja=new File(System.getProperty("user.dir")+"/user_images/"+f+".jpg");
                 imVieja.delete();
-            }else{
-                if(!dniViejo.equals(dniNuevo)){
-                    File imgVieja= new File(System.getProperty("user.dir")+"/user_images/"+dniViejo+".jpg");
-                    File imgNueva= new File(System.getProperty("user.dir")+"/user_images/"+dniNuevo+".jpg");
-                    try {
-                    Files.copy(imgVieja.toPath(), imgNueva.toPath());
-                    } catch (IOException ex) {
-                        System.err.println(ex);
-                    }
-                    imgVieja.delete();
-
-                }
-                if(imagen!=null){
-                                //se escribe en disco
-            ImageIO.write(imagen, "jpg", new File(System.getProperty("user.dir")+"/user_images/"+dniNuevo+".jpg"));
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            ImageIO.write((RenderedImage) imagen, "jpg", out);
-            
-            InputStream in = new ByteArrayInputStream(out.toByteArray());
-                }
+                return ;
             }
-
-        } catch (IOException ex) {
-            Logger.getLogger(ControladorAbmCliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
+                try {
+                    //se escribe en disco
+                    ImageIO.write(imagen, "jpg", new File(System.getProperty("user.dir")+"/user_images/"+f+".jpg"));
+                    ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    ImageIO.write((RenderedImage) imagen, "jpg", out);
+                } catch (IOException ex) {
+                    Logger.getLogger(ControladorAbmCliente.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 
+            }          
 }

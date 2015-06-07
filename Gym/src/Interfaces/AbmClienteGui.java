@@ -9,6 +9,7 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.Calendar;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -36,7 +37,7 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
     public AbmClienteGui() {
         initComponents();
         tablaActivDefault= (DefaultTableModel) tablaActividades.getModel();
-        setPicture(namePicture);
+        setPicture(-1);
     }
 
     public void setActionListener(ActionListener lis){
@@ -169,19 +170,21 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
         labelFechaVenci.setText("");
         fechaNacim.setDate(Calendar.getInstance().getTime());
         tablaActividades.clearSelection();
-            setPicture("sin_imagen_disponible.jpg");
-        
-
     }
 
-    public void setPicture(String nombre){
-        namePicture=nombre;
+    public void setPicture(Integer id){
+        namePicture=id.toString();
         String rutaImagen= System.getProperty("user.dir");
-        rutaImagen+="/user_images/"+nombre;
-        pnlImageSocio.setIcon(new javax.swing.ImageIcon(rutaImagen));
-        pnlImageSocio.repaint();
-        if("sin_imagen_disponible.jpg".equals(nombre)){
+        rutaImagen+="/user_images/";
+        File foto = new File(rutaImagen+namePicture+".jpg");
+        if (foto.exists()){
+            pnlImageSocio.setIcon(new javax.swing.ImageIcon(rutaImagen+namePicture+".jpg"));
+            pnlImageSocio.repaint();
+        }
+        else{
             image=null;
+            pnlImageSocio.setIcon(new javax.swing.ImageIcon(rutaImagen+"sin_imagen_disponible.jpg"));
+            pnlImageSocio.repaint();
         }
     }
     
