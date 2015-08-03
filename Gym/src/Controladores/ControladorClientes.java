@@ -533,7 +533,7 @@ public class ControladorClientes implements ActionListener {
             foto.setLayout(new BorderLayout());
             PanelImage panel = new PanelImage();
             String rutaImagen = System.getProperty("user.dir");
-            rutaImagen += "/user_images/" + (String)tablaClientes.getValueAt(rowNumber, 2) + ".jpg";
+            rutaImagen += "/user_images/" +Socio.first("DNI = ?", tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 2)).getString("ID_DATOS_PERS") + ".jpg";
             File file= new File(rutaImagen);
             if(file.exists()){
                 panel.setIcon(new javax.swing.ImageIcon(rutaImagen));

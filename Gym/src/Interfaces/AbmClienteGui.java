@@ -170,6 +170,7 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
         labelFechaVenci.setText("");
         fechaNacim.setDate(Calendar.getInstance().getTime());
         tablaActividades.clearSelection();
+            setPicture(-1);
     }
 
     public void setPicture(Integer id){
