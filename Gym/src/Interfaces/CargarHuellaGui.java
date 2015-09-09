@@ -73,7 +73,7 @@ public class CargarHuellaGui extends javax.swing.JDialog {
         if(rs.next()){
         fingerIndividual = DPFPFingerIndex.valueOf(rs.getString(3));
         byte templateBuffer[] = rs.getBytes(2);
-        System.out.println("entre");
+        //System.out.println("entre");
         //Crea una nueva plantilla a partir de la guardada en la base de datos
         templateIndividual = DPFPGlobal.getTemplateFactory().createTemplate(templateBuffer);
         CargarHuellaGui.this.template.put(fingerIndividual, templateIndividual);
@@ -84,13 +84,13 @@ public class CargarHuellaGui extends javax.swing.JDialog {
         fingers.addAll(template.keySet());
         panelEnrolamiento.setEnrolledFingers(fingers);
         panelEnrolamiento.setMaxEnrollFingerCount(1);
-        System.out.println("algo anda mal");
+        //System.out.println("algo anda mal");
         panelEnrolamiento.addEnrollmentListener(new DPFPEnrollmentListener() {
             public void fingerDeleted(DPFPEnrollmentEvent e) throws DPFPEnrollmentVetoException {
 
                 CargarHuellaGui.this.template.remove(e.getFingerIndex());
                 borrarHuella();
-                System.out.println("borre el dedito");
+                //System.out.println("borre el dedito");
 
             }
 
@@ -99,7 +99,7 @@ public class CargarHuellaGui extends javax.swing.JDialog {
                 CargarHuellaGui.this.template.put(e.getFingerIndex(), e.getTemplate());
                 templateIndividual = e.getTemplate();
                 fingerIndividual = e.getFingerIndex();
-                System.out.println("enrole el dedito");
+                //System.out.println("enrole el dedito");
                 guardarHuella();
             }
         });
@@ -123,7 +123,7 @@ public class CargarHuellaGui extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         this.addWindowListener(new WindowAdapter() {
             public void windowClosed(WindowEvent e){
-                System.out.println("Se cerró la ventana");
+                //System.out.println("Se cerró la ventana");
                 if(!ControladorIngreso.Lector.isStarted())
                                 ControladorIngreso.Lector.startCapture();//End Dialog
 

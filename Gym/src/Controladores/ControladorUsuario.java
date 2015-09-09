@@ -47,24 +47,24 @@ public class ControladorUsuario implements ActionListener{
         usuarioGui.getBotModif().setEnabled(true);
         usuarioGui.getBotEliminar().setEnabled(true);
         usuarioGui.getBotEliminar().setText("Eliminar");
-        System.out.println("hice click en un usuario");
+        //System.out.println("hice click en un usuario");
         int row = usuarioGui.getTablaUsuario().getSelectedRow();
         User u = User.first("USUARIO = ?", usuarioGui.getTablaUsuarioDefault().getValueAt(row, 0));
         usuarioGui.getUser().setText(u.getString("USUARIO"));
         usuarioGui.getPass().setText(u.getString("PASSWD"));
         if(u.getInteger("ADMINIS") == 1){
             usuarioGui.getAdmin().setSelected(true);
-            System.out.println("PRAAAAAAAA");
+            //System.out.println("PRAAAAAAAA");
         }
         if(u.getInteger("ADMINIS") == 0){
              usuarioGui.getAdmin().setSelected(false);
-              System.out.println("noOOOOOOOOOOOOOO");
+              //System.out.println("noOOOOOOOOOOOOOO");
         }
     }
     
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == usuarioGui.getBotEliminar()) {
-            System.out.println("Boton eliminar pulsado");
+            //System.out.println("Boton eliminar pulsado");
             if (usuarioGui.getBotEliminar().getText().equals("Eliminar")) {
                 usuarioGui.bloquearCampos(true);
                 int ret = JOptionPane.showConfirmDialog(usuarioGui, "¿Desea borrar el usuario?", null, JOptionPane.YES_NO_OPTION);
@@ -94,7 +94,7 @@ public class ControladorUsuario implements ActionListener{
                     usuarioGui.getAdmin().setEnabled(false);
                 }
             } else {
-                System.out.println("cancelé !");
+                //System.out.println("cancelé !");
                 int ret = JOptionPane.showConfirmDialog(usuarioGui, "¿Desea cancelar los cambios?", null, JOptionPane.YES_NO_OPTION);
                 if (ret == JOptionPane.YES_OPTION) {
                     usuarioGui.limpiarCampos();
@@ -134,7 +134,7 @@ public class ControladorUsuario implements ActionListener{
                 }else{
                     JOptionPane.showMessageDialog(usuarioGui, "Ocurrio un error inesperadooooo", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
-                System.out.println("Se modificó uno que existia");
+                //System.out.println("Se modificó uno que existia");
                 
             } else {
                 /*Aca va todo para guardar uno nuevo*/
@@ -147,7 +147,7 @@ public class ControladorUsuario implements ActionListener{
                 }
                 user.set("USUARIO",usuarioGui.getUser().getText());
                 user.set("PASSWD", usuarioGui.getPass().getText());
-                System.out.println("datos :"+ user.getString("USUARIO")+ " "+ user.getString("PASSWD")+" "+user.getInteger("ADMINIS"));
+                //System.out.println("datos :"+ user.getString("USUARIO")+ " "+ user.getString("PASSWD")+" "+user.getInteger("ADMINIS"));
                 if(abmUsuarios.alta(user)){
                     JOptionPane.showMessageDialog(usuarioGui, "Usuario creado exitosamente!");
                     LazyList listUsuarios = User.findAll();
@@ -162,7 +162,7 @@ public class ControladorUsuario implements ActionListener{
                 }else{
                     JOptionPane.showMessageDialog(usuarioGui, "Nombre de usuario ya utilizado, cambie el nombre", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
-                System.out.println("Boton guardó uno nuevito");
+                //System.out.println("Boton guardó uno nuevito");
             }
             usuarioGui.limpiarCampos();
             usuarioGui.bloquearCampos(true);
@@ -174,7 +174,7 @@ public class ControladorUsuario implements ActionListener{
 
         }
         if (ae.getSource() == usuarioGui.getBotModif()) {
-            System.out.println("Boton modif pulsado");
+            //System.out.println("Boton modif pulsado");
             usuarioGui.bloquearCampos(false);
             usuarioGui.getBotEliminar().setText("Cancelar");
             usuarioGui.getBotModif().setEnabled(false);
@@ -186,7 +186,7 @@ public class ControladorUsuario implements ActionListener{
             
         }
         if (ae.getSource() == usuarioGui.getBotNuevo()) {
-            System.out.println("Boton nuevo pulsado");
+            //System.out.println("Boton nuevo pulsado");
             isNuevo = true;
             usuarioGui.setBotonesNuevo(true);
             usuarioGui.limpiarCampos();

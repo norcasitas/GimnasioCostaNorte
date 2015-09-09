@@ -51,11 +51,11 @@ public class RegistrarPagoGui extends javax.swing.JDialog {
             }
         });
         fecha.setDate(Calendar.getInstance().getTime());
-        System.out.println(fecha.getDate());
+        //System.out.println(fecha.getDate());
         nombreCliente.setText(socio.getString("NOMBRE") + " " + socio.getString("APELLIDO"));
         cargarActividades();
         calcularTotal();
-        System.out.println("esta todo legal");
+        //System.out.println("esta todo legal");
         tablaActividades.addPropertyChangeListener(new PropertyChangeListener() {
 
             @Override
@@ -95,13 +95,13 @@ public class RegistrarPagoGui extends javax.swing.JDialog {
                     cal.setTime(primAsistencia.getDate("fecha"));
                     cal.add(Calendar.MONTH, 1);
                     fechaVence.setCalendar(cal);
-                    System.out.println("fue algún día entre los 5 quetiene permitido");
+                    //System.out.println("fue algún día entre los 5 quetiene permitido");
                 } else {
                     Calendar cal = fecha.getCalendar();
                     cal.setTime(primAsistencia.getDate("fecha"));
                     cal.add(Calendar.DATE, 15);
                     fechaVence.setCalendar(cal);
-                    System.out.println("fue algún día entre los 5 quetiene permitido (medio mes)");
+                    //System.out.println("fue algún día entre los 5 quetiene permitido (medio mes)");
                 }
             }
 
@@ -112,14 +112,14 @@ public class RegistrarPagoGui extends javax.swing.JDialog {
             cal.setTime(fecha.getDate());
             cal.add(Calendar.MONTH, 1);
             fechaVence.setCalendar(cal);
-            System.out.println("NO FUE después de que se le venció");
+            //System.out.println("NO FUE después de que se le venció");
             }
             else{
             Calendar cal = fecha.getCalendar();
             cal.setTime(fecha.getDate());
             cal.add(Calendar.DATE, 15);
             fechaVence.setCalendar(cal);
-                        System.out.println("NO FUE después de que se le venció(medio mes)");
+                        //System.out.println("NO FUE después de que se le venció(medio mes)");
 
             }
         }
@@ -478,7 +478,7 @@ public class RegistrarPagoGui extends javax.swing.JDialog {
                     Arancel a = Arancel.first("nombre = ?", tablaActividades.getValueAt(i, 0));
                     listaran.add(a);
                     BigDecimal precio = (BigDecimal) tablaActividades.getValueAt(i, 1);
-                    System.out.println(precio);
+                    //System.out.println(precio);
                     totalB = totalB.add(BigDecimal.valueOf(precio.doubleValue()));
                 }
             }
@@ -501,7 +501,7 @@ public class RegistrarPagoGui extends javax.swing.JDialog {
         if (abmsocio.modificar(socio, listaran, socio.getString("DNI"))) {
             JOptionPane.showMessageDialog(this, "Socio dado de alta correctamente!");
 
-            System.out.println("pago realizado!");
+            //System.out.println("pago realizado!");
             this.dispose();
         }
     }//GEN-LAST:event_realizarActionPerformed

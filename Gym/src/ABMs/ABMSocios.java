@@ -89,7 +89,7 @@ public class ABMSocios {
             Iterator<Arancel> it = act.iterator();
             while(it.hasNext()){
                 Arancel a = it.next();
-               // System.out.println(a.get("nombre"));
+               // //System.out.println(a.get("nombre"));
                 Socio so = Socio.first("DNI = ?", dniViejo);
                 Socioarancel sa = Socioarancel.create("id_socio", so.get("ID_DATOS_PERS"), "id_arancel", a.get("id"));
                 sa.saveIt();

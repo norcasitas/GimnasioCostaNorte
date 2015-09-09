@@ -223,7 +223,7 @@ public class ControladorIngreso implements ActionListener {
         // Comprobar la calidad de la muestra de la huella y lo añade a su reclutador si es bueno
         if (featuresinscripcion != null) {
             // try {
-            System.out.println("Las Caracteristicas de la Huella han sido creada");
+            //System.out.println("Las Caracteristicas de la Huella han sido creada");
             //Reclutador.addFeatures(featuresinscripcion);// Agregar las caracteristicas de la huella a la plantilla a crear
             identificarHuella();
             // Dibuja la huella dactilar capturada.
@@ -300,7 +300,7 @@ public class ControladorIngreso implements ActionListener {
                 fingerIndividual = DPFPFingerIndex.valueOf(rs.getString(3));
                 byte templateBuffer[] = rs.getBytes(2);
                 idCliente = rs.getInt(4);
-                System.out.println("entre");
+                //System.out.println("entre");
                 //Crea una nueva plantilla a partir de la guardada en la base de datos
                 templateIndividual = DPFPGlobal.getTemplateFactory().createTemplate(templateBuffer);
                 //Envia la plantilla creada al objeto contendor de Template del componente de huella digital
@@ -326,7 +326,7 @@ public class ControladorIngreso implements ActionListener {
             //Si no encuentra alguna huella correspondiente al nombre lo indica con un mensaje
             try {
                 cargarSonido("error.wav");
-                System.out.println("no te conozco wacho");
+                //System.out.println("no te conozco wacho");
                 
                 
             } catch (Exception ex) {
@@ -357,17 +357,17 @@ public class ControladorIngreso implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == ingresoGui.getLimpiarVentana()) {
-            System.out.println("limpiar ventana");
+            //System.out.println("limpiar ventana");
             ingresoGui.limpiar();
         }
         if (e.getSource() == ingresoGui.getBusquedaManual()) {
-            System.out.println("busqueda manual");
+            //System.out.println("busqueda manual");
             busquedaManualGui bus = new busquedaManualGui(ingresoGui, true, this);
             bus.setLocationRelativeTo(null);
             bus.setVisible(true);
         }
         if (e.getSource() == ingresoGui.getDarDeAlta()) {
-            System.out.println("dar de alta");
+            //System.out.println("dar de alta");
             Base.openTransaction();
             RegistrarPagoGui pagoGui = new RegistrarPagoGui(ingresoGui, true, socio);
             pagoGui.setLocationRelativeTo(null);
@@ -444,12 +444,12 @@ public class ControladorIngreso implements ActionListener {
             long milis2 = cal2.getTimeInMillis();
             long diff = milis2 - milis1;
             long diffDays = diff / (24 * 60 * 60 * 1000);
-            System.out.println(diffDays);
+            //System.out.println(diffDays);
             ingresoGui.getCantDias().setText(String.valueOf(diffDays));
 
             try {
                 if (Long.valueOf(ingresoGui.getCantDias().getText()) < 0) {
-                    System.out.println("vencido! :O");
+                    //System.out.println("vencido! :O");
                     cargarSonido("vencido.wav");
                     ingresoGui.getFechaVence().setText(ingresoGui.getFechaVence().getText().concat(" ¡VENCIDO!"));
                 } else {

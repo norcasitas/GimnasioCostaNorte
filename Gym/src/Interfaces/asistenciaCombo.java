@@ -38,10 +38,10 @@ public class asistenciaCombo extends javax.swing.JDialog {
         initComponents();
         Iterator<Socioarancel> it = socioArancel.iterator();
         Calendar calendario= Calendar.getInstance();
-        System.out.println(calendario.get(Calendar.DAY_OF_WEEK));
-        System.out.println(calendario.getTime());
+        //System.out.println(calendario.get(Calendar.DAY_OF_WEEK));
+        //System.out.println(calendario.getTime());
         calendario.add(Calendar.DATE,-calendario.get(Calendar.DAY_OF_WEEK)+1   );
-        System.out.println(calendario.getTime());
+        //System.out.println(calendario.getTime());
 
         boolean superoAsistencias=false;
         Arancel aran = null;
@@ -62,7 +62,7 @@ public class asistenciaCombo extends javax.swing.JDialog {
                     Iterator<Combo> itCombo = comboAct.iterator();
                     while (itCombo.hasNext()) {
                         Combo combo = itCombo.next();
-                        System.out.println(idCliente+" "+ dateToMySQLDate(calendario.getTime(), false)+" "+aran.get("id")+" "+combo.get("id_activ"));
+                        //System.out.println(idCliente+" "+ dateToMySQLDate(calendario.getTime(), false)+" "+aran.get("id")+" "+combo.get("id_activ"));
                         LazyList<Asistencia> asistencia = Asistencia.where("ID_DATOS_PERS = ? and FECHA> ? and ID_ACTIV =? and ID_ACTIV_COMBO =?", idCliente, dateToMySQLDate(calendario.getTime(), false),aran.get("id"),combo.get("id_activ"));
                         Iterator<Asistencia> itAsistencia= asistencia.iterator();
                         //boolean noEsDomingo=true;
@@ -75,13 +75,13 @@ public class asistenciaCombo extends javax.swing.JDialog {
                         
                     }
                     if(contador<combo.getInteger("dias")){
-                        System.out.println("puede ir!");
+                        //System.out.println("puede ir!");
                         Arancel arancel = Arancel.findFirst("id = ?", combo.get("id_activ"));
                         JRadioButton boton1 = new JRadioButton(arancel.getString("nombre"));
                         boton1.setActionCommand(idCombo + "-" + arancel.getInteger("id"));
                         panelComboManual.add(boton1);
                         actividades.add(boton1);
-                        System.out.println("actividades del combo");
+                        //System.out.println("actividades del combo");
                     }
                     }
                 } else {
@@ -97,13 +97,13 @@ public class asistenciaCombo extends javax.swing.JDialog {
                         
                     }
                     if(contador<aran.getInteger("dias")){
-                        System.out.println("puede ir!");
+                        //System.out.println("puede ir!");
                         int idActiv = aran.getInteger("id");
                         JRadioButton boton = new JRadioButton(aran.getString("nombre"));
                         boton.setActionCommand(idActiv + "-");
                         panelActiv.add(boton);
                         actividades.add(boton);
-                        System.out.println("actividades sin combo");
+                        //System.out.println("actividades sin combo");
                     }
                     
                 }
@@ -183,7 +183,7 @@ public class asistenciaCombo extends javax.swing.JDialog {
             idActiv = Integer.valueOf(split[0]);
             if (split.length > 1) {
                 idActivCombo = Integer.valueOf(split[1]);
-                System.out.println("id activ: " + idActiv + "id combo: " + idActivCombo);
+                //System.out.println("id activ: " + idActiv + "id combo: " + idActivCombo);
             }
             this.setVisible(false);
         }

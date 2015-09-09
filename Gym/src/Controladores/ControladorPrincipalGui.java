@@ -92,7 +92,7 @@ public class ControladorPrincipalGui implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == principalGui.getBotDesconectar()) {
-            System.out.println("cerrar sesión pulsado");
+            //System.out.println("cerrar sesión pulsado");
             int r = JOptionPane.showConfirmDialog(principalGui, "¿Desea cerrar la sesion?", "Cerrar sesion", JOptionPane.YES_NO_OPTION);
             if (r == JOptionPane.YES_OPTION) {
                 principalGui.dispose();
@@ -114,7 +114,7 @@ public class ControladorPrincipalGui implements ActionListener {
             }
         }
         if (ae.getSource() == principalGui.getBotSocios()) {
-            System.out.println("boton socios pulsado");
+            //System.out.println("boton socios pulsado");
             socios.setVisible(true);
             try {
                 socios.setMaximum(true);
@@ -130,7 +130,7 @@ public class ControladorPrincipalGui implements ActionListener {
             //  abm.modbase();
         }
         if (ae.getSource() == principalGui.getBotActividades()) {
-            System.out.println("actividades pulsado");
+            //System.out.println("actividades pulsado");
             controladorActividades.bloquearNoAdmin();
             actividadesGui.setVisible(true);
             try {
@@ -166,7 +166,7 @@ public class ControladorPrincipalGui implements ActionListener {
             usuarioGui.toFront();
         }
         if (ae.getSource() == principalGui.getIngreso()) {
-            System.out.println("ingreso presionado wachin");
+            //System.out.println("ingreso presionado wachin");
             ingresoGui.setVisible(true);
             ingresoGui.toFront();
             ingresoGui.setLocationRelativeTo(null);

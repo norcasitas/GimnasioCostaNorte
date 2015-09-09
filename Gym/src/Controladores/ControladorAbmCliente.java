@@ -267,7 +267,8 @@ public class ControladorAbmCliente implements ActionListener {
                         clienteGui.getBotFicha().setEnabled(true);
                         clienteGui.getBotEliminarCancelar().setText("Eliminar");
                         s= Socio.findFirst("DNI = ? ", s.getString("DNI"));
-                        guardar_imagen(s.getString("ID_DATOS_PERS"), clienteGui.getImage());//alta es el mismo dni viejo y nuevo
+                        if(clienteGui.getNamePicture().equals("-1") || clienteGui.getNamePicture().equals("hay_imagen"))
+                            guardar_imagen(s.getString("ID_DATOS_PERS"), clienteGui.getImage());//alta es el mismo dni viejo y nuevo
 
 
                            

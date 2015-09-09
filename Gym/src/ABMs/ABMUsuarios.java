@@ -50,7 +50,7 @@ public class ABMUsuarios {
         User viejo = User.first("USUARIO = ?", u.get("USUARIO"));
         if (viejo != null) {
             Base.openTransaction();
-            System.out.println("entre si esta");
+            //System.out.println("entre si esta");
             viejo.set("PASSWD", u.get("PASSWD"), "ADMINIS", u.get("ADMINIS"));
             viejo.saveIt();
             Base.commitTransaction();

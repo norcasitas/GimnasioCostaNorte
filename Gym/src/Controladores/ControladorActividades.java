@@ -60,7 +60,7 @@ public class ControladorActividades implements ActionListener {
     }
 
     public void habilitarTablaCombo(){
-        System.out.println("habilitar combo");
+        //System.out.println("habilitar combo");
         if(actividadesGui.getCategoria().getSelectedItem().equals("COMBO")){
             actividadesGui.getDias().setEnabled(false);
             actividadesGui.getPaseLibre().setEnabled(false);
@@ -69,11 +69,11 @@ public class ControladorActividades implements ActionListener {
             
             if(isNuevo){
                 cargarActividadesNuevoCombo();
-                System.out.println("nuevo");
+                //System.out.println("nuevo");
             }
             else{
                 cargarActividadesCombo(ar.getInteger("id"));
-                System.out.println("viejo");
+                //System.out.println("viejo");
             }
         }
         else{
@@ -102,7 +102,7 @@ public class ControladorActividades implements ActionListener {
         }
     }
     private void cargarActividadesCombo(int idCombo){
-        System.out.println(idCombo);
+        //System.out.println(idCombo);
         tablaActComboDefault.setRowCount(0);
         LazyList<Combo> activsCombo=Combo.where("id_combo = ?", idCombo);
         Iterator<Combo> it= activsCombo.iterator();
@@ -167,7 +167,7 @@ public class ControladorActividades implements ActionListener {
         actividadesGui.getBotModif().setEnabled(true);
         actividadesGui.getBotEliminarCancelar().setEnabled(true);
         actividadesGui.getBotEliminarCancelar().setText("Eliminar");
-        System.out.println("hice click en una actividad");
+        //System.out.println("hice click en una actividad");
         int row = actividadesGui.getTablaActividades().getSelectedRow();
         ar = Arancel.first("id = ?", actividadesGui.getTablaActividades().getValueAt(row, 0));
         actividadesGui.getActividad().setText(ar.getString("nombre"));
@@ -183,12 +183,12 @@ public class ControladorActividades implements ActionListener {
             tablaActComboDefault.setRowCount(0);
         }
                 if(diasSemana==99){
-            System.out.println("pase libre");
+            //System.out.println("pase libre");
             actividadesGui.getPaseLibre().setSelected(true);
             actividadesGui.getDias().setValue(0);
         }
         else{
-            System.out.println("limitado: "+diasSemana);
+            //System.out.println("limitado: "+diasSemana);
            actividadesGui.getPaseLibre().setSelected(false);
            actividadesGui.getDias().setValue(diasSemana);
         }
@@ -200,7 +200,7 @@ public class ControladorActividades implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == actividadesGui.getBotEliminarCancelar()) {
-            System.out.println("Boton eliminar pulsado");
+            //System.out.println("Boton eliminar pulsado");
             if (actividadesGui.getBotEliminarCancelar().getText().equals("Eliminar")) {
                 actividadesGui.bloquearCampos(true);
                 int ret = JOptionPane.showConfirmDialog(actividadesGui, "¿Desea borrar la actividad.....?", null, JOptionPane.YES_NO_OPTION);
@@ -226,7 +226,7 @@ public class ControladorActividades implements ActionListener {
                     actividadesGui.getBotEliminarCancelar().setEnabled(false);
                 }
             } else {
-                System.out.println("cancelé !");
+                //System.out.println("cancelé !");
                 int ret = JOptionPane.showConfirmDialog(actividadesGui, "¿Desea cancelar los cambios?", null, JOptionPane.YES_NO_OPTION);
                 if (ret == JOptionPane.YES_OPTION) {
                     actividadesGui.limpiarCampos();
@@ -240,7 +240,7 @@ public class ControladorActividades implements ActionListener {
         if (ae.getSource() == actividadesGui.getBotGuardar()) {
             if (!isNuevo) {
                 /*Aca va todo para guardar uno modificado*/
-                System.out.println("Se modificó uno que existia");
+                //System.out.println("Se modificó uno que existia");
                 Arancel a = new Arancel();
                 boolean error=false;
                 int vecesSemana;
@@ -252,7 +252,7 @@ public class ControladorActividades implements ActionListener {
                 }
                 /*Aca tenés la variable de la cantidad de veces, si es 99 significa pase libre*/
                 
-                System.out.println(vecesSemana);
+                //System.out.println(vecesSemana);
                 a.set("fecha", actividadesGui.getDesde().getDate());
 try{
                     BigDecimal precio=BigDecimal.valueOf(Double.valueOf(actividadesGui.getPrecio().getText()));
@@ -314,7 +314,7 @@ try{
                 a.set("nombre", actividadesGui.getActividad().getText().toUpperCase());
                 a.set("dias", vecesSemana);
                 a.set("categoria", actividadesGui.getCategoria().getSelectedItem().toString().toUpperCase());
-                System.out.println("Boton guardó uno nuevito");
+                //System.out.println("Boton guardó uno nuevito");
                 if(!error){
                 if(abmAranceles.alta(a)){
                      guardarActivs(abmAranceles.idAlta);
@@ -347,7 +347,7 @@ try{
             }
                    }   
         if (ae.getSource() == actividadesGui.getBotModif()) {
-            System.out.println("Boton modif pulsado");
+            //System.out.println("Boton modif pulsado");
             actividadesGui.bloquearCampos(false);
             actividadesGui.getBotEliminarCancelar().setText("Cancelar");
             actividadesGui.getBotModif().setEnabled(false);
@@ -365,7 +365,7 @@ try{
 
         }
         if (ae.getSource() == actividadesGui.getBotNuevo()) {
-            System.out.println("Boton nuevo pulsado");
+            //System.out.println("Boton nuevo pulsado");
             isNuevo = true;
             actividadesGui.setBotonesNuevo(true);
             actividadesGui.limpiarCampos();
@@ -393,7 +393,7 @@ try{
     
     public void bloquearNoAdmin(){
         if(!ControladorLogin.esAdmin){
-            System.out.print("es Admin:" + ControladorLogin.esAdmin);
+            //System.out.print("es Admin:" + ControladorLogin.esAdmin);
             actividadesGui.getBotEliminarCancelar().setEnabled(false);
             actividadesGui.getBotGuardar().setEnabled(false);
             actividadesGui.getBotModif().setEnabled(false);
