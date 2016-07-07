@@ -5,6 +5,14 @@ import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -22,13 +30,12 @@ public class WebCam extends javax.swing.JDialog {
      */
     Webcam webcam;
     WebcamPanel panelCam;
-    BufferedImage ImagenGrande;
+    Integer id;
 
-
-    public WebCam(java.awt.Frame parent, boolean modal) {
+    public WebCam(java.awt.Frame parent, boolean modal, Integer id) {
         super(parent, modal);
         initComponents();
-        
+        this.id =id;
         webcam = Webcam.getDefault();
         Dimension dimension = webcam.getDevice().getResolutions()[webcam.getDevice().getResolutions().length - 1];
         webcam.setViewSize(dimension);
@@ -89,22 +96,41 @@ public class WebCam extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapActionPerformed
-        ImagenGrande = webcam.getImage();
-        guardado=true;
-        this.dispose();
+        System.out.println("id"+id);
+        try {
+            if(guardar_imagen(id.toString(),webcam.getImage())){
+                this.dispose();
+                JOptionPane.showMessageDialog(this, "Imagen guardada exitosamente");
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(WebCam.class.getName()).log(Level.SEVERE, null, ex);
+        }            
     }//GEN-LAST:event_btnCapActionPerformed
 
-    public BufferedImage getImagenGrande() {
-        return ImagenGrande;
+
+
+   //metodo que guarda la imagen en disco en formato JPG
+    /**
+     *
+     * @param id
+     * @param f
+     * @param imagen
+     * @return
+     */
+    public boolean guardar_imagen(String id,BufferedImage imagen) throws IOException {
+        if(imagen !=null){
+            //se escribe en disco
+            ImageIO.setUseCache(false);
+            ImageIO.write(imagen, "jpg", new File(System.getProperty("user.dir") + "/user_images/" + id + ".jpg"));
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            return ImageIO.write((RenderedImage) imagen, "jpg", out);
+            
+        } 
+        return false;
     }
 
-  
+   
 
-    public boolean isGuardado() {
-        return guardado;
-    }
-
-    private boolean guardado=false;
     /**
      * @param args the command line arguments
      */
@@ -135,7 +161,7 @@ public class WebCam extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                WebCam dialog = new WebCam(new javax.swing.JFrame(), false);
+                WebCam dialog = new WebCam(new javax.swing.JFrame(), false,1);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

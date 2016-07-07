@@ -266,12 +266,7 @@ public class ControladorAbmCliente implements ActionListener {
                         clienteGui.getBotHuella().setEnabled(true);
                         clienteGui.getBotFicha().setEnabled(true);
                         clienteGui.getBotEliminarCancelar().setText("Eliminar");
-                        s= Socio.findFirst("DNI = ? ", s.getString("DNI"));
-                        if(clienteGui.getNamePicture().equals("-1") || clienteGui.getNamePicture().equals("hay_imagen"))
-                            guardar_imagen(s.getString("ID_DATOS_PERS"), clienteGui.getImage());//alta es el mismo dni viejo y nuevo
-
-
-                           
+                        s= Socio.findFirst("DNI = ? ", s.getString("DNI"));   
                         actualizarDatos.cargarSocios();
                     } else {
                         JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -304,9 +299,9 @@ public class ControladorAbmCliente implements ActionListener {
                         clienteGui.getBotFicha().setEnabled(true);
                         clienteGui.getBotModif().setEnabled(true);
                         clienteGui.getBotPago().setEnabled(true);
+                        clienteGui.getBtnAddPhoto().setEnabled(true);
                         clienteGui.getBotEliminarCancelar().setText("Eliminar");
                         s= Socio.findFirst("DNI = ? ", s.getString("DNI"));
-                        guardar_imagen(s.getString("ID_DATOS_PERS"), clienteGui.getImage());//alta es el mismo dni viejo y nuevo
                         actualizarDatos.cargarSocios();
                         clienteGui.setTitle(s.getString("APELLIDO")+" "+ s.getString("NOMBRE"));
                         
@@ -408,18 +403,23 @@ public class ControladorAbmCliente implements ActionListener {
         }
         
         if(ae.getSource()== clienteGui.getBtnAddPhoto()){
-            WebCam webCam= new WebCam(null, true);
+            WebCam webCam= new WebCam(null, true,s.getInteger("id"));
             webCam.setLocationRelativeTo(clienteGui);
             webCam.setVisible(true);
-            if(webCam.isGuardado()){
-                clienteGui.setPicture(webCam.getImagenGrande());
-            }
+            
+            clienteGui.setPicture(s.getInteger("ID_DATOS_PERS"));
             webCam.webcam.close();
                 
         }
         
         if(ae.getSource()== clienteGui.getBtnDeletePhoto()){
-            clienteGui.setPicture(-1);
+            File imVieja=new File(System.getProperty("user.dir")+"/user_images/"+s.getInteger("ID_DATOS_PERS")+".jpg");
+            boolean result =imVieja.delete();
+            if(result){//se borro bien{
+                JOptionPane.showMessageDialog(clienteGui, "Imagen borrada exitosamente");
+                clienteGui.setPicture(-1);
+            }
+            
         }
         /*
             ESTO PERTENECE AL CONTROLADOR DE LA FICHA MEDICA
@@ -617,6 +617,7 @@ public class ControladorAbmCliente implements ActionListener {
 
     public void setIsNuevo(boolean isNuevo) {
         this.isNuevo = isNuevo;
+        this.s = null;
     }
     
     
@@ -666,21 +667,6 @@ public class ControladorAbmCliente implements ActionListener {
                 }
     }
     
-    //metodo que guarda la imagen en disco en formato JPG
-    public void guardar_imagen(String f,BufferedImage imagen){
-            if("sin_imagen_disponible.jpg".equals(f) || imagen==null){
-                File imVieja=new File(System.getProperty("user.dir")+"/user_images/"+f+".jpg");
-                imVieja.delete();
-                return ;
-            }
-                try {
-                    //se escribe en disco
-                    ImageIO.write(imagen, "jpg", new File(System.getProperty("user.dir")+"/user_images/"+f+".jpg"));
-                    ByteArrayOutputStream out = new ByteArrayOutputStream();
-                    ImageIO.write((RenderedImage) imagen, "jpg", out);
-                } catch (IOException ex) {
-                    Logger.getLogger(ControladorAbmCliente.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                
-            }          
+
+          
 }

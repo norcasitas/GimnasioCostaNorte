@@ -6,11 +6,15 @@ package Interfaces;
 
 import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
+import java.awt.Image;
 import javax.swing.JFrame;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -30,17 +34,18 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
     /**
      * Creates new form AbmClienteGui
      */
-    private String namePicture="sin_imagen_disponible.jpg";
+    private String namePicture = "sin_imagen_disponible";
     private BufferedImage image;
-    
-    private DefaultTableModel tablaActivDefault ;
+
+    private DefaultTableModel tablaActivDefault;
+
     public AbmClienteGui() {
         initComponents();
-        tablaActivDefault= (DefaultTableModel) tablaActividades.getModel();
+        tablaActivDefault = (DefaultTableModel) tablaActividades.getModel();
         setPicture(-1);
     }
 
-    public void setActionListener(ActionListener lis){
+    public void setActionListener(ActionListener lis) {
         this.BotHuella.addActionListener(lis);
         this.botEliminarCancelar.addActionListener(lis);
         this.botFicha.addActionListener(lis);
@@ -51,6 +56,7 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
         this.btnAddPhoto.addActionListener(lis);
         this.btnDeletePhoto.addActionListener(lis);
     }
+
     public JButton getBotHuella() {
         return BotHuella;
     }
@@ -63,8 +69,6 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
         return btnDeletePhoto;
     }
 
-
-
     public JTextField getApellido() {
         return apellido;
     }
@@ -72,7 +76,7 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
     public JButton getBotEliminarCancelar() {
         return botEliminarCancelar;
     }
-    
+
     public JDateChooser getFechaNacimJDate() {
         return fechaNacim;
     }
@@ -117,8 +121,6 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
         return labelFechaVenci;
     }
 
-
-
     public JTextField getNombre() {
         return nombre;
     }
@@ -130,23 +132,24 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
     public JTextField getTelefono() {
         return telefono;
     }
-    
-    public void setBotonesNuevo(boolean si){
+
+    public void setBotonesNuevo(boolean si) {
         this.botModif.setEnabled(!si);
         this.botPago.setEnabled(!si);
         this.botFicha.setEnabled(!si);
         this.BotHuella.setEnabled(!si);
         this.botNuevo.setEnabled(si);
         this.botGuardar.setEnabled(si);
-        this.btnAddPhoto.setEnabled(si);
-        this.btnDeletePhoto.setEnabled(si);
-        if(si)
-        this.botEliminarCancelar.setText("Cancelar");
-        else
+        this.btnAddPhoto.setEnabled(!si);
+        this.btnDeletePhoto.setEnabled(!si);
+        if (si) {
+            this.botEliminarCancelar.setText("Cancelar");
+        } else {
             this.botEliminarCancelar.setText("Eliminar");
+        }
     }
-    
-    public void bloquearCampos(boolean si){
+
+    public void bloquearCampos(boolean si) {
         nombre.setEnabled(!si);
         apellido.setEnabled(!si);
         dni.setEnabled(!si);
@@ -156,11 +159,12 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
         fechaNacim.getDateEditor().setEnabled(false);
         tablaActividades.setEnabled(!si);
         sexo.setEnabled(!si);
-        btnAddPhoto.setEnabled(!si);
-        btnDeletePhoto.setEnabled(!si);
+        this.btnAddPhoto.setEnabled(!si);
+        this.btnDeletePhoto.setEnabled(!si);
+
     }
-    
-        public void limpiarCampos(){
+
+    public void limpiarCampos() {
         nombre.setText("");
         apellido.setText("");
         dni.setText("");
@@ -170,32 +174,31 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
         labelFechaVenci.setText("");
         fechaNacim.setDate(Calendar.getInstance().getTime());
         tablaActividades.clearSelection();
-            setPicture(-1);
+        setPicture(-1);
     }
 
-    public void setPicture(Integer id){
-        namePicture=id.toString();
-        String rutaImagen= System.getProperty("user.dir");
-        rutaImagen+="/user_images/";
-        File foto = new File(rutaImagen+namePicture+".jpg");
-        if (foto.exists()){
-            pnlImageSocio.setIcon(new javax.swing.ImageIcon(rutaImagen+namePicture+".jpg"));
-            pnlImageSocio.repaint();
-        }
-        else{
-            image=null;
-            pnlImageSocio.setIcon(new javax.swing.ImageIcon(rutaImagen+"sin_imagen_disponible.jpg"));
+    public void setPicture(Integer id) {
+        namePicture = id.toString();
+        String rutaImagen = System.getProperty("user.dir");
+        rutaImagen += "/user_images/";
+        File foto = new File(rutaImagen + namePicture + ".jpg");
+        if (foto.exists()) {
+            BufferedImage img = null;
+            try {
+                ImageIO.setUseCache(false);
+                img = ImageIO.read(new File(rutaImagen + namePicture + ".jpg"));
+                pnlImageSocio.setIcon(new javax.swing.ImageIcon(img));
+                pnlImageSocio.repaint();
+            } catch (IOException e) {
+            }
+
+        } else {
+            namePicture = "sin_imagen_disponible";
+            pnlImageSocio.setIcon(new javax.swing.ImageIcon(rutaImagen + "sin_imagen_disponible.jpg"));
             pnlImageSocio.repaint();
         }
     }
-    
-       public void setPicture(BufferedImage image){
-        this.image= image;
-        this.namePicture= "hay_imagen";
-        pnlImageSocio.setIcon(new javax.swing.ImageIcon(image));
-        pnlImageSocio.repaint();
-    } 
-    
+
     public DefaultTableModel getTablaActivDefault() {
         return tablaActivDefault;
     }
@@ -211,7 +214,6 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
     public BufferedImage getImage() {
         return image;
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -586,20 +588,20 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_dniActionPerformed
 
     private void pnlImageSocioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlImageSocioMouseClicked
-        if(evt.getClickCount()==2){
-            JFrame k= new JFrame("VER  IMAGEN DE SOCIO");
+        if (evt.getClickCount() == 2) {
+            JFrame k = new JFrame("VER  IMAGEN DE SOCIO");
             k.setResizable(true);
             k.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             k.setLayout(new BorderLayout());
-            PanelImage p= new PanelImage();
+            PanelImage p = new PanelImage();
             p.setIcon(this.pnlImageSocio.getIcon());
             k.add(p);
-            k.setSize(p.getIcon().getIconWidth(),p.getIcon().getIconHeight());
+            k.setSize(p.getIcon().getIconWidth(), p.getIcon().getIconHeight());
             k.setLocationRelativeTo(null);
             k.setVisible(true);
             k.toFront();
         }
-        
+
     }//GEN-LAST:event_pnlImageSocioMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -641,7 +643,5 @@ public class AbmClienteGui extends javax.swing.JInternalFrame {
     private javax.swing.JTable tablaActividades;
     private javax.swing.JTextField telefono;
     // End of variables declaration//GEN-END:variables
-
-
 
 }

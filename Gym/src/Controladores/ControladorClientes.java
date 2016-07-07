@@ -567,6 +567,8 @@ public class ControladorClientes implements ActionListener {
                 Logger.getLogger(ControladorClientes.class.getName()).log(Level.SEVERE, null, ex);
             }
             altaClienteGui.toFront();
+            altaClienteGui.getBtnAddPhoto().setEnabled(false);
+            altaClienteGui.getBtnDeletePhoto().setEnabled(false);
             altaClienteGui.getTablaActivDefault().setRowCount(0);
             LazyList<Arancel> ListAran = Arancel.findAll();
             Iterator<Arancel> ite = ListAran.iterator();
